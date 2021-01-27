@@ -29,5 +29,6 @@ namespace TegoareWeb.Data
         public DbSet<Groep> Groepen { get; set; }
         public DbSet<Ontmoetingsplaats> Ontmoetingsplaatsen { get; set; }
         public DbSet<Tijdstip> Tijdstippen { get; set; }
+        public DbSet<TegoareWeb.Models.Activiteit> Activiteit { get; set; }
     }
 }
