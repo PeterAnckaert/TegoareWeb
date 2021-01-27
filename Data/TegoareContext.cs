@@ -19,9 +19,12 @@ namespace TegoareWeb.Data
             modelBuilder.Entity<Lid>().ToTable("Lid");
 
             modelBuilder.Entity<Groep>().ToTable("Groep");
+
+            modelBuilder.Entity<Ontmoetingsplaats>().ToTable("Ontmoetingsplaats");
         }
 
         public DbSet<Lid> Leden { get; set; }
         public DbSet<Groep> Groepen { get; set; }
+        public DbSet<Ontmoetingsplaats> Ontmoetingsplaatsen { get; set; }
     }
 }
