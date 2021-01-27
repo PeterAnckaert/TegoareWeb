@@ -27,7 +27,7 @@ namespace TegoareWeb
         {
             services.AddControllersWithViews();
 
-            services.AddDbContext<LidContext>(options =>
+            services.AddDbContext<TegoareContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("DatabaseContext")));
         }
 

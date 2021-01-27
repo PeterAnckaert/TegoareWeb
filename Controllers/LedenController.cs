@@ -12,9 +12,9 @@ namespace TegoareWeb.Controllers
 {
     public class LedenController : Controller
     {
-        private readonly LidContext _context;
+        private readonly TegoareContext _context;
 
-        public LedenController(LidContext context)
+        public LedenController(TegoareContext context)
         {
             _context = context;
         }

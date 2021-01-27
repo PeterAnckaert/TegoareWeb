@@ -7,9 +7,9 @@ using TegoareWeb.Models;
 
 namespace TegoareWeb.Data
 {
-    public class LidContext : DbContext
+    public class TegoareContext : DbContext
     {
-        public LidContext(DbContextOptions<LidContext> options)
+        public TegoareContext(DbContextOptions<TegoareContext> options)
             : base(options)
         {
         }
