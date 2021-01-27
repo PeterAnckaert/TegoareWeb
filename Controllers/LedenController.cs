@@ -22,7 +22,7 @@ namespace TegoareWeb.Controllers
         // GET: Leden
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Lid.ToListAsync());
+            return View(await _context.Leden.ToListAsync());
         }
 
         // GET: Leden/Details/5
@@ -33,7 +33,7 @@ namespace TegoareWeb.Controllers
                 return NotFound();
             }
 
-            var lid = await _context.Lid
+            var lid = await _context.Leden
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (lid == null)
             {
@@ -74,7 +74,7 @@ namespace TegoareWeb.Controllers
                 return NotFound();
             }
 
-            var lid = await _context.Lid.FindAsync(id);
+            var lid = await _context.Leden.FindAsync(id);
             if (lid == null)
             {
                 return NotFound();
@@ -125,7 +125,7 @@ namespace TegoareWeb.Controllers
                 return NotFound();
             }
 
-            var lid = await _context.Lid
+            var lid = await _context.Leden
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (lid == null)
             {
@@ -140,15 +140,15 @@ namespace TegoareWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var lid = await _context.Lid.FindAsync(id);
-            _context.Lid.Remove(lid);
+            var lid = await _context.Leden.FindAsync(id);
+            _context.Leden.Remove(lid);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool LidExists(Guid id)
         {
-            return _context.Lid.Any(e => e.Id == id);
+            return _context.Leden.Any(e => e.Id == id);
         }
     }
 }

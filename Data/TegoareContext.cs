@@ -14,6 +14,11 @@ namespace TegoareWeb.Data
         {
         }
 
-        public DbSet<Lid> Lid { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Lid>().ToTable("Lid");
+        }
+
+        public DbSet<Lid> Leden { get; set; }
     }
 }
