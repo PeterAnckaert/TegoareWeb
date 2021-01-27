@@ -17,8 +17,11 @@ namespace TegoareWeb.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Lid>().ToTable("Lid");
+
+            modelBuilder.Entity<Groep>().ToTable("Groep");
         }
 
         public DbSet<Lid> Leden { get; set; }
+        public DbSet<Groep> Groepen { get; set; }
     }
 }
