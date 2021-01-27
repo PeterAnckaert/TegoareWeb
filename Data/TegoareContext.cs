@@ -21,10 +21,13 @@ namespace TegoareWeb.Data
             modelBuilder.Entity<Groep>().ToTable("Groep");
 
             modelBuilder.Entity<Ontmoetingsplaats>().ToTable("Ontmoetingsplaats");
+
+            modelBuilder.Entity<Tijdstip>().ToTable("Tijdstip");
         }
 
         public DbSet<Lid> Leden { get; set; }
         public DbSet<Groep> Groepen { get; set; }
         public DbSet<Ontmoetingsplaats> Ontmoetingsplaatsen { get; set; }
+        public DbSet<Tijdstip> Tijdstippen { get; set; }
     }
 }
