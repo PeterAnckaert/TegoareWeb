@@ -22,7 +22,7 @@ namespace TegoareWeb.Controllers
         // GET: Activiteiten
         public async Task<IActionResult> Index()
         {
-            var tegoareContext = _context.Activiteit.Include(a => a.Ontmoetingsplaats);
+            var tegoareContext = _context.Activiteiten.Include(a => a.Ontmoetingsplaats).Include(a => a.Publicatiedatum).Include(a => a.Uiterste_inschrijfdatum);
             return View(await tegoareContext.ToListAsync());
         }
 
@@ -34,8 +34,10 @@ namespace TegoareWeb.Controllers
                 return NotFound();
             }
 
-            var activiteit = await _context.Activiteit
+            var activiteit = await _context.Activiteiten
                 .Include(a => a.Ontmoetingsplaats)
+                .Include(a => a.Publicatiedatum)
+                .Include(a => a.Uiterste_inschrijfdatum)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (activiteit == null)
             {
@@ -49,6 +51,8 @@ namespace TegoareWeb.Controllers
         public IActionResult Create()
         {
             ViewData["Id_ontmoetingsplaats"] = new SelectList(_context.Ontmoetingsplaatsen, "Id", "Plaatsnaam");
+            ViewData["Id_publicatiedatum"] = new SelectList(_context.Tijdstippen, "Id", "Datum");
+            ViewData["Id_uiterste_inschrijfdatum"] = new SelectList(_context.Tijdstippen, "Id", "Datum");
             return View();
         }
 
@@ -57,7 +61,7 @@ namespace TegoareWeb.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Naam,Omschrijving,Publicatiedatum,Uiterste_inschrijfdatum,Prijs,Max_inschrijvingen,Id_ontmoetingsplaats")] Activiteit activiteit)
+        public async Task<IActionResult> Create([Bind("Id,Naam,Omschrijving,Id_publicatiedatum,Id_uiterste_inschrijfdatum,Prijs,Max_inschrijvingen,Id_ontmoetingsplaats")] Activiteit activiteit)
         {
             if (ModelState.IsValid)
             {
@@ -66,7 +70,9 @@ namespace TegoareWeb.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["Id_ontmoetingsplaats"] = new SelectList(_context.Ontmoetingsplaatsen, "Id", "Id", activiteit.Id_ontmoetingsplaats);
+            ViewData["Id_ontmoetingsplaats"] = new SelectList(_context.Ontmoetingsplaatsen, "Id", "Plaatsnaam", activiteit.Id_ontmoetingsplaats);
+            ViewData["Id_publicatiedatum"] = new SelectList(_context.Tijdstippen, "Id", "Datum", activiteit.Id_publicatiedatum);
+            ViewData["Id_uiterste_inschrijfdatum"] = new SelectList(_context.Tijdstippen, "Id", "Datum", activiteit.Id_uiterste_inschrijfdatum);
             return View(activiteit);
         }
 
@@ -78,12 +84,14 @@ namespace TegoareWeb.Controllers
                 return NotFound();
             }
 
-            var activiteit = await _context.Activiteit.FindAsync(id);
+            var activiteit = await _context.Activiteiten.FindAsync(id);
             if (activiteit == null)
             {
                 return NotFound();
             }
             ViewData["Id_ontmoetingsplaats"] = new SelectList(_context.Ontmoetingsplaatsen, "Id", "Plaatsnaam", activiteit.Id_ontmoetingsplaats);
+            ViewData["Id_publicatiedatum"] = new SelectList(_context.Tijdstippen, "Id", "Datum", activiteit.Id_publicatiedatum);
+            ViewData["Id_uiterste_inschrijfdatum"] = new SelectList(_context.Tijdstippen, "Id", "Datum", activiteit.Id_uiterste_inschrijfdatum);
             return View(activiteit);
         }
 
@@ -92,7 +100,7 @@ namespace TegoareWeb.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Naam,Omschrijving,Publicatiedatum,Uiterste_inschrijfdatum,Prijs,Max_inschrijvingen,Id_ontmoetingsplaats")] Activiteit activiteit)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Naam,Omschrijving,Id_publicatiedatum,Id_uiterste_inschrijfdatum,Prijs,Max_inschrijvingen,Id_ontmoetingsplaats")] Activiteit activiteit)
         {
             if (id != activiteit.Id)
             {
@@ -119,7 +127,9 @@ namespace TegoareWeb.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["Id_ontmoetingsplaats"] = new SelectList(_context.Ontmoetingsplaatsen, "Id", "Id", activiteit.Id_ontmoetingsplaats);
+            ViewData["Id_ontmoetingsplaats"] = new SelectList(_context.Ontmoetingsplaatsen, "Id", "Plaatsnaam", activiteit.Id_ontmoetingsplaats);
+            ViewData["Id_publicatiedatum"] = new SelectList(_context.Tijdstippen, "Id", "Datum", activiteit.Id_publicatiedatum);
+            ViewData["Id_uiterste_inschrijfdatum"] = new SelectList(_context.Tijdstippen, "Id", "Datum", activiteit.Id_uiterste_inschrijfdatum);
             return View(activiteit);
         }
 
@@ -131,8 +141,10 @@ namespace TegoareWeb.Controllers
                 return NotFound();
             }
 
-            var activiteit = await _context.Activiteit
+            var activiteit = await _context.Activiteiten
                 .Include(a => a.Ontmoetingsplaats)
+                .Include(a => a.Publicatiedatum)
+                .Include(a => a.Uiterste_inschrijfdatum)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (activiteit == null)
             {
@@ -147,15 +159,15 @@ namespace TegoareWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var activiteit = await _context.Activiteit.FindAsync(id);
-            _context.Activiteit.Remove(activiteit);
+            var activiteit = await _context.Activiteiten.FindAsync(id);
+            _context.Activiteiten.Remove(activiteit);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool ActiviteitExists(Guid id)
         {
-            return _context.Activiteit.Any(e => e.Id == id);
+            return _context.Activiteiten.Any(e => e.Id == id);
         }
     }
 }

@@ -15,5 +15,7 @@ namespace TegoareWeb.Models
         public TimeSpan Begin_uur { get; set; }
         [DataType(DataType.Time)]
         public TimeSpan Eind_uur { get; set; }
+        public virtual ICollection<Activiteit> Activiteiten_Publicatie { get; set; }
+        public virtual ICollection<Activiteit> Activiteiten_Inschrijf { get; set; }
     }
 }

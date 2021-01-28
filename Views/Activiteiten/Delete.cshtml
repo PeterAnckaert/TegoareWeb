@@ -27,14 +27,14 @@
             @Html.DisplayNameFor(model => model.Publicatiedatum)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Publicatiedatum)
-        </dd>
+            @Html.DisplayFor(model => model.Publicatiedatum.Datum)
+        </dd class>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Uiterste_inschrijfdatum)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Uiterste_inschrijfdatum)
-        </dd>
+            @Html.DisplayFor(model => model.Uiterste_inschrijfdatum.Datum)
+        </dd class>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Prijs)
         </dt>
@@ -51,7 +51,7 @@
             @Html.DisplayNameFor(model => model.Ontmoetingsplaats)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Ontmoetingsplaats.Id)
+            @Html.DisplayFor(model => model.Ontmoetingsplaats.Plaatsnaam)
         </dd class>
     </dl>
     
