@@ -43,6 +43,10 @@
                 <span asp-validation-for="Max_inschrijvingen" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="Id_ontmoetingsplaats" class="control-label"></label>
+                <select asp-for="Id_ontmoetingsplaats" class ="form-control" asp-items="ViewBag.Id_ontmoetingsplaats"></select>
+            </div>
+            <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>

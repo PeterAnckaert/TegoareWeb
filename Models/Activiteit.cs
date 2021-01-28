@@ -17,5 +17,7 @@ namespace TegoareWeb.Models
         public DateTime Uiterste_inschrijfdatum { get; set; }
         public short Prijs { get; set; }
         public short Max_inschrijvingen { get; set; }
+        public Ontmoetingsplaats Ontmoetingsplaats { get; set; }
+        public Guid? Id_ontmoetingsplaats { get; set; }
     }
 }

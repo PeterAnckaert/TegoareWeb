@@ -22,7 +22,8 @@ namespace TegoareWeb.Controllers
         // GET: Activiteiten
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Activiteit.ToListAsync());
+            var tegoareContext = _context.Activiteit.Include(a => a.Ontmoetingsplaats);
+            return View(await tegoareContext.ToListAsync());
         }
 
         // GET: Activiteiten/Details/5
@@ -34,6 +35,7 @@ namespace TegoareWeb.Controllers
             }
 
             var activiteit = await _context.Activiteit
+                .Include(a => a.Ontmoetingsplaats)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (activiteit == null)
             {
@@ -46,6 +48,7 @@ namespace TegoareWeb.Controllers
         // GET: Activiteiten/Create
         public IActionResult Create()
         {
+            ViewData["Id_ontmoetingsplaats"] = new SelectList(_context.Ontmoetingsplaatsen, "Id", "Plaatsnaam");
             return View();
         }
 
@@ -54,7 +57,7 @@ namespace TegoareWeb.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Naam,Omschrijving,Publicatiedatum,Uiterste_inschrijfdatum,Prijs,Max_inschrijvingen")] Activiteit activiteit)
+        public async Task<IActionResult> Create([Bind("Id,Naam,Omschrijving,Publicatiedatum,Uiterste_inschrijfdatum,Prijs,Max_inschrijvingen,Id_ontmoetingsplaats")] Activiteit activiteit)
         {
             if (ModelState.IsValid)
             {
@@ -63,6 +66,7 @@ namespace TegoareWeb.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["Id_ontmoetingsplaats"] = new SelectList(_context.Ontmoetingsplaatsen, "Id", "Id", activiteit.Id_ontmoetingsplaats);
             return View(activiteit);
         }
 
@@ -79,6 +83,7 @@ namespace TegoareWeb.Controllers
             {
                 return NotFound();
             }
+            ViewData["Id_ontmoetingsplaats"] = new SelectList(_context.Ontmoetingsplaatsen, "Id", "Plaatsnaam", activiteit.Id_ontmoetingsplaats);
             return View(activiteit);
         }
 
@@ -87,7 +92,7 @@ namespace TegoareWeb.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Naam,Omschrijving,Publicatiedatum,Uiterste_inschrijfdatum,Prijs,Max_inschrijvingen")] Activiteit activiteit)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Naam,Omschrijving,Publicatiedatum,Uiterste_inschrijfdatum,Prijs,Max_inschrijvingen,Id_ontmoetingsplaats")] Activiteit activiteit)
         {
             if (id != activiteit.Id)
             {
@@ -114,6 +119,7 @@ namespace TegoareWeb.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["Id_ontmoetingsplaats"] = new SelectList(_context.Ontmoetingsplaatsen, "Id", "Id", activiteit.Id_ontmoetingsplaats);
             return View(activiteit);
         }
 
@@ -126,6 +132,7 @@ namespace TegoareWeb.Controllers
             }
 
             var activiteit = await _context.Activiteit
+                .Include(a => a.Ontmoetingsplaats)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (activiteit == null)
             {

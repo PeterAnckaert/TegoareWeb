@@ -23,12 +23,17 @@ namespace TegoareWeb.Data
             modelBuilder.Entity<Ontmoetingsplaats>().ToTable("Ontmoetingsplaats");
 
             modelBuilder.Entity<Tijdstip>().ToTable("Tijdstip");
+
+            modelBuilder.Entity<Activiteit>()
+                .HasOne<Ontmoetingsplaats>(s => s.Ontmoetingsplaats)
+                .WithMany(g => g.Activiteiten)
+                .HasForeignKey(s => s.Id_ontmoetingsplaats);
         }
 
         public DbSet<Lid> Leden { get; set; }
         public DbSet<Groep> Groepen { get; set; }
         public DbSet<Ontmoetingsplaats> Ontmoetingsplaatsen { get; set; }
         public DbSet<Tijdstip> Tijdstippen { get; set; }
-        public DbSet<TegoareWeb.Models.Activiteit> Activiteit { get; set; }
+        public DbSet<Activiteit> Activiteit { get; set; }
     }
 }

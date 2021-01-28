@@ -13,5 +13,6 @@ namespace TegoareWeb.Models
         public string Straatnummer { get; set; }
         public short Postcode { get; set; }
         public string Gemeente { get; set; }
+        public virtual ICollection<Activiteit> Activiteiten { get; set; }
     }
 }
