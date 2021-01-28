@@ -26,6 +26,8 @@ namespace TegoareWeb.Data
 
             modelBuilder.Entity<Activiteit>().ToTable("Activiteit");
 
+            modelBuilder.Entity<KalenderItem>().ToTable("KalenderItem");
+
             modelBuilder.Entity<Activiteit>()
                 .HasOne<Tijdstip>(t => t.Publicatiedatum)
                 .WithMany(a => a.Activiteiten_Publicatie)
@@ -40,6 +42,18 @@ namespace TegoareWeb.Data
                .HasOne<Ontmoetingsplaats>(o => o.Ontmoetingsplaats)
                .WithMany(a => a.Activiteiten)
                .HasForeignKey(o => o.Id_ontmoetingsplaats);
+
+            modelBuilder.Entity<KalenderItem>().HasKey(ki => new { ki.Id_activiteit, ki.Id_tijdstip });
+
+            modelBuilder.Entity<KalenderItem>()
+                .HasOne<Activiteit>(ki => ki.Activiteit)
+                .WithMany(a => a.KalenderItems)
+                .HasForeignKey(ki => ki.Id_activiteit);
+
+            modelBuilder.Entity<KalenderItem>()
+                .HasOne<Tijdstip>(ki => ki.Tijdstip)
+                .WithMany(t => t.KalenderItems)
+                .HasForeignKey(ki => ki.Id_tijdstip);
         }
 
         public DbSet<Lid> Leden { get; set; }
@@ -47,5 +61,6 @@ namespace TegoareWeb.Data
         public DbSet<Ontmoetingsplaats> Ontmoetingsplaatsen { get; set; }
         public DbSet<Tijdstip> Tijdstippen { get; set; }
         public DbSet<Activiteit> Activiteiten { get; set; }
+        public DbSet<KalenderItem> KalenderItems { get; set; }
     }
 }

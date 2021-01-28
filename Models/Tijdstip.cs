@@ -17,5 +17,6 @@ namespace TegoareWeb.Models
         public TimeSpan Eind_uur { get; set; }
         public virtual ICollection<Activiteit> Activiteiten_Publicatie { get; set; }
         public virtual ICollection<Activiteit> Activiteiten_Inschrijf { get; set; }
+        public IList<KalenderItem> KalenderItems { get; set; }
     }
 }

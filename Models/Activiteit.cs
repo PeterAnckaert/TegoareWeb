@@ -19,5 +19,6 @@ namespace TegoareWeb.Models
         public short Max_inschrijvingen { get; set; }
         public Guid? Id_ontmoetingsplaats { get; set; }
         public Ontmoetingsplaats Ontmoetingsplaats { get; set; }
+        public IList<KalenderItem> KalenderItems { get; set; }
     }
 }
