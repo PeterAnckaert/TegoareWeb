@@ -15,7 +15,7 @@ namespace TegoareWeb.Models
         public Tijdstip Publicatiedatum { get; set; }
         public Guid? Id_uiterste_inschrijfdatum { get; set; }
         public Tijdstip Uiterste_inschrijfdatum { get; set; }
-        public short Prijs { get; set; }
+        public decimal Prijs { get; set; }
         public short Max_inschrijvingen { get; set; }
         public Guid? Id_ontmoetingsplaats { get; set; }
         public Ontmoetingsplaats Ontmoetingsplaats { get; set; }

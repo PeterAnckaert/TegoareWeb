@@ -20,10 +20,108 @@ namespace TegoareWeb.Controllers
         }
 
         // GET: Activiteiten
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(
+            string sortOrder,
+            string currentFilter,
+            string searchString,
+            int? pageNumber)
         {
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["NaamSortParm"] = sortOrder == "naam_asc" ? "naam_desc" : "naam_asc";
+            ViewData["OmschrijvingSortParm"] = sortOrder == "omschrijving_asc" ? "omschrijving_desc" : "omschrijving_asc";
+            ViewData["PublicatiedatumSortParm"] = sortOrder == "publicatie_asc" ? "publicatie_desc" : "publicatie_asc";
+            ViewData["InschrijfdatumSortParm"] = sortOrder == "inschrijfdatum_asc" ? "inschrijfdatum_desc" : "inschrijfdatum_asc";
+            ViewData["PrijsSortParm"] = sortOrder == "prijs_asc" ? "prijs_desc" : "prijs_asc";
+            ViewData["MaxInschrijvingSortParm"] = sortOrder == "maxinschrijving_asc" ? "maxinschrijving_desc" : "maxinschrijving_asc";
+            ViewData["OntmoetingsplaatsSortParm"] = sortOrder == "plaats_asc" ? "plaats_desc" : "plaats_asc";
+
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+            ViewData["CurrentFilter"] = searchString;
+
             var tegoareContext = _context.Activiteiten.Include(a => a.Ontmoetingsplaats).Include(a => a.Publicatiedatum).Include(a => a.Uiterste_inschrijfdatum);
-            return View(await tegoareContext.ToListAsync());
+            var activiteiten = from a in _context.Activiteiten.Include(a => a.Ontmoetingsplaats).Include(a => a.Publicatiedatum).Include(a => a.Uiterste_inschrijfdatum)
+                               select a;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                activiteiten = activiteiten.Where(a => a.Naam.Contains(searchString)
+                                       || a.Omschrijving.Contains(searchString)
+                                       || a.Ontmoetingsplaats.Plaatsnaam.Contains(searchString));
+            }
+
+            switch (sortOrder)
+            {
+                case "naam_asc":
+                    activiteiten = activiteiten.OrderBy(a => a.Naam)
+                        .ThenBy(a => a.Uiterste_inschrijfdatum);
+                    break;
+                case "naam_desc":
+                    activiteiten = activiteiten.OrderByDescending(a => a.Naam)
+                        .ThenByDescending(a => a.Uiterste_inschrijfdatum);
+                    break;
+                case "omschrijving_asc":
+                    activiteiten = activiteiten.OrderBy(a => a.Omschrijving)
+                        .ThenBy(a => a.Uiterste_inschrijfdatum);
+                    break;
+                case "omschrijving_desc":
+                    activiteiten = activiteiten.OrderByDescending(a => a.Omschrijving)
+                        .ThenByDescending(a => a.Uiterste_inschrijfdatum);
+                    break;
+                case "publicatie_asc":
+                    activiteiten = activiteiten.OrderBy(a => a.Publicatiedatum)
+                        .ThenBy(a => a.Naam);
+                    break;
+                case "publicatie_desc":
+                    activiteiten = activiteiten.OrderByDescending(a => a.Publicatiedatum)
+                        .ThenByDescending(a => a.Naam);
+                    break;
+                case "inschrijfdatum_asc":
+                    activiteiten = activiteiten.OrderBy(a => a.Uiterste_inschrijfdatum)
+                        .ThenBy(a => a.Naam);
+                    break;
+                case "inschrijfdatum_desc":
+                    activiteiten = activiteiten.OrderByDescending(a => a.Uiterste_inschrijfdatum)
+                        .ThenByDescending(a => a.Naam);
+                    break;
+                case "prijs_asc":
+                    activiteiten = activiteiten.OrderBy(a => a.Prijs)
+                        .ThenBy(a => a.Naam);
+                    break;
+                case "prijs_desc":
+                    activiteiten = activiteiten.OrderByDescending(a => a.Prijs)
+                        .ThenByDescending(a => a.Naam);
+                    break;
+                case "maxinschrijving_asc":
+                    activiteiten = activiteiten.OrderBy(a => a.Max_inschrijvingen)
+                        .ThenBy(a => a.Naam);
+                    break;
+                case "maxinschrijving_desc":
+                    activiteiten = activiteiten.OrderByDescending(a => a.Max_inschrijvingen)
+                        .ThenByDescending(a => a.Naam);
+                    break;
+                case "plaats_asc":
+                    activiteiten = activiteiten.OrderBy(a => a.Ontmoetingsplaats)
+                        .ThenBy(a => a.Uiterste_inschrijfdatum);
+                    break;
+                case "plaats_desc":
+                    activiteiten = activiteiten.OrderByDescending(a => a.Ontmoetingsplaats)
+                        .ThenByDescending(a => a.Uiterste_inschrijfdatum);
+                    break;
+                default:
+                    activiteiten = activiteiten.OrderBy(a => a.Naam)
+                        .ThenBy(a => a.Uiterste_inschrijfdatum);
+                    break;
+            }
+
+            int pageSize = 10;
+            return View(await PaginatedList<Activiteit>.CreateAsync(activiteiten, pageNumber ?? 1, pageSize));
         }
 
         // GET: Activiteiten/Details/5

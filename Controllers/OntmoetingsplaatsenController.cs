@@ -22,7 +22,7 @@ namespace TegoareWeb.Controllers
         // GET: Ontmoetingsplaatsen
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Ontmoetingsplaatsen.ToListAsync());
+            return View(await _context.Ontmoetingsplaatsen.OrderBy(o => o.Plaatsnaam).ToListAsync());
         }
 
         // GET: Ontmoetingsplaatsen/Details/5

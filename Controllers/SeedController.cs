@@ -319,14 +319,56 @@ namespace TegoareWeb.Controllers
             return RedirectToAction("Index");
         }
 
-        public IActionResult DelActiviteiten()
+        public async Task<IActionResult> DelActiviteiten()
         {
+            _context.Activiteiten.RemoveRange(_context.Activiteiten);
+            await _context.SaveChangesAsync();
             strStatus = "Activiteiten zijn gewist";
             return RedirectToAction("Index");
         }
 
-        public IActionResult SeedActiviteiten()
+        public async Task<IActionResult> SeedActiviteiten()
         {
+            if (_context.Tijdstippen.Count() == 0)
+            {
+                strStatus = "GEEN TIJDSTIPPEN";
+                return RedirectToAction("Index");
+            }
+
+            Tijdstip[] array = _context.Tijdstippen.ToArray();
+            Tijdstip t1 = array[0];
+            Tijdstip t2 = array[array.Length - 1];
+
+            Ontmoetingsplaats plaats1, plaats2;
+
+            if(_context.Ontmoetingsplaatsen.Count() == 0)
+            {
+                strStatus = "GEEN ONTMOETINGSPLAATSEN";
+                return RedirectToAction("Index");
+            }
+
+            plaats1 = _context.Ontmoetingsplaatsen.Where(o => o.Plaatsnaam == "De Kersecorf").FirstOrDefault();
+            if (plaats1 == null)
+            {
+                strStatus = "GEEN KERSECORF";
+                return RedirectToAction("Index");
+            }
+
+            plaats2 = _context.Ontmoetingsplaatsen.Where(o => o.Plaatsnaam == "Familiekring").FirstOrDefault();
+            if (plaats2 == null)
+            {
+                strStatus = "GEEN FAMILIEKRING";
+                return RedirectToAction("Index");
+            }
+
+            _context.Activiteiten.Add(new Activiteit { Naam = "AUTO 1", Omschrijving = "tekst", Id_ontmoetingsplaats = plaats1.Id });
+            _context.Activiteiten.Add(new Activiteit { Naam = "AUTO 2", Omschrijving = "tekst", Id_ontmoetingsplaats = plaats2.Id });
+            _context.Activiteiten.Add(new Activiteit { Naam = "AUTO 3", Omschrijving = "familiekring - max = 15", Id_ontmoetingsplaats = plaats2.Id, Max_inschrijvingen = 15 });
+            _context.Activiteiten.Add(new Activiteit { Naam = "AUTO 4", Omschrijving = "kersecorf - prijs = 1,50", Id_ontmoetingsplaats = plaats1.Id, Prijs = 1.50M });
+            _context.Activiteiten.Add(new Activiteit { Naam = "AUTO 5", Omschrijving = "kersecorf - prijs = 4, uiterst", Id_ontmoetingsplaats = plaats1.Id, Prijs = 4M, Id_uiterste_inschrijfdatum = t1.Id });
+            _context.Activiteiten.Add(new Activiteit { Naam = "AUTO 6", Omschrijving = "familiekring - max = 5, publicatie", Id_ontmoetingsplaats = plaats2.Id, Max_inschrijvingen = 5, Publicatiedatum = t2});
+            _context.Activiteiten.Add(new Activiteit { Naam = "AUTO 7", Omschrijving = "kersecorf - prijs = 4 - max = 10, uiterst+publicatie", Id_ontmoetingsplaats = plaats1.Id, Prijs = 4M, Uiterste_inschrijfdatum = t1, Publicatiedatum = t2, Max_inschrijvingen = 10 });
+            await _context.SaveChangesAsync();
             strStatus = "Activiteiten zijn aangemaakt";
             return RedirectToAction("Index");
         }

@@ -22,7 +22,7 @@ namespace TegoareWeb.Controllers
         // GET: Groepen
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Groepen.ToListAsync());
+            return View(await _context.Groepen.OrderBy(g => g.Rol).ToListAsync());
         }
 
         // GET: Groepen/Details/5
