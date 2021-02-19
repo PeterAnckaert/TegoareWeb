@@ -24,7 +24,8 @@ namespace TegoareWeb.Controllers
             string sortOrder,
             string currentFilter,
             string searchString,
-            int? pageNumber)
+            int? pageNumber,
+            int? pageSize)
         {
             ViewData["CurrentSort"] = sortOrder;
             ViewData["NaamSortParm"] = sortOrder == "naam_asc" ? "naam_desc" : "naam_asc";
@@ -120,8 +121,7 @@ namespace TegoareWeb.Controllers
                     break;
             }
 
-            int pageSize = 10;
-            return View(await PaginatedList<Activiteit>.CreateAsync(activiteiten, pageNumber ?? 1, pageSize));
+            return View(await PaginatedList<Activiteit>.CreateAsync(activiteiten, pageNumber ?? 1, pageSize ?? 10));
         }
 
         // GET: Activiteiten/Details/5

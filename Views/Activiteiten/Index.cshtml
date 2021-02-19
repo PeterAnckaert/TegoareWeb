@@ -28,20 +28,65 @@
     <a asp-action="Index"
        asp-route-sortOrder="@ViewData["CurrentSort"]"
        asp-route-pageNumber="@(Model.PageIndex - 1)"
+       asp-route-pageSize="@Model.PageSize"
        asp-route-currentFilter="@ViewData["CurrentFilter"]"
        class="btn btn-outline-dark @prevDisabled">
-        Previous
+        Vorige
     </a>
     <a asp-action="Index"
        asp-route-sortOrder="@ViewData["CurrentSort"]"
        asp-route-pageNumber="@(Model.PageIndex + 1)"
+       asp-route-pageSize="@Model.PageSize"
        asp-route-currentFilter="@ViewData["CurrentFilter"]"
        class="btn btn-outline-dark @nextDisabled">
-        Next
+        Volgende
     </a>
-    Pagina: @Model.PageIndex / @Model.TotalPages
-    Resultaat: @((Model.PageIndex - 1) * Model.PageSize + 1) tot @((Model.PageIndex - 1) * Model.PageSize + Model.Count)
+    Resultaten per:
+    <a asp-action="Index"
+       asp-route-sortOrder="@ViewData["CurrentSort"]"
+       asp-route-pageNumber="1"
+       asp-route-pageSize="10"
+       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+       class="btn @(!(Model.PageSize == 10) ? "btn-outline-dark" : "btn-dark")">
+        10
+    </a>
+    <a asp-action="Index"
+       asp-route-sortOrder="@ViewData["CurrentSort"]"
+       asp-route-pageNumber="1"
+       asp-route-pageSize="20"
+       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+       class="btn @(!(Model.PageSize == 20) ? "btn-outline-dark" : "btn-dark")">
+        20
+    </a>
+    <a asp-action="Index"
+       asp-route-sortOrder="@ViewData["CurrentSort"]"
+       asp-route-pageNumber="1"
+       asp-route-pageSize="50"
+       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+       class="btn @(!(Model.PageSize == 50) ? "btn-outline-dark" : "btn-dark")">
+        50
+    </a>
+    Totaal aantal resultaten: @Model.TotalResults
 </p>
+@if (Model.TotalPages > 1)
+{
+    <p>
+        @for (int i = 1; i < Model.TotalPages + 1; i++)
+        {
+            <a asp-action="Index"
+               asp-route-sortOrder="@ViewData["CurrentSort"]"
+               asp-route-pageNumber="@i"
+               asp-route-pageSize="@Model.PageSize"
+               asp-route-currentFilter="@ViewData["CurrentFilter"]"
+               class="btn @(!(Model.PageIndex == i) ? "btn-outline-dark" : "btn-dark")">
+                @i
+            </a>
+        }
+    </p>
+    <p>
+        Resultaat: @((Model.PageIndex - 1) * Model.PageSize + 1) tot @((Model.PageIndex - 1) * Model.PageSize + Model.Count)
+    </p>
+}
 
 <table class="table">
     <thead>
@@ -105,21 +150,67 @@
     </tbody>
 </table>
 
+@if (Model.TotalPages > 1)
+{
+    <p>
+        @for (int i = 1; i < Model.TotalPages + 1; i++)
+        {
+            <a asp-action="Index"
+               asp-route-sortOrder="@ViewData["CurrentSort"]"
+               asp-route-pageNumber="@i"
+               asp-route-pageSize="@Model.PageSize"
+               asp-route-currentFilter="@ViewData["CurrentFilter"]"
+               class="btn @(!(Model.PageIndex == i) ? "btn-outline-dark" : "btn-dark")">
+                @i
+            </a>
+        }
+    </p>
+    <p>
+        Resultaat: @((Model.PageIndex - 1) * Model.PageSize + 1) tot @((Model.PageIndex - 1) * Model.PageSize + Model.Count)
+    </p>
+}
+
 <p>
     <a asp-action="Index"
        asp-route-sortOrder="@ViewData["CurrentSort"]"
        asp-route-pageNumber="@(Model.PageIndex - 1)"
+       asp-route-pageSize="@Model.PageSize"
        asp-route-currentFilter="@ViewData["CurrentFilter"]"
        class="btn btn-outline-dark @prevDisabled">
-        Previous
+        Vorige
     </a>
     <a asp-action="Index"
        asp-route-sortOrder="@ViewData["CurrentSort"]"
        asp-route-pageNumber="@(Model.PageIndex + 1)"
+       asp-route-pageSize="@Model.PageSize"
        asp-route-currentFilter="@ViewData["CurrentFilter"]"
        class="btn btn-outline-dark @nextDisabled">
-        Next
+        Volgende
     </a>
-    Pagina: @Model.PageIndex / @Model.TotalPages
-    Resultaat: @((Model.PageIndex - 1) * Model.PageSize + 1) tot @((Model.PageIndex - 1) * Model.PageSize + Model.Count)
+    Resultaten per:
+    <a asp-action="Index"
+       asp-route-sortOrder="@ViewData["CurrentSort"]"
+       asp-route-pageNumber="1"
+       asp-route-pageSize="10"
+       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+       class="btn @(!(Model.PageSize == 10) ? "btn-outline-dark" : "btn-dark")">
+        10
+    </a>
+    <a asp-action="Index"
+       asp-route-sortOrder="@ViewData["CurrentSort"]"
+       asp-route-pageNumber="1"
+       asp-route-pageSize="20"
+       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+       class="btn @(!(Model.PageSize == 20) ? "btn-outline-dark" : "btn-dark")">
+        20
+    </a>
+    <a asp-action="Index"
+       asp-route-sortOrder="@ViewData["CurrentSort"]"
+       asp-route-pageNumber="1"
+       asp-route-pageSize="50"
+       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+       class="btn @(!(Model.PageSize == 50) ? "btn-outline-dark" : "btn-dark")">
+        50
+    </a>
+    Totaal aantal resultaten: @Model.TotalResults
 </p>
