@@ -1,0 +1,31 @@
+﻿
+@if (Model.TotalPages > 1)
+{
+    @if (ViewData["FooterPaginatedList"] != null && (bool)ViewData["FooterPaginatedList"] == true)
+    {
+        <p>
+            Resultaat: @((Model.PageIndex - 1) * Model.PageSize + 1) tot @((Model.PageIndex - 1) * Model.PageSize + Model.Count)
+        </p>
+    }
+
+    <p>
+        @for (int i = 1; i < Model.TotalPages + 1; i++)
+        {
+            <a asp-action="Index"
+               asp-route-sortOrder="@ViewData["CurrentSort"]"
+               asp-route-pageNumber="@i"
+               asp-route-pageSize="@Model.PageSize"
+               asp-route-currentFilter="@ViewData["CurrentFilter"]"
+               class="btn @(!(Model.PageIndex == i) ? "btn-outline-dark" : "btn-dark")">
+                @i
+            </a>
+        }
+    </p>
+
+    @if (ViewData["FooterPaginatedList"] == null || (bool)ViewData["FooterPaginatedList"] == false)
+    {
+        <p>
+            Resultaat: @((Model.PageIndex - 1) * Model.PageSize + 1) tot @((Model.PageIndex - 1) * Model.PageSize + Model.Count)
+        </p>
+    }
+}

@@ -1,0 +1,11 @@
+﻿
+@if (ViewData["FooterPaginatedList"] != null && (bool)ViewData["FooterPaginatedList"] == true)
+{
+    <partial name="_PageButtonsPaginatedList" model="Model" />
+    <partial name="_PrevNextPaginatedList" model="Model" />
+}
+else
+{
+    <partial name="_PrevNextPaginatedList" model="Model" />
+    <partial name="_PageButtonsPaginatedList" model="Model" />
+}
