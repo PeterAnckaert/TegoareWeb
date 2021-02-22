@@ -21,5 +21,7 @@ namespace TegoareWeb.Models
         public string Telefoon_vast { get; set; }
         public string Telefoon_GSM { get; set; }
         public string Email { get; set; }
+        public IList<Relatie> Relaties1 { get; set; }
+        public IList<Relatie> Relaties2 { get; set; }
     }
 }

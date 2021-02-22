@@ -10,5 +10,6 @@ namespace TegoareWeb.Models
         public Guid Id { get; set; }
         public string Rol { get; set; }
         public string Omschrijving { get; set; }
+        public IList<Relatie> Relaties { get; set; }
     }
 }
