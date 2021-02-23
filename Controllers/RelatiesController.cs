@@ -50,9 +50,9 @@ namespace TegoareWeb.Controllers
         // GET: Relaties/Create
         public IActionResult Create()
         {
-            ViewData["Id_Groep"] = new SelectList(_context.Groepen, "Id", "Id");
-            ViewData["Id_Lid1"] = new SelectList(_context.Leden, "Id", "Id");
-            ViewData["Id_Lid2"] = new SelectList(_context.Leden, "Id", "Id");
+            ViewData["Id_Groep"] = new SelectList(_context.Groepen.OrderBy(g =>g.Rol), "Id", "Rol");
+            ViewData["Id_Lid1"] = new SelectList(_context.Leden.OrderBy(l => l.Achternaam).ThenBy(l => l.Voornaam), "Id", "VolledigeNaam");
+            ViewData["Id_Lid2"] = new SelectList(_context.Leden.OrderBy(l => l.Achternaam).ThenBy(l => l.Voornaam), "Id", "VolledigeNaam");
             return View();
         }
 
@@ -70,9 +70,9 @@ namespace TegoareWeb.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["Id_Groep"] = new SelectList(_context.Groepen, "Id", "Id", relatie.Id_Groep);
-            ViewData["Id_Lid1"] = new SelectList(_context.Leden, "Id", "Id", relatie.Id_Lid1);
-            ViewData["Id_Lid2"] = new SelectList(_context.Leden, "Id", "Id", relatie.Id_Lid2);
+            ViewData["Id_Groep"] = new SelectList(_context.Groepen.OrderBy(g => g.Rol), "Id", "Rol", relatie.Id_Groep);
+            ViewData["Id_Lid1"] = new SelectList(_context.Leden.OrderBy(l => l.Achternaam).ThenBy(l => l.Voornaam), "Id", "VolledigeNaam", relatie.Id_Lid1);
+            ViewData["Id_Lid2"] = new SelectList(_context.Leden.OrderBy(l => l.Achternaam).ThenBy(l => l.Voornaam), "Id", "VolledigeNaam", relatie.Id_Lid2);
             return View(relatie);
         }
 
@@ -89,9 +89,9 @@ namespace TegoareWeb.Controllers
             {
                 return NotFound();
             }
-            ViewData["Id_Groep"] = new SelectList(_context.Groepen, "Id", "Id", relatie.Id_Groep);
-            ViewData["Id_Lid1"] = new SelectList(_context.Leden, "Id", "Id", relatie.Id_Lid1);
-            ViewData["Id_Lid2"] = new SelectList(_context.Leden, "Id", "Id", relatie.Id_Lid2);
+            ViewData["Id_Groep"] = new SelectList(_context.Groepen.OrderBy(g => g.Rol), "Id", "Rol", relatie.Id_Groep);
+            ViewData["Id_Lid1"] = new SelectList(_context.Leden.OrderBy(l => l.Achternaam).ThenBy(l => l.Voornaam), "Id", "VolledigeNaam", relatie.Id_Lid1);
+            ViewData["Id_Lid2"] = new SelectList(_context.Leden.OrderBy(l => l.Achternaam).ThenBy(l => l.Voornaam), "Id", "VolledigeNaam", relatie.Id_Lid2);
             return View(relatie);
         }
 
@@ -127,9 +127,9 @@ namespace TegoareWeb.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["Id_Groep"] = new SelectList(_context.Groepen, "Id", "Id", relatie.Id_Groep);
-            ViewData["Id_Lid1"] = new SelectList(_context.Leden, "Id", "Id", relatie.Id_Lid1);
-            ViewData["Id_Lid2"] = new SelectList(_context.Leden, "Id", "Id", relatie.Id_Lid2);
+            ViewData["Id_Groep"] = new SelectList(_context.Groepen.OrderBy(g => g.Rol), "Id", "Rol", relatie.Id_Groep);
+            ViewData["Id_Lid1"] = new SelectList(_context.Leden.OrderBy(l => l.Achternaam).ThenBy(l => l.Voornaam), "Id", "VolledigeNaam", relatie.Id_Lid1);
+            ViewData["Id_Lid2"] = new SelectList(_context.Leden.OrderBy(l => l.Achternaam).ThenBy(l => l.Voornaam), "Id", "VolledigeNaam", relatie.Id_Lid2);
             return View(relatie);
         }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TegoareWeb.Models
 {
@@ -23,5 +24,8 @@ namespace TegoareWeb.Models
         public string Email { get; set; }
         public IList<Relatie> Relaties1 { get; set; }
         public IList<Relatie> Relaties2 { get; set; }
+
+        [NotMapped]
+        public string VolledigeNaam => $"{Voornaam} {Achternaam}";
     }
 }
