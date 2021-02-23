@@ -24,14 +24,14 @@
                 <span asp-validation-for="Omschrijving" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Id_publicatiedatum" class="control-label"></label>
-                <select asp-for="Id_publicatiedatum" class="form-control" asp-items="ViewBag.Id_publicatiedatum"></select>
-                <span asp-validation-for="Id_publicatiedatum" class="text-danger"></span>
+                <label asp-for="Publicatiedatum" class="control-label"></label>
+                <input asp-for="Publicatiedatum" class="form-control" />
+                <span asp-validation-for="Publicatiedatum" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Id_uiterste_inschrijfdatum" class="control-label"></label>
-                <select asp-for="Id_uiterste_inschrijfdatum" class="form-control" asp-items="ViewBag.Id_uiterste_inschrijfdatum"></select>
-                <span asp-validation-for="Id_uiterste_inschrijfdatum" class="text-danger"></span>
+                <label asp-for="Uiterste_inschrijfdatum" class="control-label"></label>
+                <input asp-for="Uiterste_inschrijfdatum" class="form-control" />
+                <span asp-validation-for="Uiterste_inschrijfdatum" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Prijs" class="control-label"></label>
@@ -47,6 +47,26 @@
                 <label asp-for="Id_ontmoetingsplaats" class="control-label"></label>
                 <select asp-for="Id_ontmoetingsplaats" class="form-control" asp-items="ViewBag.Id_ontmoetingsplaats"></select>
                 <span asp-validation-for="Id_ontmoetingsplaats" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Activiteitendatum" class="control-label"></label>
+                <input asp-for="Activiteitendatum" class="form-control" />
+                <span asp-validation-for="Activiteitendatum" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Beginuur" class="control-label"></label>
+                <input asp-for="Beginuur" class="form-control" />
+                <span asp-validation-for="Beginuur" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Einduur" class="control-label"></label>
+                <input asp-for="Einduur" class="form-control" />
+                <span asp-validation-for="Einduur" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DeelVanReeks" class="control-label"></label>
+                <input asp-for="DeelVanReeks" class="form-control" />
+                <span asp-validation-for="DeelVanReeks" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />

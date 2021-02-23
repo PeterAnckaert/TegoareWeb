@@ -39,40 +39,64 @@
             <th>
                 <a asp-action="Index" asp-route-sortOrder="@ViewData["OntmoetingsplaatsSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Ontmoetingsplaats</a>
             </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["ActiviteitendatumSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Activiteitendatum</a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["BeginuurSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Beginuur</a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["EinduurdatumSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Einduur</a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["DeelVanReeksSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Deel van een reeks</a>
+            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Naam)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Omschrijving)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Publicatiedatum.Datum)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Uiterste_inschrijfdatum.Datum)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Prijs)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Max_inschrijvingen)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Ontmoetingsplaats.Plaatsnaam)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                </td>
-            </tr>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Naam)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Omschrijving)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Publicatiedatum)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Uiterste_inschrijfdatum)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Prijs)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Max_inschrijvingen)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ontmoetingsplaats.Plaatsnaam)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Activiteitendatum)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Beginuur)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Einduur)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DeelVanReeks)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
         }
     </tbody>
 </table>

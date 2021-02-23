@@ -57,7 +57,6 @@ namespace TegoareWeb.Controllers
 
         public async Task<IActionResult> SeedLeden()
         {
-            //            _context.Leden.Add(new Lid { Achternaam = "Tester", Voornaam = "Voornaam", Geboortedatum = DateTime.Parse("31/12/1974", new CultureInfo("de-DE")), Straatnaam = "RvBlaan", Straatnummer = "182", Postcode= 8900, Gemeente = "IEPER", Telefoon_vast = "057/123456", Telefoon_GSM = "0498/123456", Email = "anckaert.peter@telenet.be" });
             _context.Leden.Add(new Lid { Achternaam = "Vanhauwaert", Voornaam = "Marcel", Geboortedatum = DateTime.Parse("19/01/1938", new CultureInfo("de-DE")), Straatnaam = "Groenestraat", Straatnummer = "22", Postcode = 8900, Gemeente = "Ieper", Telefoon_vast = "057/205070", Telefoon_GSM = "", Email = "ria.coulembier@belgacom.net" });
             _context.Leden.Add(new Lid { Achternaam = "Saelens ", Voornaam = "Josiane", Geboortedatum = DateTime.Parse("20/06/1959", new CultureInfo("de-DE")), Straatnaam = "R.Van Bethunelaan", Straatnummer = "84", Postcode = 8900, Gemeente = "Ieper", Telefoon_vast = "057/218440", Telefoon_GSM = "0471/024017", Email = "" });
             _context.Leden.Add(new Lid { Achternaam = "Seghers ", Voornaam = "Nicole", Geboortedatum = DateTime.Parse("28/12/1959", new CultureInfo("de-DE")), Straatnaam = "Kerselaar", Straatnummer = "50", Postcode = 8900, Gemeente = "Ieper", Telefoon_vast = "057/216537", Telefoon_GSM = "0486/866517", Email = "" });
@@ -329,16 +328,6 @@ namespace TegoareWeb.Controllers
 
         public async Task<IActionResult> SeedActiviteiten()
         {
-            if (_context.Tijdstippen.Count() == 0)
-            {
-                strStatus = "GEEN TIJDSTIPPEN";
-                return RedirectToAction("Index");
-            }
-
-            Tijdstip[] array = _context.Tijdstippen.ToArray();
-            Tijdstip t1 = array[0];
-            Tijdstip t2 = array[array.Length - 1];
-
             Ontmoetingsplaats plaats1, plaats2;
 
             if(_context.Ontmoetingsplaatsen.Count() == 0)
@@ -365,9 +354,9 @@ namespace TegoareWeb.Controllers
             _context.Activiteiten.Add(new Activiteit { Naam = "AUTO 2", Omschrijving = "tekst", Id_ontmoetingsplaats = plaats2.Id });
             _context.Activiteiten.Add(new Activiteit { Naam = "AUTO 3", Omschrijving = "familiekring - max = 15", Id_ontmoetingsplaats = plaats2.Id, Max_inschrijvingen = 15 });
             _context.Activiteiten.Add(new Activiteit { Naam = "AUTO 4", Omschrijving = "kersecorf - prijs = 1,50", Id_ontmoetingsplaats = plaats1.Id, Prijs = 1.50M });
-            _context.Activiteiten.Add(new Activiteit { Naam = "AUTO 5", Omschrijving = "kersecorf - prijs = 4, uiterst", Id_ontmoetingsplaats = plaats1.Id, Prijs = 4M, Id_uiterste_inschrijfdatum = t1.Id });
-            _context.Activiteiten.Add(new Activiteit { Naam = "AUTO 6", Omschrijving = "familiekring - max = 5, publicatie", Id_ontmoetingsplaats = plaats2.Id, Max_inschrijvingen = 5, Publicatiedatum = t2});
-            _context.Activiteiten.Add(new Activiteit { Naam = "AUTO 7", Omschrijving = "kersecorf - prijs = 4 - max = 10, uiterst+publicatie", Id_ontmoetingsplaats = plaats1.Id, Prijs = 4M, Uiterste_inschrijfdatum = t1, Publicatiedatum = t2, Max_inschrijvingen = 10 });
+            _context.Activiteiten.Add(new Activiteit { Naam = "AUTO 5", Omschrijving = "kersecorf - prijs = 4, uiterst", Id_ontmoetingsplaats = plaats1.Id, Prijs = 4M, Uiterste_inschrijfdatum = new DateTime(2021, 12, 25, 10, 30, 50) });
+            _context.Activiteiten.Add(new Activiteit { Naam = "AUTO 6", Omschrijving = "familiekring - max = 5, publicatie", Id_ontmoetingsplaats = plaats2.Id, Max_inschrijvingen = 5, Publicatiedatum = new DateTime(2021, 02, 23, 20, 46, 00) });
+            _context.Activiteiten.Add(new Activiteit { Naam = "AUTO 7", Omschrijving = "kersecorf - prijs = 4 - max = 10, uiterst+publicatie", Id_ontmoetingsplaats = plaats1.Id, Prijs = 4M, Uiterste_inschrijfdatum = new DateTime(2021, 12, 25, 10, 30, 50), Publicatiedatum = new DateTime(2021, 12, 25, 10, 30, 50), Max_inschrijvingen = 10 });
             await _context.SaveChangesAsync();
             strStatus = "Activiteiten zijn aangemaakt";
             return RedirectToAction("Index");
