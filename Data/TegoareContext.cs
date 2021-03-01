@@ -32,17 +32,17 @@ namespace TegoareWeb.Data
                .HasForeignKey(o => o.Id_ontmoetingsplaats);
 
             modelBuilder.Entity<Relatie>()
-                .HasOne<Lid>(r => r.Lid1)
+                .HasOne(r => r.Lid1)
                 .WithMany(l => l.Relaties1)
                 .HasForeignKey(r => r.Id_Lid1);
 
             modelBuilder.Entity<Relatie>()
-                .HasOne<Groep>(r => r.Groep)
+                .HasOne(r => r.Groep)
                 .WithMany(g => g.Relaties)
                 .HasForeignKey(r => r.Id_Groep);
 
             modelBuilder.Entity<Relatie>()
-                .HasOne<Lid>(r => r.Lid2)
+                .HasOne(r => r.Lid2)
                 .WithMany(l => l.Relaties2)
                 .HasForeignKey(r => r.Id_Lid2);
 

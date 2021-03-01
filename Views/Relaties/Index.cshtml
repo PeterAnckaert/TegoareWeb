@@ -1,47 +1,56 @@
-﻿@model IEnumerable<TegoareWeb.Models.Relatie>
+﻿@model IEnumerable<TegoareWeb.Models.Lid>
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Lid1)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Groep)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Lid2)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Lid1.VolledigeNaam)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Groep.Rol)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Lid2.VolledigeNaam)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
+@{
+    int count = 0;
+    char letter = '*';
+    bool newLetter = true;
 }
-    </tbody>
-</table>
+
+@foreach (var item in Model)
+{
+    @if (count % 4 == 0)
+    {
+        @Html.Raw("<div class=\"row\">")
+        count = 0;
+    }
+    @if (!item.Achternaam.ToUpper().StartsWith(letter))
+    {
+        letter = item.Achternaam.ToCharArray()[0];
+        count = 0;
+        @Html.Raw("</div>")
+        <hr style='background-image: linear-gradient(to left, rgba(0, 0, 0, 0), rgba(9, 84, 132)); border: 0; height: 5px;' />
+        <h1 style="text-align:center">@letter</h1>
+        <hr style='background-image: linear-gradient(to left, rgba(0, 0, 0, 0), rgba(9, 84, 132)); border: 0; height: 5px;' />
+        @Html.Raw("<div class=\"row\">")
+    }
+    <a asp-controller="Leden" asp-action="Edit" asp-route-id="@item.Id " class="card col-3 border-0 btn">
+        <div class="card-body bg-warning">
+            <h5 class="card-title bg-primary"><b>@item.VolledigeNaam</b></h5>
+            <p class="card-text">
+                <p>AANTAL: @item.Relaties1.Count</p>
+            </p>
+            <p class="card-text">
+                @foreach (var rel in item.Relaties1)
+                {
+                <p>@rel.Lid1.VolledigeNaam  is @rel.Groep.Rol @(@rel.Lid2 != null ? " van " + @rel.Lid2.VolledigeNaam : "")</p>
+            }
+                </p>
+                <p class="card-text">
+                    @foreach (var rel in item.Relaties2)
+                    {
+                    <p>@rel.Lid1.VolledigeNaam is @rel.Id_Groep  van @rel.Lid2.VolledigeNaam</p>
+                }
+                    </p>
+                </div>
+            </a>
+
+            @if (++count % 4 == 0)
+            {
+                <p>&nbsp;</p>
+                @Html.Raw("</div>")
+            }
+        }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -22,8 +21,9 @@ namespace TegoareWeb.Controllers
         // GET: Relaties
         public async Task<IActionResult> Index()
         {
-            var tegoareContext = _context.Relaties.Include(r => r.Groep).Include(r => r.Lid1).Include(r => r.Lid2);
-            return View(await tegoareContext.ToListAsync());
+            var tegoareContext = _context.Leden.Include(l => l.Relaties1).Include(l => l.Relaties2);
+            var leden = await tegoareContext.OrderBy(l => l.Achternaam).ThenBy(l => l.Voornaam).ToListAsync(); ;
+            return View(leden);
         }
 
         // GET: Relaties/Details/5
