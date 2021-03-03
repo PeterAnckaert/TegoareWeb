@@ -21,7 +21,7 @@ namespace TegoareWeb.Models
         public Groep Groep { get; set; }
 
         [Column("lid2_id")]
-        public Guid Id_Lid2 { get; set; }
+        public Guid? Id_Lid2 { get; set; }
         [ForeignKey("Id_Lid2")]
         public Lid Lid2 { get; set; }
     }

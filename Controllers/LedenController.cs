@@ -39,7 +39,7 @@ namespace TegoareWeb.Controllers
             ViewData["TelGSMSortParm"] = sortOrder == "telgsm_asc" ? "telgsm_desc" : "telgsm_asc";
             ViewData["EmailSortParm"] = sortOrder == "email_asc" ? "email_desc" : "email_asc";
 
-            if (searchString != null)
+            if (!String.IsNullOrWhiteSpace(searchString))
             {
                 pageNumber = 1;
             }
@@ -54,14 +54,14 @@ namespace TegoareWeb.Controllers
 
             if (!String.IsNullOrEmpty(searchString))
             {
-                leden = leden.Where(l => l.Achternaam.Contains(searchString)
-                                       || l.Voornaam.Contains(searchString)
-                                       || l.Straatnaam.Contains(searchString)
-                                       || l.Straatnummer.Contains(searchString)
-                                       || l.Gemeente.Contains(searchString)
-                                       || l.Email.Contains(searchString)
-                                       || l.Telefoon_vast.Contains(searchString)
-                                       || l.Telefoon_GSM.Contains(searchString));
+                leden = leden.Where(l => l.Achternaam.ToLower().Contains(searchString)
+                                       || l.Voornaam.ToLower().Contains(searchString)
+                                       || l.Straatnaam.ToLower().Contains(searchString)
+                                       || l.Straatnummer.ToLower().Contains(searchString)
+                                       || l.Gemeente.ToLower().Contains(searchString)
+                                       || l.Email.ToLower().Contains(searchString)
+                                       || l.Telefoon_vast.ToLower().Contains(searchString)
+                                       || l.Telefoon_GSM.ToLower().Contains(searchString));
             }
 
             switch (sortOrder)

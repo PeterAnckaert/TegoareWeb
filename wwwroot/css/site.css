@@ -69,3 +69,52 @@ body {
   white-space: nowrap;
   line-height: 60px; /* Vertically center the text there */
 }
+
+/*  Mijn opmaak
+    ----------------------------------*/
+.btn-lijst {
+    color: #fff;
+    background-color: skyblue;
+    border-radius: 5em;
+    margin: .5em;
+}
+
+hr {
+    background-image: linear-gradient(to left, rgba(0, 0, 0, 0), rgba(9, 84, 132));
+    border: 0;
+    height: 5px;
+    vertical-align: middle;
+}
+
+.btn-zoek {
+    background-color: powderblue;
+    border-radius: 15px;
+    border: 2px solid black;
+}
+
+.btn-zoek:hover {
+    background-color: deepskyblue;
+}
+
+.tekst-zoek {
+    font-size: larger;
+    margin-bottom: 15px;
+}
+
+.rel-card {
+    background-color: powderblue;
+    border-radius: 20px;
+    border: 2px solid black;
+    font-weight: bold;
+}
+
+.rel-card:hover {
+    background-color: deepskyblue;
+}
+
+.rel-card-title {
+    background-color: khaki;
+    padding: 10px;
+    border-radius: 20px;
+    border: 2px solid black;
+}

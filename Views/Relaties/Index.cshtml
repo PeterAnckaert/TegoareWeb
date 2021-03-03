@@ -1,4 +1,5 @@
-﻿@model IEnumerable<TegoareWeb.Models.Lid>
+﻿@using TegoareWeb.ViewModels
+@model RelatiesViewModel
 
 @{
     ViewData["Title"] = "Index";
@@ -7,50 +8,48 @@
 @{
     int count = 0;
     char letter = '*';
-    bool newLetter = true;
 }
 
-@foreach (var item in Model)
+<partial name="_Search" />
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+
+@foreach (var lid in Model.Leden)
 {
     @if (count % 4 == 0)
     {
         @Html.Raw("<div class=\"row\">")
         count = 0;
     }
-    @if (!item.Achternaam.ToUpper().StartsWith(letter))
+    @if (!lid.Achternaam.ToUpper().StartsWith(letter))
     {
-        letter = item.Achternaam.ToCharArray()[0];
+        letter = lid.Achternaam.ToCharArray()[0];
         count = 0;
         @Html.Raw("</div>")
-        <hr style='background-image: linear-gradient(to left, rgba(0, 0, 0, 0), rgba(9, 84, 132)); border: 0; height: 5px;' />
-        <h1 style="text-align:center">@letter</h1>
-        <hr style='background-image: linear-gradient(to left, rgba(0, 0, 0, 0), rgba(9, 84, 132)); border: 0; height: 5px;' />
+        <hr />
+        <h1 class="text-center">@letter</h1>
+        <hr />
         @Html.Raw("<div class=\"row\">")
     }
-    <a asp-controller="Leden" asp-action="Edit" asp-route-id="@item.Id " class="card col-3 border-0 btn">
-        <div class="card-body bg-warning">
-            <h5 class="card-title bg-primary"><b>@item.VolledigeNaam</b></h5>
+    <a asp-controller="Leden" asp-action="Edit" asp-route-id="@lid.Id " class="card col-3 border-0 btn">
+        <div class="card-body rel-card">
+            <h5 class="card-title rel-card-title"><b>@lid.VolledigeNaam</b></h5>
             <p class="card-text">
-                <p>AANTAL: @item.Relaties1.Count</p>
-            </p>
-            <p class="card-text">
-                @foreach (var rel in item.Relaties1)
+                @{
+                    var relaties1 = Model.Relaties.Where(r => r.Id_Lid1 == lid.Id || r.Id_Lid2 == lid.Id);
+                }
+                @foreach (var rel in relaties1)
                 {
                 <p>@rel.Lid1.VolledigeNaam  is @rel.Groep.Rol @(@rel.Lid2 != null ? " van " + @rel.Lid2.VolledigeNaam : "")</p>
             }
-                </p>
-                <p class="card-text">
-                    @foreach (var rel in item.Relaties2)
-                    {
-                    <p>@rel.Lid1.VolledigeNaam is @rel.Id_Groep  van @rel.Lid2.VolledigeNaam</p>
-                }
-                    </p>
-                </div>
-            </a>
+            </div>
+        </a>
 
-            @if (++count % 4 == 0)
-            {
-                <p>&nbsp;</p>
-                @Html.Raw("</div>")
-            }
+        @if (++count % 4 == 0)
+        {
+            @Html.Raw("</div>")
         }
+    }

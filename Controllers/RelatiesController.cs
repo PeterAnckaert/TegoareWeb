@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TegoareWeb.Data;
 using TegoareWeb.Models;
+using TegoareWeb.ViewModels;
 
 namespace TegoareWeb.Controllers
 {
@@ -19,11 +20,40 @@ namespace TegoareWeb.Controllers
         }
 
         // GET: Relaties
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString = null)
         {
-            var tegoareContext = _context.Leden.Include(l => l.Relaties1).Include(l => l.Relaties2);
-            var leden = await tegoareContext.OrderBy(l => l.Achternaam).ThenBy(l => l.Voornaam).ToListAsync(); ;
-            return View(leden);
+            var query = _context.Leden
+                .AsNoTracking();  
+               
+            if(!string.IsNullOrWhiteSpace(searchString))
+            {
+                query = query.Where(l => l.Voornaam.ToLower().Contains(searchString)
+                                        || l.Achternaam.ToLower().Contains(searchString));
+            }
+
+            ViewData["CurrentFilter"] = searchString;
+
+            var leden = await query
+                .OrderBy(l => l.Achternaam)
+                .ThenBy(l => l.Voornaam).ToListAsync();
+            var ledenIds = leden.Select(l => l.Id).ToList();
+
+            var relaties = await _context.Relaties
+                .AsNoTracking()
+                .Include(r => r.Groep)
+                .Include(r => r.Lid1)
+                .Include(r => r.Lid2)
+                .Where(r => ledenIds.Contains(r.Id_Lid1))
+                .OrderBy(r => r.Groep.Rol)
+                .ToListAsync();
+
+            var model = new RelatiesViewModel
+            {
+                Leden = leden,
+                Relaties = relaties
+            };
+
+            return View(model);
         }
 
         // GET: Relaties/Details/5
