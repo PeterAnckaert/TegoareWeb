@@ -20,9 +20,24 @@ namespace TegoareWeb.Controllers
         }
 
         // GET: Ontmoetingsplaatsen
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? searchString)
         {
-            return View(await _context.Ontmoetingsplaatsen.OrderBy(o => o.Plaatsnaam).ToListAsync());
+            var query = _context.Ontmoetingsplaatsen
+            .AsNoTracking();
+
+            if (!string.IsNullOrWhiteSpace(searchString))
+            {
+                query = query.Where(o => o.Plaatsnaam.ToLower().Contains(searchString)
+                                        || o.Gemeente.ToLower().Contains(searchString)
+                                        || o.Straatnaam.ToLower().Contains(searchString));
+            }
+
+            ViewData["CurrentFilter"] = searchString;
+
+            var ontmoetingsplaatsen = await query
+                .OrderBy(o => o.Plaatsnaam).ToListAsync();
+
+            return View(ontmoetingsplaatsen);
         }
 
         // GET: Ontmoetingsplaatsen/Details/5

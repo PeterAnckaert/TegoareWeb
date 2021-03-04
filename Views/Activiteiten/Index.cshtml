@@ -4,14 +4,10 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Activiteiten</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-
-
-<partial name="_Search" />
+@{ var soort = "Nieuwe activiteit";}
+<partial name="_SearchCreate" model="soort" />
 
 <partial name="_NavigatorPaginatedList" />
 
@@ -57,46 +53,46 @@
     <tbody>
         @foreach (var item in Model)
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Naam)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Omschrijving)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Publicatiedatum)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Uiterste_inschrijfdatum)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Prijs)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Max_inschrijvingen)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Ontmoetingsplaats.Plaatsnaam)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Activiteitendatum)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Beginuur)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Einduur)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DeelVanReeks)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Naam)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Omschrijving)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Publicatiedatum)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Uiterste_inschrijfdatum)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Prijs)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Max_inschrijvingen)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Ontmoetingsplaats.Plaatsnaam)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Activiteitendatum)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Beginuur)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Einduur)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DeelVanReeks)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
         }
     </tbody>
 </table>

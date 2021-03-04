@@ -86,6 +86,10 @@ hr {
     vertical-align: middle;
 }
 
+.verborgen {
+    display:none;
+}
+
 .btn-zoek {
     background-color: powderblue;
     border-radius: 15px;
@@ -96,7 +100,24 @@ hr {
     background-color: deepskyblue;
 }
 
+.btn-create {
+    background-color: lawngreen;
+    border-radius: 15px;
+    border: 2px solid black;
+    text-align: center;
+    float: right;
+}
+
+.btn-create:hover {
+    background-color: forestgreen;
+}
+
 .tekst-zoek {
+    font-size: larger;
+    margin-bottom: 15px;
+}
+
+.tekst-create {
     font-size: larger;
     margin-bottom: 15px;
 }

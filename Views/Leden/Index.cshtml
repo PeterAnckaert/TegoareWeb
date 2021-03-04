@@ -4,13 +4,10 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Leden</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-
-<partial name="_Search" />
+@{ var soort = "Nieuw lid";}
+<partial name="_SearchCreate" model="soort" />
 
 <partial name="_NavigatorPaginatedList" />
 

@@ -20,7 +20,7 @@ namespace TegoareWeb.Controllers
         }
 
         // GET: Relaties
-        public async Task<IActionResult> Index(string searchString = null)
+        public async Task<IActionResult> Index(string? searchString)
         {
             var query = _context.Leden
                 .AsNoTracking();  

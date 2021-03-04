@@ -20,9 +20,23 @@ namespace TegoareWeb.Controllers
         }
 
         // GET: Groepen
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? searchString)
         {
-            return View(await _context.Groepen.OrderBy(g => g.Rol).ToListAsync());
+            var query = _context.Groepen
+                .AsNoTracking();
+
+            if (!string.IsNullOrWhiteSpace(searchString))
+            {
+                query = query.Where(g => g.Rol.ToLower().Contains(searchString)
+                                        || g.Omschrijving.ToLower().Contains(searchString));
+            }
+
+            ViewData["CurrentFilter"] = searchString;
+
+            var groepen = await query
+                .OrderBy(g => g.Rol).ToListAsync();
+
+            return View(groepen);
         }
 
         // GET: Groepen/Details/5

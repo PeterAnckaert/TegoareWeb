@@ -1,10 +1,12 @@
-﻿
+﻿@model String
+
 <form asp-action="Index" method="get">
     <div class="form-actions">
         <div class="tekst-zoek">
             Zoeken <input type="text" name="SearchString" value="@(!string.IsNullOrWhiteSpace((string)@ViewData["CurrentFilter"]) ? @ViewData["CurrentFilter"] : "")" />
-            <button type="submit" class="btn btn-zoek tekst-zoek"><i class="fa fa-search"></i> Zoek</button> 
+            <button type="submit" class="btn btn-zoek tekst-zoek"><i class="fa fa-search"></i> Zoek</button>
             <a asp-action="Index" class="btn btn-zoek tekst-zoek">Terug naar volledige lijst</a>
+            <a class="btn btn-create tekst-create" asp-action="Create">@Model</a>
         </div>
     </div>
 </form>

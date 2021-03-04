@@ -8,14 +8,12 @@
 @{
     int count = 0;
     char letter = '*';
+    String soort = "Nieuwe relatie";
 }
 
-<partial name="_Search" />
+<h1>Relaties</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-
+<partial name="_SearchCreate" model="soort" />
 
 @foreach (var lid in Model.Leden)
 {
