@@ -1,5 +1,5 @@
 ﻿@using TegoareWeb.ViewModels
-@model RelatiesViewModel
+@model RelatieListViewModel
 
 @{
     ViewData["Title"] = "Index";
@@ -13,7 +13,11 @@
 
 <h1>Relaties</h1>
 
+<partial name="_Message" />
+
 <partial name="_SearchCreate" model="soort" />
+
+<partial name="_Message" />
 
 @foreach (var lid in Model.Leden)
 {

@@ -1,4 +1,4 @@
-﻿@model TegoareWeb.Models.Relatie
+﻿@model TegoareWeb.ViewModels.CreateRelatieViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -9,23 +9,45 @@
 <h4>Relatie</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-12">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Id_Lid1" class="control-label"></label>
-                <select asp-for="Id_Lid1" class ="form-control" asp-items="ViewBag.Id_Lid1"></select>
+            <div class="row">
+                <div class="col-6">
+                    <label asp-for="Id_Lid1" class="control-label font-weight-bold">Kies één lid:</label>
+                    <select asp-for="Id_Lid1" class="form-control" id="lid1_lijst" asp-items="Model.LedenList"></select>
+                </div>
+                <div class="col-6">
+                    <label asp-for="Id_Groep" class="control-label font-weight-bold">Kies de relatie:</label>
+                    <select asp-for="Id_Groep" class="form-control" id="groepen_lijst" asp-items="Model.GroepenRolList"></select>
+                </div>
+            </div>
+            <div>
+                <div class="row">
+                    @foreach (SelectListItem groep in Model.GroepenDubbeleRelatieList)
+                    {
+                        <div>
+                            <input type="hidden" value="@groep.Text" id="@("DR-"+groep.Value)" />
+                        </div>
+                    }
+                </div>
             </div>
             <div class="form-group">
-                <label asp-for="Id_Groep" class="control-label"></label>
-                <select asp-for="Id_Groep" class ="form-control" asp-items="ViewBag.Id_Groep"></select>
+                <input type="submit" value="Maak relatie(s) aan" class="btn btn-primary m-4 verborgen" id="submit" />
             </div>
-            <div class="form-group">
-                <label asp-for="Id_Lid2" class="control-label"></label>
-                <select asp-for="Id_Lid2" class ="form-control" asp-items="ViewBag.Id_Lid2"></select>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+            <div class="verborgen" id="lid2_lijst">
+                <div class="row font-weight-bold">
+                    <label class="control-label font-weight-bold">Kies één of meerdere leden:</label>
+                </div>
+                <div class="row">
+                    @foreach (Lid lid in Model.AlleLeden)
+                    {
+                        <div class="col-3 checkbox">
+                            <input type="checkbox" name="ledenlijst" value="@lid.Id" id="@lid.Id" onclick="EnableDisableSubmit()"/>
+                            <label for="@lid.Id">@lid.VolledigeNaam</label>
+                        </div>
+                    }
+                </div>
             </div>
         </form>
     </div>
@@ -38,3 +60,33 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+
+<script type="text/javascript">
+    document.getElementById('groepen_lijst').onchange = function () {
+        document.getElementById('lid2_lijst').style.display = (this.value != 0 && document.getElementById('DR-' + this.value).value == 'True' ? 'block' : 'none');
+        document.getElementsByName('ledenlijst').forEach(cb => cb.checked = false);
+        EnableDisableSubmit();
+    }
+    document.getElementById('lid1_lijst').onchange = function () {
+        EnableDisableSubmit();
+    }
+
+    function EnableDisableSubmit() {
+        var show = 'none';
+        if (document.getElementById('groepen_lijst').value != 0 &&
+            document.getElementById('lid1_lijst').value != 0) {
+            if (document.getElementById('lid2_lijst').style.display != 'block') {
+                show = 'block';
+            }
+            else {
+                document.getElementsByName('ledenlijst').forEach((cb) => {
+                    if (cb.checked == true) { show = 'block'; }
+                });
+            }
+        }
+        document.getElementById('submit').style.display = show;
+    }
+
+</script>
+
+

@@ -1,0 +1,14 @@
+﻿
+@if (@TempData["Error"] != null)
+{
+    if ((bool)TempData["Error"])
+    {
+        <div class="message message-danger">@TempData["Message"]</div>
+
+    }
+    else
+    {
+        <div class="message message-success">@TempData["Message"]</div>
+    }
+}
+

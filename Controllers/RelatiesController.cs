@@ -47,7 +47,7 @@ namespace TegoareWeb.Controllers
                 .OrderBy(r => r.Groep.Rol)
                 .ToListAsync();
 
-            var model = new RelatiesViewModel
+            var model = new RelatieListViewModel
             {
                 Leden = leden,
                 Relaties = relaties
@@ -78,12 +78,32 @@ namespace TegoareWeb.Controllers
         }
 
         // GET: Relaties/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["Id_Groep"] = new SelectList(_context.Groepen.OrderBy(g =>g.Rol), "Id", "Rol");
-            ViewData["Id_Lid1"] = new SelectList(_context.Leden.OrderBy(l => l.Achternaam).ThenBy(l => l.Voornaam), "Id", "VolledigeNaam");
-            ViewData["Id_Lid2"] = new SelectList(_context.Leden.OrderBy(l => l.Achternaam).ThenBy(l => l.Voornaam), "Id", "VolledigeNaam");
-            return View();
+            var leden = await _context.Leden
+                .OrderBy(l => l.Achternaam)
+                .ThenBy(l => l.Voornaam)
+                .ToListAsync();
+
+            var groepen = await _context.Groepen
+                .OrderBy(g => g.Rol)
+                .ToListAsync();
+
+            var ledenList = new SelectList(leden, "Id", "VolledigeNaam").ToList();
+            var groepenList = new SelectList(groepen, "Id", "Rol").ToList();
+            
+            ledenList.Insert(0, new SelectListItem("-- Kies een lid --", "0"));
+            groepenList.Insert(0, new SelectListItem("-- Kies een relatie --", "0"));
+
+            var model = new CreateRelatieViewModel
+            {
+                LedenList = new SelectList(ledenList, "Value", "Text"),
+                GroepenRolList = new SelectList(groepenList, "Value", "Text"),
+                GroepenDubbeleRelatieList = new SelectList(groepen, "Id", "Dubbele_Relatie"),
+                AlleLeden = leden
+            };
+
+            return View(model);
         }
 
         // POST: Relaties/Create
@@ -96,14 +116,26 @@ namespace TegoareWeb.Controllers
             if (ModelState.IsValid)
             {
                 relatie.Id = Guid.NewGuid();
-                _context.Add(relatie);
-                await _context.SaveChangesAsync();
+                var duplicate = await _context.Relaties
+                    .FirstOrDefaultAsync(r => r.Id_Lid1 == relatie.Id_Lid1 &&
+                    r.Id_Groep == relatie.Id_Groep &&
+                    r.Id_Lid2 == relatie.Id_Lid2);
+                if(duplicate == null)
+                {
+                    TempData["Message"] = "Relatie met succes bewaard";
+                    TempData["Error"] = false;
+                    _context.Add(relatie);
+                    await _context.SaveChangesAsync();
+                }
+                else
+                {
+                    TempData["Message"] = "Relatie niet bewaard omdat de relatie reeds bestaat";
+                    TempData["Error"] = true;
+                }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["Id_Groep"] = new SelectList(_context.Groepen.OrderBy(g => g.Rol), "Id", "Rol", relatie.Id_Groep);
-            ViewData["Id_Lid1"] = new SelectList(_context.Leden.OrderBy(l => l.Achternaam).ThenBy(l => l.Voornaam), "Id", "VolledigeNaam", relatie.Id_Lid1);
-            ViewData["Id_Lid2"] = new SelectList(_context.Leden.OrderBy(l => l.Achternaam).ThenBy(l => l.Voornaam), "Id", "VolledigeNaam", relatie.Id_Lid2);
-            return View(relatie);
+
+            return RedirectToAction(nameof(Create));
         }
 
         // GET: Relaties/Edit/5
