@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -20,7 +21,7 @@ namespace TegoareWeb.Controllers
         }
 
         // GET: Relaties
-        public async Task<IActionResult> Index(string? searchString)
+        public async Task<IActionResult> Index(string searchString = null)
         {
             var query = _context.Leden
                 .AsNoTracking();  
@@ -111,27 +112,61 @@ namespace TegoareWeb.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Id_Lid1,Id_Groep,Id_Lid2")] Relatie relatie)
+        public async Task<IActionResult> Create(Guid Id_Lid1, Guid Id_Groep, List<Guid> ledenlijst)
         {
+            string message="";
+            Relatie relatie = new Relatie
+            {
+                Id_Lid1 = Id_Lid1,
+                Id_Groep = Id_Groep
+            };
+
             if (ModelState.IsValid)
             {
                 relatie.Id = Guid.NewGuid();
-                var duplicate = await _context.Relaties
-                    .FirstOrDefaultAsync(r => r.Id_Lid1 == relatie.Id_Lid1 &&
-                    r.Id_Groep == relatie.Id_Groep &&
-                    r.Id_Lid2 == relatie.Id_Lid2);
-                if(duplicate == null)
+                if (ledenlijst.Count == 0)
                 {
-                    TempData["Message"] = "Relatie met succes bewaard";
-                    TempData["Error"] = false;
-                    _context.Add(relatie);
-                    await _context.SaveChangesAsync();
+                    var duplicate = await _context.Relaties
+                        .FirstOrDefaultAsync(r => r.Id_Lid1 == relatie.Id_Lid1 &&
+                        r.Id_Groep == relatie.Id_Groep);
+                    if (duplicate == null)
+                    {
+                        _context.Add(relatie);
+                        await _context.SaveChangesAsync();
+                        message += "true&Relatie met success bewaard&";
+                    }
+                    else
+                    {
+                        message += "false&Relatie niet bewaard omdat ze reeds bestaat&";
+                    }
                 }
                 else
                 {
-                    TempData["Message"] = "Relatie niet bewaard omdat de relatie reeds bestaat";
-                    TempData["Error"] = true;
+                    foreach(Guid Id_Lid2 in ledenlijst)
+                    {
+                        if(Id_Lid1 == Id_Lid2)
+                        {
+                            message += "false&Relatie niet bewaard omdat beide leden identiek zijn&";
+                            continue;
+                        }
+                        relatie.Id_Lid2 = Id_Lid2;
+                        var duplicate = await _context.Relaties
+                            .FirstOrDefaultAsync(r => r.Id_Lid1 == relatie.Id_Lid1 &&
+                            r.Id_Groep == relatie.Id_Groep &&
+                            r.Id_Lid2 == relatie.Id_Lid2);
+                        if (duplicate == null)
+                        {
+                            _context.Add(relatie);
+                            await _context.SaveChangesAsync();
+                            message += "true&Relatie met succes bewaard&";
+                        }
+                        else
+                        {
+                            message += "false&Relatie niet bewaard omdat ze reeds bestaat&";
+                        }
+                    }
                 }
+                TempData["Message"] = message;
                 return RedirectToAction(nameof(Index));
             }
 

@@ -21,11 +21,11 @@ namespace TegoareWeb.Controllers
 
         // GET: Leden
         public async Task<IActionResult> Index(
-            string? sortOrder,
-            string? currentFilter,
-            string? searchString,
             int? pageNumber,
-            int? pageSize)
+            int? pageSize,
+            string sortOrder = null,
+            string currentFilter = null,
+            string searchString = null)
         {
             ViewData["CurrentSort"] = sortOrder;
             ViewData["AchternaamSortParm"] = sortOrder == "achternaam_asc" ? "achternaam_desc" : "achternaam_asc";

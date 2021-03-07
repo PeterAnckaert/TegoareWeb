@@ -20,7 +20,7 @@ namespace TegoareWeb.Controllers
         }
 
         // GET: Ontmoetingsplaatsen
-        public async Task<IActionResult> Index(string? searchString)
+        public async Task<IActionResult> Index(string searchString = null)
         {
             var query = _context.Ontmoetingsplaatsen
             .AsNoTracking();

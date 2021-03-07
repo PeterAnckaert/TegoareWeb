@@ -144,6 +144,8 @@ hr {
     text-align: center;
     font-weight: bold;
     border: 2px solid;
+    border-radius: 15px;
+    margin: 10px;
 }
 
 .message-danger {

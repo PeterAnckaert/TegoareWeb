@@ -1,14 +1,20 @@
-﻿
-@if (@TempData["Error"] != null)
-{
-    if ((bool)TempData["Error"])
+﻿@{
+    if (@TempData["Message"] != null)
     {
-        <div class="message message-danger">@TempData["Message"]</div>
-
-    }
-    else
-    {
-        <div class="message message-success">@TempData["Message"]</div>
+        var messages = TempData["Message"].ToString().Split("&");
+        int len = messages.Length;
+        for (int i = 0; i < messages.Length-1; i+=2)
+        {
+            if (messages[i] == "false")
+            {
+                <div class="message message-danger">@messages[i + 1]</div>
+            }
+            else
+            {
+                <div class="message message-success">@messages[i + 1]</div>
+            }
+        }
     }
 }
+
 

@@ -1,4 +1,5 @@
 ﻿@using TegoareWeb.ViewModels
+@using TegoareWeb.Data
 @model RelatieListViewModel
 
 @{
@@ -16,8 +17,6 @@
 <partial name="_Message" />
 
 <partial name="_SearchCreate" model="soort" />
-
-<partial name="_Message" />
 
 @foreach (var lid in Model.Leden)
 {
