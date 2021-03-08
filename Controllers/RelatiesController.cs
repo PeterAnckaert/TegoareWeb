@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using TegoareWeb.Data;
 using TegoareWeb.Models;
@@ -14,6 +15,7 @@ namespace TegoareWeb.Controllers
     public class RelatiesController : Controller
     {
         private readonly TegoareContext _context;
+        private static RelatieListViewModel _listModel = new RelatieListViewModel();
 
         public RelatiesController(TegoareContext context)
         {
@@ -48,13 +50,10 @@ namespace TegoareWeb.Controllers
                 .OrderBy(r => r.Groep.Rol)
                 .ToListAsync();
 
-            var model = new RelatieListViewModel
-            {
-                Leden = leden,
-                Relaties = relaties
-            };
+            _listModel.Leden = leden;
+            _listModel.Relaties = relaties;
 
-            return View(model);
+            return View(_listModel);
         }
 
         // GET: Relaties/Details/5
@@ -114,16 +113,19 @@ namespace TegoareWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Guid Id_Lid1, Guid Id_Groep, List<Guid> ledenlijst)
         {
-            string message="";
             Relatie relatie = new Relatie
             {
                 Id_Lid1 = Id_Lid1,
                 Id_Groep = Id_Groep
             };
 
+            var lid1 = await _context.Leden.FirstAsync(l => l.Id == Id_Lid1);
+            var groep = await _context.Groepen.FirstAsync(r => r.Id == Id_Groep);
+
             if (ModelState.IsValid)
             {
                 relatie.Id = Guid.NewGuid();
+                _listModel.ErrorMessages = new List<ErrorMessage>();
                 if (ledenlijst.Count == 0)
                 {
                     var duplicate = await _context.Relaties
@@ -133,20 +135,27 @@ namespace TegoareWeb.Controllers
                     {
                         _context.Add(relatie);
                         await _context.SaveChangesAsync();
-                        message += "true&Relatie met success bewaard&";
+                        _listModel.ErrorMessages.Add(new ErrorMessage { 
+                            Message = $"{lid1.VolledigeNaam} als {groep.Rol.ToLower()}: SUCCES",
+                            Value = true });
                     }
                     else
                     {
-                        message += "false&Relatie niet bewaard omdat ze reeds bestaat&";
+                        _listModel.ErrorMessages.Add(new ErrorMessage {
+                            Message = $"{lid1.VolledigeNaam} als {groep.Rol.ToLower()}: MISLUKT (bestaat reeds)",
+                            Value = false });
                     }
                 }
                 else
                 {
                     foreach(Guid Id_Lid2 in ledenlijst)
                     {
-                        if(Id_Lid1 == Id_Lid2)
+                        var lid2 = await _context.Leden.FirstAsync(l => l.Id == Id_Lid2);
+                        if (Id_Lid1 == Id_Lid2)
                         {
-                            message += "false&Relatie niet bewaard omdat beide leden identiek zijn&";
+                            _listModel.ErrorMessages.Add(new ErrorMessage {
+                                Message = $"{lid1.VolledigeNaam} als {groep.Rol.ToLower()} van {lid2.VolledigeNaam}: MISLUKT (beide leden zijn identiek)",
+                                Value = false });
                             continue;
                         }
                         relatie.Id_Lid2 = Id_Lid2;
@@ -158,15 +167,22 @@ namespace TegoareWeb.Controllers
                         {
                             _context.Add(relatie);
                             await _context.SaveChangesAsync();
-                            message += "true&Relatie met succes bewaard&";
+                            _listModel.ErrorMessages.Add(new ErrorMessage
+                            {
+                                Message = $"{lid1.VolledigeNaam} als {groep.Rol.ToLower()} van {lid2.VolledigeNaam}: SUCCES",
+                                Value = true
+                            });
                         }
                         else
                         {
-                            message += "false&Relatie niet bewaard omdat ze reeds bestaat&";
+                            _listModel.ErrorMessages.Add(new ErrorMessage
+                            {
+                                Message = $"{lid1.VolledigeNaam} als {groep.Rol.ToLower()} van {lid2.VolledigeNaam}: MISLUKT (bestaat reeds)",
+                                Value = false
+                            });
                         }
                     }
                 }
-                TempData["Message"] = message;
                 return RedirectToAction(nameof(Index));
             }
 

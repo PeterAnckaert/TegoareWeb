@@ -146,6 +146,36 @@ hr {
     border: 2px solid;
     border-radius: 15px;
     margin: 10px;
+    animation-duration: 7s;
+    animation-fill-mode: both;
+    animation-name: message;
+}
+
+@keyframes message {
+    0% {
+        opacity: 1;
+        transform: translateX(-100%);
+        height: 50px;
+    }
+
+    10% {
+        opacity: 1;
+        transform: translateX(0);
+        height: 30px;
+    }
+
+    90% {
+        opacity: 1;
+        transform: translateX(0%);
+        height: 30px;
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateX(100%);
+        display: none;
+        height: 0px;
+    }
 }
 
 .message-danger {

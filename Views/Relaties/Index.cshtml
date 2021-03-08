@@ -44,7 +44,21 @@
                 }
                 @foreach (var rel in relaties1)
                 {
-                <p>@rel.Lid1.VolledigeNaam  is @rel.Groep.Rol @(@rel.Lid2 != null ? " van " + @rel.Lid2.VolledigeNaam : "")</p>
+                    if (rel.Lid2 == null)
+                    {
+                    <p>lid van @rel.Groep.Rol.ToLower()</p>
+                }
+                else
+                {
+                    if (rel.Lid1.Id == lid.Id)
+                    {
+                        <p>@rel.Groep.Rol van @rel.Lid2.VolledigeNaam</p>
+                    }
+                    else
+                    {
+                        <p>heeft @rel.Lid1.VolledigeNaam als @rel.Groep.Rol.ToLower()</p>
+                    }
+                }
             }
             </div>
         </a>

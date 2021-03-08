@@ -1,20 +1,17 @@
-﻿@{
-    if (@TempData["Message"] != null)
+﻿@using TegoareWeb.Data
+
+@if (Model.ErrorMessages != null)
+{
+    foreach (ErrorMessage msg in Model.ErrorMessages)
     {
-        var messages = TempData["Message"].ToString().Split("&");
-        int len = messages.Length;
-        for (int i = 0; i < messages.Length-1; i+=2)
+        if (msg.Value == false)
         {
-            if (messages[i] == "false")
-            {
-                <div class="message message-danger">@messages[i + 1]</div>
-            }
-            else
-            {
-                <div class="message message-success">@messages[i + 1]</div>
-            }
+            <div class="message message-danger">@msg.Message</div>
+        }
+        else
+        {
+            <div class="message message-success">@msg.Message</div>
         }
     }
+    Model.ErrorMessages = null;
 }
-
-
