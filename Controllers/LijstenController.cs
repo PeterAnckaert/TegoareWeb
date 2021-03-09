@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TegoareWeb.Data;
 using TegoareWeb.Models;
+using TegoareWeb.ViewModels;
 
 namespace TegoareWeb.Controllers
 {
@@ -52,8 +54,48 @@ namespace TegoareWeb.Controllers
             ViewData["Maanden"] = maandList;
             Verjaardagslijst lijst = new Verjaardagslijst();
             lijst.Maand = selectedMonth;
-            lijst.Jarigen = _context.Leden.Where(l => l.Geboortedatum.Month.ToString() == selectedMonth).OrderBy(l => l.Geboortedatum.Day).ThenByDescending(l => l.Geboortedatum.Year).ToList();
+            lijst.Jarigen = _context.Leden
+                .Where(l => l.Geboortedatum.Month.ToString() == selectedMonth)
+                .OrderBy(l => l.Geboortedatum.Day)
+                .ThenByDescending(l => l.Geboortedatum.Year)
+                .ToList();
             return View(lijst);
+        }
+
+        public async Task<IActionResult> Huisbezoekerslijst()
+        {
+            var model = new Huisbezoekerslijst
+            {
+                HuisbezoekersList = new SortedDictionary<string, Guid>()
+            };
+
+            var queryHuisbezoeker = await _context.Groepen.FirstOrDefaultAsync(g => g.Rol == "Huisbezoeker");
+            Guid huisbezoekerId = queryHuisbezoeker.Id;
+
+            var query = _context.Relaties
+                    .AsNoTracking()
+                    .Where(r => r.Id_Groep == huisbezoekerId)
+                    .Select(r => r.Id_Lid1)
+                    .Distinct()
+                    .ToList();
+
+            foreach (var huisbezoeker in query)
+            {
+                var lid = await _context.Leden
+                    .Where(l => l.Id == huisbezoeker)
+                    .FirstOrDefaultAsync();
+                String naam = lid.VolledigeNaam;
+                model.HuisbezoekersList.Add(naam, huisbezoeker);
+            }
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult LedenHuisbezoekerlijst(Guid? IdHuisbezoeker)
+        {
+            var ID = IdHuisbezoeker;
+            return View();
         }
         public IActionResult NotImpl()
         {

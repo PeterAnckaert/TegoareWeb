@@ -73,7 +73,7 @@ body {
 /*  Mijn opmaak
     ----------------------------------*/
 .btn-lijst {
-    color: #fff;
+    color: #00529B;
     background-color: skyblue;
     border-radius: 5em;
     margin: .5em;
@@ -140,6 +140,15 @@ hr {
     border: 2px solid black;
 }
 
+.huisbezoeker-card-title {
+    background-color: khaki;
+    padding: 10px;
+    border-radius: 20px;
+    border: 2px solid black;
+    font-size: larger;
+    font-weight: bold;
+}
+
 .message {
     text-align: center;
     font-weight: bold;
@@ -179,11 +188,13 @@ hr {
 }
 
 .message-danger {
-    background-color: orangered;
+    color: #D8000C;
+    background-color: #FFD2D2;
 }
 
 .message-success {
-    background-color: greenyellow;
+    color: #4F8A10;
+    background-color: #DFF2BF;
 }
 
 .checkbox {

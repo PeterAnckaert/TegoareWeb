@@ -17,54 +17,53 @@
 <partial name="_Message" />
 
 <partial name="_SearchCreate" model="soort" />
-
-@foreach (var lid in Model.Leden)
-{
-    @if (count % 4 == 0)
+<div class="row">
+    @foreach (var lid in Model.Leden)
     {
-        @Html.Raw("<div class=\"row\">")
-        count = 0;
-    }
-    @if (!lid.Achternaam.ToUpper().StartsWith(letter))
-    {
-        letter = lid.Achternaam.ToCharArray()[0];
-        count = 0;
-        @Html.Raw("</div>")
-        <hr />
-        <h1 class="text-center">@letter</h1>
-        <hr />
-        @Html.Raw("<div class=\"row\">")
-    }
-    <a asp-controller="Leden" asp-action="Edit" asp-route-id="@lid.Id " class="card col-3 border-0 btn">
-        <div class="card-body rel-card">
-            <h5 class="card-title rel-card-title"><b>@lid.VolledigeNaam</b></h5>
-            <p class="card-text">
-                @{
-                    var relaties1 = Model.Relaties.Where(r => r.Id_Lid1 == lid.Id || r.Id_Lid2 == lid.Id);
-                }
-                @foreach (var rel in relaties1)
-                {
-                    if (rel.Lid2 == null)
+        @if (count % 4 == 0)
+        {
+            count = 0;
+        }
+        @if (!lid.Achternaam.ToUpper().StartsWith(letter))
+        {
+            letter = lid.Achternaam.ToCharArray()[0];
+            count = 0;
+            @Html.Raw("</div>")
+            <hr />
+            <h1 class="text-center">@letter</h1>
+            <hr />
+            @Html.Raw("<div class=\"row\">")
+        }
+        <a asp-controller="Leden" asp-action="Edit" asp-route-id="@lid.Id " class="card col-sm-12 col-md-6 col-lg-3 border-0 btn">
+            <div class="card-body rel-card">
+                <h5 class="card-title rel-card-title"><b>@lid.VolledigeNaam</b></h5>
+                <p class="card-text">
+                    @{
+                        var relaties1 = Model.Relaties.Where(r => r.Id_Lid1 == lid.Id || r.Id_Lid2 == lid.Id);
+                    }
+                    @foreach (var rel in relaties1)
                     {
-                    <p>lid van @rel.Groep.Rol.ToLower()</p>
-                }
-                else
-                {
-                    if (rel.Lid1.Id == lid.Id)
-                    {
-                        <p>@rel.Groep.Rol van @rel.Lid2.VolledigeNaam</p>
+                        if (rel.Lid2 == null)
+                        {
+                        <p>lid van @rel.Groep.Rol.ToLower()</p>
                     }
                     else
                     {
-                        <p>heeft @rel.Lid1.VolledigeNaam als @rel.Groep.Rol.ToLower()</p>
+                        if (rel.Lid1.Id == lid.Id)
+                        {
+                            <p>@rel.Groep.Rol van @rel.Lid2.VolledigeNaam</p>
+                        }
+                        else
+                        {
+                            <p>heeft @rel.Lid1.VolledigeNaam als @rel.Groep.Rol.ToLower()</p>
+                        }
                     }
                 }
-            }
-            </div>
-        </a>
+                </div>
+            </a>
 
-        @if (++count % 4 == 0)
-        {
-            @Html.Raw("</div>")
+            @if (++count % 4 == 0)
+            {
+            }
         }
-    }
+</div>

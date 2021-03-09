@@ -55,7 +55,7 @@ namespace TegoareWeb
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Relaties}/{action=Index}/{id?}");
+                    pattern: "{controller=Lijsten}/{action=Index}/{id?}");
             });
         }
     }

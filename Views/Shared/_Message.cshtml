@@ -6,11 +6,11 @@
     {
         if (msg.Value == false)
         {
-            <div class="message message-danger">@msg.Message</div>
+            <div class="message message-danger"><i class="fa fa-times-circle"></i> @msg.Message</div>
         }
         else
         {
-            <div class="message message-success">@msg.Message</div>
+            <div class="message message-success"><i class="fa fa-check-circle"></i> @msg.Message</div>
         }
     }
     Model.ErrorMessages = null;
