@@ -132,7 +132,7 @@ namespace TegoareWeb.Controllers
                 Ledenmanagerlijst = new List<string>()
             };
             model.Activiteitenmanagerlijst = await FillList("Activiteitenmanager");
-            model.Ledenmanagerlijst = await FillList("Vrijwilliger");
+            model.Ledenmanagerlijst = await FillList("Ledenmanager");
             return View(model);
         }
         public IActionResult NotImpl()

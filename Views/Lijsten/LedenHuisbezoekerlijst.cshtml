@@ -4,7 +4,7 @@
     ViewData["Title"] = "LedenHuisbezoekerlijst";
 }
 
-<h1>@ViewData["NaamHuisbezoeker"] heeft als leden:</h1>
+<h1>@ViewData["NaamHuisbezoeker"] heeft (@Model.Count) leden:</h1>
 <hr />
 <partial name="_ListLeden" model="Model" />
 <hr />
