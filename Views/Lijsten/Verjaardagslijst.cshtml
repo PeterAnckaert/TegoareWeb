@@ -54,6 +54,9 @@
     </tbody>
 </table>
 
+@{var goTo = new TegoareWeb.Data.KnopInfo { Label = "Terug naar lijst" }; }
+<partial name="_GoTo" model="goTo" />
+
 <script type="text/javascript">
     document.getElementById('select_lijst').onchange = function () {
         document.getElementById('submit').click();

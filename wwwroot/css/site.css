@@ -79,6 +79,13 @@ body {
     margin: .5em;
 }
 
+.btn-knop {
+    border-radius: 5em;
+    padding: 1em;
+    margin: 1em;
+    font-size: larger;
+}
+
 hr {
     background-image: linear-gradient(to left, rgba(0, 0, 0, 0), rgba(9, 84, 132));
     border: 0;

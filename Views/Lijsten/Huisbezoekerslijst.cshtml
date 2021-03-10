@@ -7,16 +7,22 @@
 <h1>LIJST MET HUISBEZOEKERS</h1>
 <h4>Klik op de huisbezoeker waarvan je de lijst met zijn/haar leden wilt zien</h4>
 <hr />
-@foreach (var huisbezoeker in Model.HuisbezoekersList)
-{
-    <div class="col-sm-6 col-md-4 col-lg-3 float-left">
-        <form asp-action="LedenHuisbezoekerlijst">
-            <div class="card border-0 btn">
-                <input type="submit" value="@huisbezoeker.Key" class="card-title huisbezoeker-card-title" />
-                <input type="hidden" asp-for="IdHuisbezoeker" value="@huisbezoeker.Value" />
-            </div>
-        </form>
-    </div>
-}
+<div class="row">
+    @foreach (var huisbezoeker in Model.HuisbezoekersList)
+    {
+        <div class="col-sm-6 col-md-4 col-lg-3 float-left">
+            <form asp-action="LedenHuisbezoekerlijst">
+                <div class="card border-0 btn">
+                    <input type="submit" asp-for="NaamHuisbezoeker" value="@huisbezoeker.Key" class="card-title huisbezoeker-card-title" />
+                    <input type="hidden" asp-for="IdCurrentHuisbezoeker" value="@huisbezoeker.Value" />
+                </div>
+            </form>
+        </div>
+    }
+</div>
+
+@{var goTo = new TegoareWeb.Data.KnopInfo { Label = "Terug naar lijst" }; }
+<partial name="_GoTo" model="goTo" />
+
 
 

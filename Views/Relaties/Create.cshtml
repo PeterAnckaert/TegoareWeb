@@ -53,9 +53,8 @@
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Terug naar lijst met relaties</a>
-</div>
+@{var goTo = new TegoareWeb.Data.KnopInfo { Label = "Terug naar lijst met relaties" }; }
+<partial name="_GoTo" model="goTo" />
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

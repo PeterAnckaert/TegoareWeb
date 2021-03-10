@@ -1,0 +1,13 @@
+﻿@model List<string>
+
+
+@{
+    ViewData["Title"] = "Vrijwilligers";
+}
+
+<h1>Lijst met vrijwilligers</h1>
+<hr />
+<partial name="_ListLeden" model="Model" />
+<hr />
+@{var goTo = new TegoareWeb.Data.KnopInfo { Label = "Terug naar lijst" }; }
+<partial name="_GoTo" model="goTo" />

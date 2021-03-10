@@ -10,7 +10,7 @@ namespace TegoareWeb.ViewModels
     public class Huisbezoekerslijst
     {
         public SortedDictionary<string, Guid> HuisbezoekersList { get; set; }
-        public Guid IdHuisbezoeker { get; set; }
-        public IList<Lid> Leden { get; set; }
+        public Guid IdCurrentHuisbezoeker { get; set; }
+        public string NaamHuisbezoeker { get; set; }
     }
 }

@@ -1,0 +1,13 @@
+﻿@model TegoareWeb.Data.KnopInfo
+
+@{var classes = "btn btn-block btn-knop " + @Model.CSS;}
+<div>
+    @if (String.IsNullOrWhiteSpace(Model.Controller))
+    {
+        <a asp-action="@Model.Action" class="@classes">@Model.Label</a>
+    }
+    else
+    {
+        <a asp-controller="@Model.Controller" asp-action="@Model.Action" class="@classes">@Model.Label</a>
+    }
+</div>

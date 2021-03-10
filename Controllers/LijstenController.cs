@@ -92,14 +92,73 @@ namespace TegoareWeb.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult LedenHuisbezoekerlijst(Guid? IdHuisbezoeker)
+        public async Task<IActionResult> LedenHuisbezoekerlijst(Guid IdCurrentHuisbezoeker, String NaamHuisbezoeker)
         {
-            var ID = IdHuisbezoeker;
-            return View();
+            var queryHuisbezoeker = await _context.Groepen.FirstOrDefaultAsync(g => g.Rol == "Huisbezoeker");
+
+            var query = _context.Relaties
+                    .AsNoTracking()
+                    .Where(r => r.Id_Groep == queryHuisbezoeker.Id && r.Id_Lid1 == IdCurrentHuisbezoeker)
+                    .Include(r => r.Lid2)
+                    .ToList()
+                    .OrderBy(r => r.Lid2.Achternaam)
+                    .ThenBy(r => r.Lid2.VolledigeNaam);
+
+            var model = new List<string>();
+
+            foreach (var rel in query)
+            {
+                model.Add(rel.Lid2.VolledigeNaam);
+            }
+            ViewData["NaamHuisbezoeker"] = NaamHuisbezoeker;
+            return View(model);
+        }
+
+        public async Task<IActionResult> Stuurgroep()
+        {
+            return View(await FillList("Stuurgroep"));
+        }
+        public async Task<IActionResult> Vrijwilligers()
+        {
+
+            return View(await FillList ("Vrijwilliger"));
+        }
+
+        public async Task<IActionResult> Beheerders()
+        {
+            var model = new Beheerderslijst
+            {
+                Activiteitenmanagerlijst = new List<string>(),
+                Ledenmanagerlijst = new List<string>()
+            };
+            model.Activiteitenmanagerlijst = await FillList("Activiteitenmanager");
+            model.Ledenmanagerlijst = await FillList("Vrijwilliger");
+            return View(model);
         }
         public IActionResult NotImpl()
         {
             return View();
+        }
+
+        private async Task<List<string>> FillList(string Rol)
+        {
+            List<string> lijst = new();
+
+            var queryRol =  await _context.Groepen.FirstOrDefaultAsync(g => g.Rol == Rol);
+
+            var query = _context.Relaties
+                    .AsNoTracking()
+                    .Where(r => r.Id_Groep == queryRol.Id)
+                    .Include(r => r.Lid1)
+                    .ToList()
+                    .OrderBy(r => r.Lid1.Achternaam)
+                    .ThenBy(r => r.Lid1.VolledigeNaam);
+
+            foreach (var rel in query)
+            {
+                lijst.Add(rel.Lid1.VolledigeNaam);
+            }
+            return lijst;
         }
     }
 }
