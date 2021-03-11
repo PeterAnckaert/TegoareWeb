@@ -12,9 +12,6 @@
 <partial name="_SearchCreate" model="soort" />
 
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -33,7 +30,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.Gemeente)
             </th>
-            <th></th>
+            <th class="text-center">Aanpassen</th>
         </tr>
     </thead>
     <tbody>
@@ -55,10 +52,15 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Gemeente)
                 </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <td class="text-center">
+                    <a asp-action="Edit" asp-route-id="@item.Id">
+                        <i class="btn btn-edit fa fa-pencil fa-2x"></i>
+                    </a>
+                    @*
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    *@
                 </td>
             </tr>
         }

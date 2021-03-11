@@ -131,7 +131,7 @@ namespace TegoareWeb.Controllers
             }
             return View(ontmoetingsplaats);
         }
-
+/*
         // GET: Ontmoetingsplaatsen/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
@@ -160,7 +160,7 @@ namespace TegoareWeb.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-
+*/
         private bool OntmoetingsplaatsExists(Guid id)
         {
             return _context.Ontmoetingsplaatsen.Any(e => e.Id == id);

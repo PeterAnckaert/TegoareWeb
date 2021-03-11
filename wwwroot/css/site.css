@@ -2,72 +2,75 @@
 for details on configuring this project to bundle and minify static web assets. */
 
 a.navbar-brand {
-  white-space: normal;
-  text-align: center;
-  word-break: break-all;
+    white-space: normal;
+    text-align: center;
+    word-break: break-all;
 }
 
 /* Provide sufficient contrast against white background */
 a {
-  color: #0366d6;
+    color: #0366d6;
 }
 
 .btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
 }
 
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
 }
 
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
+
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 .border-top {
-  border-top: 1px solid #e5e5e5;
+    border-top: 1px solid #e5e5e5;
 }
+
 .border-bottom {
-  border-bottom: 1px solid #e5e5e5;
+    border-bottom: 1px solid #e5e5e5;
 }
 
 .box-shadow {
-  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
 }
 
 button.accept-policy {
-  font-size: 1rem;
-  line-height: inherit;
+    font-size: 1rem;
+    line-height: inherit;
 }
 
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
 }
+
 .footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  white-space: nowrap;
-  line-height: 60px; /* Vertically center the text there */
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    white-space: nowrap;
+    line-height: 60px; /* Vertically center the text there */
 }
 
 /*  Mijn opmaak
@@ -86,6 +89,24 @@ body {
     font-size: larger;
 }
 
+.btn-edit, .btn-create {
+    background-color: lawngreen;
+}
+
+    .btn-edit:hover, .btn-create:hover {
+        color: lawngreen;
+        background-color: black;
+    }
+
+.btn-delete {
+    background-color: darkred;
+}
+
+    .btn-delete:hover {
+        color: darkred;
+        background-color: black;
+    }
+
 hr {
     background-image: linear-gradient(to left, rgba(0, 0, 0, 0), rgba(9, 84, 132));
     border: 0;
@@ -94,7 +115,7 @@ hr {
 }
 
 .verborgen {
-    display:none;
+    display: none;
 }
 
 .btn-zoek {
@@ -103,20 +124,15 @@ hr {
     border: 2px solid black;
 }
 
-.btn-zoek:hover {
-    background-color: deepskyblue;
-}
+    .btn-zoek:hover {
+        background-color: deepskyblue;
+    }
 
 .btn-create {
-    background-color: lawngreen;
     border-radius: 15px;
     border: 2px solid black;
     text-align: center;
     float: right;
-}
-
-.btn-create:hover {
-    background-color: forestgreen;
 }
 
 .tekst-zoek {
@@ -136,9 +152,9 @@ hr {
     font-weight: bold;
 }
 
-.rel-card:hover {
-    background-color: deepskyblue;
-}
+    .rel-card:hover {
+        background-color: deepskyblue;
+    }
 
 .rel-card-title {
     background-color: khaki;
@@ -208,71 +224,70 @@ hr {
     padding-left: 20px;
 }
 
-.checkbox label {
-    display: inline-block;
-    vertical-align: middle;
-    position: relative;
-    padding-left: 5px;
-}
+    .checkbox label {
+        display: inline-block;
+        vertical-align: middle;
+        position: relative;
+        padding-left: 5px;
+    }
 
-.checkbox label::before {
-    content: "";
-    display: inline-block;
-    position: absolute;
-    width: 17px;
-    height: 17px;
-    left: 0;
-    margin-left: -20px;
-    border: 1px solid #cccccc;
-    border-radius: 3px;
-    background-color: #fff;
-    -webkit-transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
-    -o-transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
-    transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
-}
+        .checkbox label::before {
+            content: "";
+            display: inline-block;
+            position: absolute;
+            width: 17px;
+            height: 17px;
+            left: 0;
+            margin-left: -20px;
+            border: 1px solid #cccccc;
+            border-radius: 3px;
+            background-color: #fff;
+            -webkit-transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
+            -o-transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
+            transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
+        }
 
-.checkbox label::after {
-    display: inline-block;
-    position: absolute;
-    width: 16px;
-    height: 16px;
-    left: 0;
-    top: 0;
-    margin-left: -20px;
-    padding-left: 3px;
-    padding-top: 1px;
-    font-size: 11px;
-    color: #555555;
-}
+        .checkbox label::after {
+            display: inline-block;
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            left: 0;
+            top: 0;
+            margin-left: -20px;
+            padding-left: 3px;
+            padding-top: 1px;
+            font-size: 11px;
+            color: #555555;
+        }
 
-.checkbox input[type="checkbox"] {
-    opacity: 0;
-    z-index: 1;
-}
+    .checkbox input[type="checkbox"] {
+        opacity: 0;
+        z-index: 1;
+    }
 
-.checkbox input[type="checkbox"]:focus + label::before {
-    outline: thin dotted;
-    outline: 5px auto -webkit-focus-ring-color;
-    outline-offset: -2px;
-}
+        .checkbox input[type="checkbox"]:focus + label::before {
+            outline: thin dotted;
+            outline: 5px auto -webkit-focus-ring-color;
+            outline-offset: -2px;
+        }
 
-.checkbox input[type="checkbox"]:checked + label::before {
-    background-color: #A3F460;
-    border-color: #f0ad4e;
-}
+        .checkbox input[type="checkbox"]:checked + label::before {
+            background-color: #A3F460;
+            border-color: #f0ad4e;
+        }
 
-.checkbox input[type="checkbox"]:checked + label::after {
-    font-family: "FontAwesome";
-    content: "\f00c";
-    color: #4A5190;
-}
+        .checkbox input[type="checkbox"]:checked + label::after {
+            font-family: "FontAwesome";
+            content: "\f00c";
+            color: #4A5190;
+        }
 
-.checkbox input[type="checkbox"]:disabled + label {
-    opacity: 0.65;
-}
+        .checkbox input[type="checkbox"]:disabled + label {
+            opacity: 0.65;
+        }
 
-.checkbox input[type="checkbox"]:disabled + label::before {
-    background-color: #eeeeee;
-    cursor: not-allowed;
-}
-
+            .checkbox input[type="checkbox"]:disabled + label::before {
+                background-color: #eeeeee;
+                cursor: not-allowed;
+            }
