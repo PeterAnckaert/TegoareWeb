@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace TegoareWeb.Models
+namespace TegoareWeb.ViewModels
 {
     public class PaginatedList<T>:List<T>
     {

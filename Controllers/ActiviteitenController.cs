@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TegoareWeb.Data;
 using TegoareWeb.Models;
+using TegoareWeb.ViewModels;
 
 namespace TegoareWeb.Controllers
 {

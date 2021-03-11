@@ -1,4 +1,6 @@
-﻿@model TegoareWeb.Models.Groep
+﻿@using TegoareWeb.Models
+
+@model Groep
 
 @{
     ViewData["Title"] = "Delete";
@@ -30,7 +32,7 @@
             @Html.DisplayFor(model => model.Dubbele_Relatie)
         </dd>
     </dl>
-    
+
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
