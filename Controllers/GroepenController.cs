@@ -68,7 +68,7 @@ namespace TegoareWeb.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Rol,Omschrijving")] Groep groep)
+        public async Task<IActionResult> Create([Bind("Id,Rol,Omschrijving,Dubbele_Relatie")] Groep groep)
         {
             if (ModelState.IsValid)
             {
@@ -101,7 +101,7 @@ namespace TegoareWeb.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Rol,Omschrijving")] Groep groep)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Rol,Omschrijving,Dubbele_Relatie")] Groep groep)
         {
             if (id != groep.Id)
             {
@@ -130,7 +130,7 @@ namespace TegoareWeb.Controllers
             }
             return View(groep);
         }
-
+/*
         // GET: Groepen/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
@@ -159,7 +159,7 @@ namespace TegoareWeb.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-
+*/
         private bool GroepExists(Guid id)
         {
             return _context.Groepen.Any(e => e.Id == id);

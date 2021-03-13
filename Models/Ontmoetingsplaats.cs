@@ -8,7 +8,7 @@ namespace TegoareWeb.Models
 {
     public class Ontmoetingsplaats
     {
-        [Required]
+        [Key]
         public Guid Id { get; set; }
 
         [Required(ErrorMessage = "{0} dient ingevuld te worden")]

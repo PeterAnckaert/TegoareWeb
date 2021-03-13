@@ -238,10 +238,10 @@ hr {
             content: "";
             display: inline-block;
             position: absolute;
-            width: 17px;
-            height: 17px;
+            width: 27px;
+            height: 27px;
             left: 0;
-            margin-left: -20px;
+            margin-left: -30px;
             border: 1px solid #cccccc;
             border-radius: 3px;
             background-color: #fff;
@@ -253,11 +253,11 @@ hr {
         .checkbox label::after {
             display: inline-block;
             position: absolute;
-            width: 16px;
-            height: 16px;
+            width: 26px;
+            height: 26px;
             left: 0;
             top: 0;
-            margin-left: -20px;
+            margin-left: -30px;
             padding-left: 3px;
             padding-top: 1px;
             font-size: 11px;
@@ -284,6 +284,7 @@ hr {
             font-family: "FontAwesome";
             content: "\f00c";
             color: #4A5190;
+            font-size: 20px;
         }
 
         .checkbox input[type="checkbox"]:disabled + label {
