@@ -1,4 +1,5 @@
 ﻿@using TegoareWeb.Models
+@using TegoareWeb.Data
 
 @model Ontmoetingsplaats
 
@@ -40,12 +41,12 @@
                 <span asp-validation-for="Gemeente" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary btn-block btn-knop" />
+                <button class="btn btn-block btn-knop btn-save" type="submit">
+                    <i class="fa fa-save"></i> Bewaar ontmoetingsplaats
+                </button>
             </div>
-            @{var goTo = new TegoareWeb.Data.KnopInfo { Label = "Terug naar lijst" }; }
-            <partial name="_GoTo" model="goTo" />
-
         </form>
+        <partial name="_GoTo" model="new KnopInfo()" />
     </div>
 </div>
 

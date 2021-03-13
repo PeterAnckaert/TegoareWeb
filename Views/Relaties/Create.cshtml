@@ -1,4 +1,5 @@
 ﻿@using TegoareWeb.ViewModels
+@using TegoareWeb.Data
 
 @model CreateRelatieViewModel
 
@@ -35,7 +36,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <input type="submit" value="Maak relatie(s) aan" class="btn btn-primary btn-block btn-knop m-4 verborgen" id="submit" />
+                <input type="submit" value="Maak relatie(s) aan" class="btn btn-create btn-block btn-knop m-4 verborgen" id="submit" />
             </div>
             <div class="verborgen" id="lid2_lijst">
                 <div class="row font-weight-bold">
@@ -55,8 +56,7 @@
     </div>
 </div>
 
-@{var goTo = new TegoareWeb.Data.KnopInfo { Label = "Terug naar lijst met relaties" }; }
-<partial name="_GoTo" model="goTo" />
+<partial name="_GoTo" model="new KnopInfo()" />
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

@@ -76,8 +76,6 @@ body {
 /*  Mijn opmaak
     ----------------------------------*/
 .btn-lijst {
-    color: #00529B;
-    background-color: skyblue;
     border-radius: 5em;
     margin: .5em;
 }
@@ -89,21 +87,21 @@ body {
     font-size: larger;
 }
 
-.btn-edit, .btn-create {
-    background-color: lawngreen;
+.btn-edit, .btn-create, .btn-save {
+    background-color: #7DFA94;
 }
 
-    .btn-edit:hover, .btn-create:hover {
-        color: lawngreen;
+    .btn-edit:hover, .btn-create:hover, .btn-save:hover {
+        color: #7DFA94;
         background-color: black;
     }
 
 .btn-delete {
-    background-color: darkred;
+    background-color: #FA3B2E;
 }
 
     .btn-delete:hover {
-        color: darkred;
+        color: #FA3B2E;
         background-color: black;
     }
 
@@ -119,13 +117,14 @@ hr {
 }
 
 .btn-zoek {
-    background-color: powderblue;
+    background-color: #63ABFA;
     border-radius: 15px;
     border: 2px solid black;
 }
 
     .btn-zoek:hover {
-        background-color: deepskyblue;
+        color: #63ABFA;
+        background-color: black;
     }
 
 .btn-create {
@@ -135,25 +134,18 @@ hr {
     float: right;
 }
 
-.tekst-zoek {
+.tekst-groter {
     font-size: larger;
-    margin-bottom: 15px;
-}
-
-.tekst-create {
-    font-size: larger;
-    margin-bottom: 15px;
 }
 
 .rel-card {
-    background-color: powderblue;
+    background-color: #63ABFA;
     border-radius: 20px;
     border: 2px solid black;
-    font-weight: bold;
 }
 
     .rel-card:hover {
-        background-color: deepskyblue;
+        background-color: #4E83B3;
     }
 
 .rel-card-title {
@@ -161,6 +153,17 @@ hr {
     padding: 10px;
     border-radius: 20px;
     border: 2px solid black;
+    font-weight: bold;
+}
+
+.rel-card ul li {
+    background: #FACD82;
+    list-style-type: none;
+    margin: 5px -10px 5px -50px;
+    padding: 5px;
+    border: solid gray 2px;
+    border-radius: 10px;
+    font-size: smaller;
 }
 
 .huisbezoeker-card-title {

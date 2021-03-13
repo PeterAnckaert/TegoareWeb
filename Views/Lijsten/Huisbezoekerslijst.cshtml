@@ -1,4 +1,5 @@
 ﻿@using TegoareWeb.ViewModels
+@using TegoareWeb.Data
 
 @model Huisbezoekerslijst
 
@@ -23,8 +24,7 @@
     }
 </div>
 
-@{var goTo = new TegoareWeb.Data.KnopInfo { Label = "Terug naar lijst" }; }
-<partial name="_GoTo" model="goTo" />
+<partial name="_GoTo" model="new KnopInfo()" />
 
 
 

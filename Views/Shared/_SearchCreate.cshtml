@@ -2,11 +2,11 @@
 
 <form asp-action="Index" method="get">
     <div class="form-actions">
-        <div class="tekst-zoek">
+        <div class="tekst-groter">
             Zoeken <input type="text" name="SearchString" value="@(!string.IsNullOrWhiteSpace((string)@ViewData["CurrentFilter"]) ? @ViewData["CurrentFilter"] : "")" />
-            <button type="submit" class="btn btn-zoek tekst-zoek"><i class="fa fa-search"></i> Zoek</button>
-            <a asp-action="Index" class="btn btn-zoek tekst-zoek">Terug naar volledige lijst</a>
-            <a class="btn btn-create tekst-create" asp-action="Create">@Model</a>
+            <button type="submit" class="btn btn-zoek tekst-groter"><i class="fa fa-search"></i> Zoek</button>
+            <a asp-action="Index" class="btn btn-zoek tekst-groter"><i class="fa fa-refresh"></i> Terug naar volledige lijst</a>
+            <a class="btn btn-create tekst-groter" asp-action="Create"><i class="fa fa-plus-square"></i> @Model</a>
         </div>
     </div>
 </form>

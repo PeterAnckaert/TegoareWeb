@@ -6,10 +6,11 @@
 <div>
     @if (String.IsNullOrWhiteSpace(Model.Controller))
     {
-        <a asp-action="@Model.Action" class="@classes">@Model.Label</a>
+    <a asp-action="@Model.Action" class="@classes"><i class="fa @Model.FA"></i> @Model.Label</a>
     }
     else
     {
-        <a asp-controller="@Model.Controller" asp-action="@Model.Action" class="@classes">@Model.Label</a>
+<a asp-controller="@Model.Controller" asp-action="@Model.Action" class="@classes"><i class="fa @Model.FA"></i> @Model.Label</a>
     }
 </div>
+

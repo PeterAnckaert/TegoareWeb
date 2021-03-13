@@ -1,4 +1,6 @@
-﻿@model List<string>
+﻿@using TegoareWeb.Data
+
+@model List<string>
 
 @{
     ViewData["Title"] = "LedenHuisbezoekerlijst";
@@ -8,5 +10,5 @@
 <hr />
 <partial name="_ListLeden" model="Model" />
 <hr />
-@{var goTo = new TegoareWeb.Data.KnopInfo { Action = "Huisbezoekerslijst", Label = "Ga terug naar de huisbezoekers" }; }
+@{var goTo = new KnopInfo { Action = "Huisbezoekerslijst", Label = "Ga terug naar de huisbezoekers" }; }
 <partial name="_GoTo" model="goTo" />

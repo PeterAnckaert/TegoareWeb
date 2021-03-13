@@ -1,4 +1,6 @@
-﻿@model List<string>
+﻿@using TegoareWeb.Data
+
+@model List<string>
 
 
 @{
@@ -9,6 +11,5 @@
 <hr />
 <partial name="_ListLeden" model="Model" />
 <hr />
-@{var goTo = new TegoareWeb.Data.KnopInfo { Label = "Terug naar lijst" }; }
-<partial name="_GoTo" model="goTo" />
+<partial name="_GoTo" model="new KnopInfo()" />
 
