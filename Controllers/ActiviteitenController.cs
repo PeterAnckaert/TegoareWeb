@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TegoareWeb.Data;
@@ -31,11 +32,9 @@ namespace TegoareWeb.Controllers
             ViewData["CurrentSort"] = sortOrder;
             ViewData["NaamSortParm"] = sortOrder == "naam_asc" ? "naam_desc" : "naam_asc";
             ViewData["OmschrijvingSortParm"] = sortOrder == "omschrijving_asc" ? "omschrijving_desc" : "omschrijving_asc";
-            ViewData["PublicatiedatumSortParm"] = sortOrder == "publicatie_asc" ? "publicatie_desc" : "publicatie_asc";
-            ViewData["InschrijfdatumSortParm"] = sortOrder == "inschrijfdatum_asc" ? "inschrijfdatum_desc" : "inschrijfdatum_asc";
-            ViewData["PrijsSortParm"] = sortOrder == "prijs_asc" ? "prijs_desc" : "prijs_asc";
-            ViewData["MaxInschrijvingSortParm"] = sortOrder == "maxinschrijving_asc" ? "maxinschrijving_desc" : "maxinschrijving_asc";
             ViewData["OntmoetingsplaatsSortParm"] = sortOrder == "plaats_asc" ? "plaats_desc" : "plaats_asc";
+            ViewData["ActiviteitendatumSortParm"] = sortOrder == "datum_asc" ? "datum_desc" : "datum_asc";
+            ViewData["PublicatiedatumSortParm"] = sortOrder == "publicatie_asc" ? "publicatie_desc" : "publicatie_asc";
 
             if (searchString != null)
             {
@@ -62,63 +61,47 @@ namespace TegoareWeb.Controllers
             {
                 case "naam_asc":
                     activiteiten = activiteiten.OrderBy(a => a.Naam)
-                        .ThenBy(a => a.Uiterste_inschrijfdatum);
+                        .ThenByDescending(a => a.Activiteitendatum);
                     break;
                 case "naam_desc":
                     activiteiten = activiteiten.OrderByDescending(a => a.Naam)
-                        .ThenByDescending(a => a.Uiterste_inschrijfdatum);
+                        .ThenByDescending(a => a.Activiteitendatum);
                     break;
                 case "omschrijving_asc":
                     activiteiten = activiteiten.OrderBy(a => a.Omschrijving)
-                        .ThenBy(a => a.Uiterste_inschrijfdatum);
+                        .ThenByDescending(a => a.Activiteitendatum);
                     break;
                 case "omschrijving_desc":
                     activiteiten = activiteiten.OrderByDescending(a => a.Omschrijving)
-                        .ThenByDescending(a => a.Uiterste_inschrijfdatum);
-                    break;
-                case "publicatie_asc":
-                    activiteiten = activiteiten.OrderBy(a => a.Publicatiedatum)
-                        .ThenBy(a => a.Naam);
-                    break;
-                case "publicatie_desc":
-                    activiteiten = activiteiten.OrderByDescending(a => a.Publicatiedatum)
-                        .ThenByDescending(a => a.Naam);
-                    break;
-                case "inschrijfdatum_asc":
-                    activiteiten = activiteiten.OrderBy(a => a.Uiterste_inschrijfdatum)
-                        .ThenBy(a => a.Naam);
-                    break;
-                case "inschrijfdatum_desc":
-                    activiteiten = activiteiten.OrderByDescending(a => a.Uiterste_inschrijfdatum)
-                        .ThenByDescending(a => a.Naam);
-                    break;
-                case "prijs_asc":
-                    activiteiten = activiteiten.OrderBy(a => a.Prijs)
-                        .ThenBy(a => a.Naam);
-                    break;
-                case "prijs_desc":
-                    activiteiten = activiteiten.OrderByDescending(a => a.Prijs)
-                        .ThenByDescending(a => a.Naam);
-                    break;
-                case "maxinschrijving_asc":
-                    activiteiten = activiteiten.OrderBy(a => a.Max_inschrijvingen)
-                        .ThenBy(a => a.Naam);
-                    break;
-                case "maxinschrijving_desc":
-                    activiteiten = activiteiten.OrderByDescending(a => a.Max_inschrijvingen)
-                        .ThenByDescending(a => a.Naam);
+                        .ThenByDescending(a => a.Activiteitendatum);
                     break;
                 case "plaats_asc":
                     activiteiten = activiteiten.OrderBy(a => a.Ontmoetingsplaats)
-                        .ThenBy(a => a.Uiterste_inschrijfdatum);
+                        .ThenByDescending(a => a.Activiteitendatum);
                     break;
                 case "plaats_desc":
                     activiteiten = activiteiten.OrderByDescending(a => a.Ontmoetingsplaats)
-                        .ThenByDescending(a => a.Uiterste_inschrijfdatum);
+                        .ThenByDescending(a => a.Activiteitendatum);
+                    break;
+                case "datum_asc":
+                    activiteiten = activiteiten.OrderBy(a => a.Activiteitendatum)
+                        .ThenBy(a => a.Naam);
+                    break;
+                case "datum_desc":
+                    activiteiten = activiteiten.OrderByDescending(a => a.Activiteitendatum)
+                        .ThenBy(a => a.Naam);
+                    break;
+                case "publicatie_asc":
+                    activiteiten = activiteiten.OrderBy(a => a.Publicatiedatum)
+                        .ThenByDescending(a => a.Activiteitendatum);
+                    break;
+                case "publicatie_desc":
+                    activiteiten = activiteiten.OrderByDescending(a => a.Publicatiedatum)
+                        .ThenByDescending(a => a.Activiteitendatum);
                     break;
                 default:
-                    activiteiten = activiteiten.OrderBy(a => a.Naam)
-                        .ThenBy(a => a.Uiterste_inschrijfdatum);
+                    activiteiten = activiteiten.OrderByDescending(a => a.Activiteitendatum)
+                        .ThenBy(a => a.Naam);
                     break;
             }
 
@@ -156,7 +139,7 @@ namespace TegoareWeb.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Naam,Omschrijving,Publicatiedatum,Uiterste_inschrijfdatum,Prijs,Max_inschrijvingen,Id_ontmoetingsplaats,Activiteitendatum,Beginuur,Einduur,DeelVanReeks")] Activiteit activiteit)
+        public async Task<IActionResult> Create([Bind("Id,Naam,Omschrijving,Publicatiedatum,Uiterste_inschrijfdatum,Prijs,Max_inschrijvingen,Id_ontmoetingsplaats,Activiteitendatum,Beginuur,Einduur")] Activiteit activiteit)
         {
             if (ModelState.IsValid)
             {
@@ -191,7 +174,7 @@ namespace TegoareWeb.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Naam,Omschrijving,Publicatiedatum,Uiterste_inschrijfdatum,Prijs,Max_inschrijvingen,Id_ontmoetingsplaats,Activiteitendatum,Beginuur,Einduur,DeelVanReeks")] Activiteit activiteit)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Naam,Omschrijving,Publicatiedatum,Uiterste_inschrijfdatum,Prijs,Max_inschrijvingen,Id_ontmoetingsplaats,Activiteitendatum,Beginuur,Einduur")] Activiteit activiteit)
         {
             if (id != activiteit.Id)
             {
