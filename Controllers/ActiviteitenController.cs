@@ -133,7 +133,6 @@ namespace TegoareWeb.Controllers
             ViewData["Id_ontmoetingsplaats"] = new SelectList(_context.Ontmoetingsplaatsen, "Id", "Plaatsnaam");
             return View();
         }
-
         // POST: Activiteiten/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -151,6 +150,37 @@ namespace TegoareWeb.Controllers
             ViewData["Id_ontmoetingsplaats"] = new SelectList(_context.Ontmoetingsplaatsen, "Id", "Plaatsnaam", activiteit.Id_ontmoetingsplaats);
             return View(activiteit);
         }
+
+        // GET: Activiteiten/Copy/5
+        public async Task<IActionResult> Copy(Guid? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var activiteit = await _context.Activiteiten.FindAsync(id);
+            if (activiteit == null)
+            {
+                return NotFound();
+            }
+            var copy = new Activiteit
+            {
+                Beginuur = activiteit.Beginuur,
+                Einduur = activiteit.Einduur,
+                Id_ontmoetingsplaats = activiteit.Id_ontmoetingsplaats,
+                Max_inschrijvingen = activiteit.Max_inschrijvingen,
+                Naam = activiteit.Naam,
+                Omschrijving = activiteit.Omschrijving,
+                Prijs = activiteit.Prijs,
+                Publicatiedatum = activiteit.Publicatiedatum,
+                Uiterste_inschrijfdatum = activiteit.Uiterste_inschrijfdatum
+            };
+
+            ViewData["Id_ontmoetingsplaats"] = new SelectList(_context.Ontmoetingsplaatsen, "Id", "Plaatsnaam", copy.Id_ontmoetingsplaats);
+            return View(activiteit);
+        }
+
 
         // GET: Activiteiten/Edit/5
         public async Task<IActionResult> Edit(Guid? id)

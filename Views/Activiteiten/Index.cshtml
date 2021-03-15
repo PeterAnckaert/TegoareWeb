@@ -17,11 +17,11 @@
 <table class="table">
     <thead>
         <tr>
-            <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["ActiviteitendatumSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Activiteitendatum</a>
+            <th class="text-center">
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["ActiviteitendatumSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Datum</a>
             </th>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["NaamSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Naam</a>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["NaamSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Activiteit</a>
             </th>
             <th>
                 <a asp-action="Index" asp-route-sortOrder="@ViewData["OmschrijvingSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Omschrijving</a>
@@ -36,6 +36,9 @@
                 Einduur
             </th>
             <th>
+                Prijs
+            </th>
+            <th>
                 <a asp-action="Index" asp-route-sortOrder="@ViewData["PublicatiedatumSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Publicatiedatum</a>
             </th>
             <th class="text-center">Aanpassen</th>
@@ -44,39 +47,54 @@
     <tbody>
         @foreach (var item in Model)
         {
-        <tr>
-            <td class="text-right">
-                @Html.DisplayFor(modelItem => item.Activiteitendatum)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Naam)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Omschrijving)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Ontmoetingsplaats.Plaatsnaam)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Beginuur)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Einduur)
-            </td>
-            <td class="text-center">
-                @Html.DisplayFor(modelItem => item.Publicatiedatum)
-            </td>
-            <td class="text-center tekst-groter">
-                <a asp-action="Edit" asp-route-id="@item.Id">
-                    <i class="btn btn-edit fa fa-wrench"></i>
-                </a>
-                @*
-            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                *@
-            </td>
-        </tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Activiteitendatum)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Naam)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Omschrijving)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Ontmoetingsplaats.Plaatsnaam)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Beginuur)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Einduur)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Prijs)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Publicatiedatum)
+                </td>
+                <td class="text-center tekst-groter">
+                    <div>
+                        <a asp-action="Edit" asp-route-id="@item.Id">
+                            <i class="btn btn-edit fa fa-wrench"></i>
+                        </a>
+                    </div>
+                    <div>
+                        <a asp-action="Delete" asp-route-id="@item.Id">
+                            <i class="btn btn-delete fa fa-times-circle"></i>
+                        </a>
+                    </div>
+                    <div>
+                        <a asp-action="Copy" asp-route-id="@item.Id">
+                            <i class="btn btn-copy fa fa-clone"></i>
+                        </a>
+                    </div>
+                    @*
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    *@
+                </td>
+            </tr>
         }
     </tbody>
 </table>

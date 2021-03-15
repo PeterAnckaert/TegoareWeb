@@ -105,6 +105,15 @@ body {
         background-color: black;
     }
 
+.btn-copy {
+    background-color: #F5E726;
+}
+
+    .btn-copy:hover {
+        color: #F5E726;
+        background-color: black;
+    }
+
 hr {
     background-image: linear-gradient(to left, rgba(0, 0, 0, 0), rgba(9, 84, 132));
     border: 0;

@@ -1,4 +1,6 @@
 ﻿@using TegoareWeb.Models
+@using TegoareWeb.Data
+
 @model Activiteit
 
 @{
@@ -9,70 +11,124 @@
 
 <h4>Activiteit</h4>
 <hr />
+
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-11">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="Naam" class="control-label"></label>
-                <input asp-for="Naam" class="form-control" />
-                <span asp-validation-for="Naam" class="text-danger"></span>
+            <div class="row">
+                <div class="col-lg-3 col-md-6 col-sm-12 font-weight-bold text-lg-right text-md-left pr-1">
+                    <label asp-for="Naam" class="control-label">@Html.DisplayNameFor(Model => Model.Naam):</label>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-12 mb-2 pl-0">
+                    <input asp-for="Naam" class="form-control" />
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-12 font-weight-bold text-lg-right text-md-left pr-1">
+                    <label asp-for="Activiteitendatum" class="control-label">@Html.DisplayNameFor(Model => Model.Activiteitendatum):</label>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-12 mb-2 pl-0">
+                    <input asp-for="Activiteitendatum" class="form-control" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3 col-md-12 font-weight-bold text-lg-right text-md-left pr-1">
+                    <label asp-for="Omschrijving" class="control-label">@Html.DisplayNameFor(Model => Model.Omschrijving):</label>
+                </div>
+                <div class="col-lg-9 col-md-12 mb-2 pl-0">
+                    <textarea asp-for="Omschrijving" class="form-control"></textarea>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3 col-md-6 col-sm-12 font-weight-bold text-lg-right text-md-left pr-1">
+                    <label asp-for="Beginuur" class="control-label">@Html.DisplayNameFor(Model => Model.Beginuur):</label>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-12 mb-2 pl-0">
+                    <input asp-for="Beginuur" class="form-control" />
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-12 font-weight-bold text-lg-right text-md-left pr-1">
+                    <label asp-for="Einduur" class="control-label">@Html.DisplayNameFor(Model => Model.Einduur):</label>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-12 mb-2 pl-0">
+                    <input asp-for="Einduur" class="form-control" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3 col-md-6 col-sm-12 font-weight-bold text-lg-right text-md-left pr-1">
+                    <label asp-for="Id_ontmoetingsplaats" class="control-label">@Html.DisplayNameFor(Model => Model.Ontmoetingsplaats):</label>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-12 mb-2 pl-0">
+                    <select asp-for="Id_ontmoetingsplaats" class="form-control" asp-items="ViewBag.Id_ontmoetingsplaats"></select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3 col-md-6 col-sm-12 font-weight-bold text-lg-right text-md-left pr-1">
+                    <label asp-for="Publicatiedatum" class="control-label">@Html.DisplayNameFor(Model => Model.Publicatiedatum):</label>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-12 mb-2 pl-0">
+                    <input asp-for="Publicatiedatum" class="form-control" />
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-12 font-weight-bold text-lg-right text-md-left pr-1">
+                    <label asp-for="Uiterste_inschrijfdatum" class="control-label">@Html.DisplayNameFor(Model => Model.Uiterste_inschrijfdatum):</label>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-12 mb-2 pl-0">
+                    <input asp-for="Uiterste_inschrijfdatum" class="form-control" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3 col-md-6 col-sm-12 font-weight-bold text-lg-right text-md-left pr-1">
+                    <label asp-for="Prijs" class="control-label">@Html.DisplayNameFor(Model => Model.Prijs):</label>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-12 mb-2 pl-0">
+                    <input asp-for="Prijs" class="form-control"/>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-12 font-weight-bold text-lg-right text-md-left pr-1">
+                    <label asp-for="Max_inschrijvingen" class="control-label">@Html.DisplayNameFor(Model => Model.Max_inschrijvingen):</label>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-12 mb-2 pl-0">
+                    <input asp-for="Max_inschrijvingen" class="form-control" />
+                </div>
+            </div>
+            <div class="font-weight-bold">
+                <div>
+                    <span asp-validation-for="Naam" class="text-danger"></span>
+                </div>
+                <div>
+                    <span asp-validation-for="Activiteitendatum" class="text-danger"></span>
+                </div>
+                <div>
+                    <span asp-validation-for="Omschrijving" class="text-danger"></span>
+                </div>
+                <div>
+                    <span asp-validation-for="Beginuur" class="text-danger"></span>
+                </div>
+                <div>
+                    <span asp-validation-for="Einduur" class="text-danger"></span>
+                </div>
+                <div>
+                    <span asp-validation-for="Id_ontmoetingsplaats" class="text-danger"></span>
+                </div>
+                <div>
+                    <span asp-validation-for="Publicatiedatum" class="text-danger"></span>
+                </div>
+                <div>
+                    <span asp-validation-for="Uiterste_inschrijfdatum" class="text-danger"></span>
+                </div>
+                <div>
+                    <span asp-validation-for="Prijs" class="text-danger"></span>
+                </div>
+                <div>
+                    <span asp-validation-for="Max_inschrijvingen" class="text-danger"></span>
+                </div>
             </div>
             <div class="form-group">
-                <label asp-for="Omschrijving" class="control-label"></label>
-                <input asp-for="Omschrijving" class="form-control" />
-                <span asp-validation-for="Omschrijving" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Publicatiedatum" class="control-label"></label>
-                <input asp-for="Publicatiedatum" class="form-control" />
-                <span asp-validation-for="Publicatiedatum" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Uiterste_inschrijfdatum" class="control-label"></label>
-                <input asp-for="Uiterste_inschrijfdatum" class="form-control" />
-                <span asp-validation-for="Uiterste_inschrijfdatum" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Prijs" class="control-label"></label>
-                <input asp-for="Prijs" class="form-control" />
-                <span asp-validation-for="Prijs" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Max_inschrijvingen" class="control-label"></label>
-                <input asp-for="Max_inschrijvingen" class="form-control" />
-                <span asp-validation-for="Max_inschrijvingen" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Id_ontmoetingsplaats" class="control-label"></label>
-                <select asp-for="Id_ontmoetingsplaats" class="form-control" asp-items="ViewBag.Id_ontmoetingsplaats"></select>
-                <span asp-validation-for="Id_ontmoetingsplaats" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Activiteitendatum" class="control-label"></label>
-                <input asp-for="Activiteitendatum" class="form-control" />
-                <span asp-validation-for="Activiteitendatum" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Beginuur" class="control-label"></label>
-                <input asp-for="Beginuur" class="form-control" />
-                <span asp-validation-for="Beginuur" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Einduur" class="control-label"></label>
-                <input asp-for="Einduur" class="form-control" />
-                <span asp-validation-for="Einduur" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <button class="btn btn-block btn-knop btn-save" type="submit">
+                    <i class="fa fa-save"></i> Bewaar aanpassingen
+                </button>
             </div>
         </form>
+        <partial name="_GoTo" model="new KnopInfo()" />
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {
