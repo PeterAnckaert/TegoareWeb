@@ -28,9 +28,10 @@ namespace TegoareWeb.Models
         [DataType(DataType.Date)]
         public DateTime? Uiterste_inschrijfdatum { get; set; }
 
-        [Range(0.01, 9999.99, ErrorMessage = "Prijs moet leeg zijn of tussen 0.01 en 9999.99 liggen")]
-        [DataType(DataType.Currency)]
-        public decimal? Prijs { get; set; }
+        [StringLength(50)]
+        [RegularExpression("^(\\d+(?:[\\.\\,]\\d{2})?)$", ErrorMessage = "Gelieve een correct geldbedrag in te vullen")]
+        
+        public string Prijs { get; set; }
 
         [Display(Name = "Max. inschrijvingen")]
         [RegularExpression("^\\d*$", ErrorMessage = "Gelieve een geheel getal in te vullen")]

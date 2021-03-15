@@ -143,6 +143,7 @@ namespace TegoareWeb.Controllers
             if (ModelState.IsValid)
             {
                 activiteit.Id = Guid.NewGuid();
+                NormalizePrijs(activiteit);
                 _context.Add(activiteit);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -164,20 +165,8 @@ namespace TegoareWeb.Controllers
             {
                 return NotFound();
             }
-            var copy = new Activiteit
-            {
-                Beginuur = activiteit.Beginuur,
-                Einduur = activiteit.Einduur,
-                Id_ontmoetingsplaats = activiteit.Id_ontmoetingsplaats,
-                Max_inschrijvingen = activiteit.Max_inschrijvingen,
-                Naam = activiteit.Naam,
-                Omschrijving = activiteit.Omschrijving,
-                Prijs = activiteit.Prijs,
-                Publicatiedatum = activiteit.Publicatiedatum,
-                Uiterste_inschrijfdatum = activiteit.Uiterste_inschrijfdatum
-            };
 
-            ViewData["Id_ontmoetingsplaats"] = new SelectList(_context.Ontmoetingsplaatsen, "Id", "Plaatsnaam", copy.Id_ontmoetingsplaats);
+            ViewData["Id_ontmoetingsplaats"] = new SelectList(_context.Ontmoetingsplaatsen, "Id", "Plaatsnaam", activiteit.Id_ontmoetingsplaats);
             return View(activiteit);
         }
 
@@ -215,6 +204,7 @@ namespace TegoareWeb.Controllers
             {
                 try
                 {
+                    NormalizePrijs(activiteit);
                     _context.Update(activiteit);
                     await _context.SaveChangesAsync();
                 }
@@ -268,6 +258,18 @@ namespace TegoareWeb.Controllers
         private bool ActiviteitExists(Guid id)
         {
             return _context.Activiteiten.Any(e => e.Id == id);
+        }
+
+        private void NormalizePrijs(Activiteit activiteit)
+        {
+            if (activiteit.Prijs != null)
+            {
+                activiteit.Prijs = activiteit.Prijs.Replace('.', ',');
+                if (!activiteit.Prijs.Contains(','))
+                {
+                    activiteit.Prijs += ",00";
+                }
+            }
         }
     }
 }

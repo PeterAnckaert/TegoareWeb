@@ -67,7 +67,7 @@
                     @Html.DisplayFor(modelItem => item.Einduur)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Prijs)
+                    @Html.DisplayFor(modelItem => item.Prijs)@(item.Prijs != null ? "€":"")
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Publicatiedatum)
