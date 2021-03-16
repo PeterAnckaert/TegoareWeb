@@ -18,78 +18,52 @@
     <thead>
         <tr>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["AchternaamSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Achternaam</a>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["LidnaamSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Achter- en voornaam</a>
             </th>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["VoornaamSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Voornaam</a>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["StraatnaamSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Straatnaam en -nummer</a>
             </th>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["GeboortedatumSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Geboortedatum</a>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["GemeenteSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Postcode en gemeente</a>
             </th>
-            <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["StraatnaamSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Straatnaam</a>
-            </th>
-            <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["StraatnummerSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Straatnummer</a>
-            </th>
-            <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["PostcodeSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Postcode</a>
-            </th>
-            <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["GemeenteSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Gemeente</a>
-            </th>
-            <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["TelVastSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Telefoon_vast</a>
-            </th>
-            <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["TelGSMSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Telefoon_GSM</a>
-            </th>
-            <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["EmailSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Email</a>
-            </th>
-            <th></th>
+            <th>Telefoon</th>
+            <th>E-mail</th>
+            <th class="text-center">Aanpassen</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Achternaam)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Voornaam)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Geboortedatum)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Straatnaam)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Straatnummer)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Postcode)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Gemeente)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Telefoon_vast)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Telefoon_GSM)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Email)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                </td>
-            </tr>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Achternaam) @Html.DisplayFor(modelItem => item.Voornaam)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Straatnaam) @Html.DisplayFor(modelItem => item.Straatnummer)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Postcode) @Html.DisplayFor(modelItem => item.Gemeente)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Telefoon_vast)@(!String.IsNullOrEmpty(item.Telefoon_vast) ? Html.Raw("<br />") : "")@Html.DisplayFor(modelItem => item.Telefoon_GSM)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td class="text-center tekst-groter">
+                <a asp-action="Edit" asp-route-id="@item.Id">
+                    <i class="btn btn-edit fa fa-wrench"></i>
+                </a>
+                <a asp-action="Delete" asp-route-id="@item.Id">
+                    <i class="btn btn-delete fa fa-times-circle"></i>
+                </a>
+                @*
+            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                *@
+            </td>
+        </tr>
         }
     </tbody>
 </table>

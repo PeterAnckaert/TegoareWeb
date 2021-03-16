@@ -9,21 +9,47 @@ namespace TegoareWeb.Models
 {
     public class Lid
     {
+        [Key]
         public Guid Id { get; set; }
+
+        [Required(ErrorMessage = "{0} dient ingevuld te worden")]
+        [StringLength(50)]
         public string Achternaam { get; set; }
+
+        [Required(ErrorMessage = "{0} dient ingevuld te worden")]
+        [StringLength(50)]
         public string Voornaam { get; set; }
 
+        [Required(ErrorMessage = "{0} dient ingevuld te worden")]
         [DataType(DataType.Date)]
         public DateTime Geboortedatum { get; set; }
+
+        [Required(ErrorMessage = "{0} dient ingevuld te worden")]
+        [StringLength(50)]
         public string Straatnaam { get; set; }
+
+        [Required(ErrorMessage = "{0} dient ingevuld te worden")]
+        [StringLength(20)]
         public string Straatnummer { get; set; }
+
+        [Required(ErrorMessage = "{0} dient ingevuld te worden")]
+        [Range(1000, 9999, ErrorMessage = "Gelieve een geldige postcode in te vullen")]
         public short Postcode { get; set; }
+
+        [Required(ErrorMessage = "{0} dient ingevuld te worden")]
+        [StringLength(50)]
         public string Gemeente { get; set; }
+
+        [DataType(DataType.PhoneNumber)]
         public string Telefoon_vast { get; set; }
+
+        [DataType(DataType.PhoneNumber)]
         public string Telefoon_GSM { get; set; }
+
+        [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
-        public IList<Relatie> Relaties1 { get; set; }
-        public IList<Relatie> Relaties2 { get; set; }
+
+        public IList<Relatie> Relaties { get; set; }
 
         [NotMapped]
         public string VolledigeNaam => $"{Voornaam} {Achternaam}";

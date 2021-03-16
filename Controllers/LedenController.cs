@@ -29,16 +29,9 @@ namespace TegoareWeb.Controllers
             string searchString = null)
         {
             ViewData["CurrentSort"] = sortOrder;
-            ViewData["AchternaamSortParm"] = sortOrder == "achternaam_asc" ? "achternaam_desc" : "achternaam_asc";
-            ViewData["VoornaamSortParm"] = sortOrder == "voornaam_asc" ? "voornaam_desc" : "voornaam_asc";
-            ViewData["GeboorteDatumSortParm"] = sortOrder == "geboorte_asc" ? "geboorte_desc" : "geboorte_asc";
+            ViewData["LidnaamSortParm"] = sortOrder == "lidnaam_asc" ? "lidnaam_desc" : "lidnaam_asc";
             ViewData["StraatnaamSortParm"] = sortOrder == "straatnaam_asc" ? "straatnaam_desc" : "straatnaam_asc";
-            ViewData["StraatnummerSortParm"] = sortOrder == "straatnummer_asc" ? "straatnummer_desc" : "straatnummer_asc";
-            ViewData["PostcodeSortParm"] = sortOrder == "postcode_asc" ? "postcode_desc" : "postcode_asc";
             ViewData["GemeenteSortParm"] = sortOrder == "gemeente_asc" ? "gemeente_desc" : "gemeente_asc";
-            ViewData["TelVastSortParm"] = sortOrder == "telvast_asc" ? "telvast_desc" : "telvast_asc";
-            ViewData["TelGSMSortParm"] = sortOrder == "telgsm_asc" ? "telgsm_desc" : "telgsm_asc";
-            ViewData["EmailSortParm"] = sortOrder == "email_asc" ? "email_desc" : "email_asc";
 
             if (!String.IsNullOrWhiteSpace(searchString))
             {
@@ -67,79 +60,45 @@ namespace TegoareWeb.Controllers
 
             switch (sortOrder)
             {
-                case "achternaam_asc":
+                case "lidnaam_asc":
                     leden = leden.OrderBy(l => l.Achternaam)
                         .ThenBy(l => l.Voornaam);
                     break;
-                case "achternaam_desc":
+                case "lidnaam_desc":
                     leden = leden.OrderByDescending(l => l.Achternaam)
                         .ThenByDescending(l => l.Voornaam);
                     break;
-                case "voornaam_asc":
-                    leden = leden.OrderBy(l => l.Voornaam)
-                        .ThenBy(l => l.Achternaam);
-                    break;
-                case "voornaam_desc":
-                    leden = leden.OrderByDescending(l => l.Voornaam)
-                        .ThenByDescending(l => l.Achternaam);
-                    break;
-                case "geboorte_asc":
-                    leden = leden.OrderBy(l => l.Geboortedatum);
-                    break;
-                case "geboorte_desc":
-                    leden = leden.OrderByDescending(l => l.Geboortedatum);
-                    break;
                 case "straatnaam_asc":
                     leden = leden.OrderBy(l => l.Straatnaam)
-                        .ThenBy(l => l.Straatnummer);
+                        .ThenBy(l => l.Straatnummer)
+                        .ThenBy(l => l.Postcode)
+                        .ThenBy(l => l.Gemeente)
+                        .ThenBy(l => l.Achternaam)
+                        .ThenBy(l => l.Voornaam);
                     break;
                 case "straatnaam_desc":
                     leden = leden.OrderByDescending(l => l.Straatnaam)
-                        .ThenByDescending(l => l.Straatnummer);
-                    break;
-                case "straatnummer_asc":
-                    leden = leden.OrderBy(l => l.Straatnummer);
-                    break;
-                case "straatnummer_desc":
-                    leden = leden.OrderByDescending(l => l.Straatnummer);
-                    break;
-                case "postcode_asc":
-                    leden = leden.OrderBy(l => l.Postcode)
-                        .ThenBy(l => l.Gemeente)
-                        .ThenBy(l => l.Straatnummer);
-                    break;
-                case "postcode_desc":
-                    leden = leden.OrderByDescending(l => l.Postcode)
+                        .ThenByDescending(l => l.Straatnummer)
+                        .ThenByDescending(l => l.Postcode)
                         .ThenByDescending(l => l.Gemeente)
-                        .ThenByDescending(l => l.Straatnummer);
+                        .ThenByDescending(l => l.Achternaam)
+                        .ThenByDescending(l => l.Voornaam);
                     break;
                 case "gemeente_asc":
-                    leden = leden.OrderBy(l => l.Gemeente)
+                    leden = leden.OrderBy(l => l.Postcode)
+                        .ThenBy(l => l.Gemeente)
                         .ThenBy(l => l.Straatnaam)
-                        .ThenBy(l => l.Straatnummer);
+                        .ThenBy(l => l.Straatnummer)
+                        .ThenBy(l => l.Achternaam)
+                        .ThenBy(l => l.Voornaam);
                     break;
                 case "gemeente_desc":
-                    leden = leden.OrderByDescending(l => l.Gemeente)
+                    leden = leden.OrderByDescending(l => l.Postcode)
+                        .ThenByDescending(l => l.Gemeente)
                         .ThenByDescending(l => l.Straatnaam)
-                        .ThenByDescending(l => l.Straatnummer);
-                    break;
-                case "telvast_asc":
-                    leden = leden.OrderBy(l => l.Telefoon_vast);
-                    break;
-                case "telvast_desc":
-                    leden = leden.OrderByDescending(l => l.Telefoon_vast);
-                    break;
-                case "telgsm_asc":
-                    leden = leden.OrderBy(l => l.Telefoon_GSM);
-                    break;
-                case "telgsm_desc":
-                    leden = leden.OrderByDescending(l => l.Telefoon_GSM);
-                    break;
-                case "email_asc":
-                    leden = leden.OrderBy(l => l.Email);
-                    break;
-                case "email_desc":
-                    leden = leden.OrderByDescending(l => l.Email);
+                        .ThenByDescending(l => l.Straatnummer)
+                        .ThenByDescending(l => l.Achternaam)
+                        .ThenByDescending(l => l.Voornaam);
                     break;
                 default:
                     leden = leden.OrderBy(l => l.Achternaam)
@@ -200,10 +159,23 @@ namespace TegoareWeb.Controllers
             }
 
             var lid = await _context.Leden.FindAsync(id);
+
             if (lid == null)
             {
                 return NotFound();
             }
+
+            var relaties = await _context.Relaties
+                .AsNoTracking()
+                .Include(r => r.Groep)
+                .Include(r => r.Lid1)
+                .Include(r => r.Lid2)
+                .Where(r => r.Id_Lid1 == lid.Id || r.Id_Lid2 == lid.Id)
+                .OrderBy(r => r.Groep.Rol)
+                .ToListAsync();
+
+            lid.Relaties = relaties;
+
             return View(lid);
         }
 
@@ -250,12 +222,23 @@ namespace TegoareWeb.Controllers
                 return NotFound();
             }
 
-            var lid = await _context.Leden
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var lid = await _context.Leden.FindAsync(id);
+
             if (lid == null)
             {
                 return NotFound();
             }
+
+            var relaties = await _context.Relaties
+                .AsNoTracking()
+                .Include(r => r.Groep)
+                .Include(r => r.Lid1)
+                .Include(r => r.Lid2)
+                .Where(r => r.Id_Lid1 == lid.Id || r.Id_Lid2 == lid.Id)
+                .OrderBy(r => r.Groep.Rol)
+                .ToListAsync();
+
+            lid.Relaties = relaties;
 
             return View(lid);
         }
@@ -265,10 +248,42 @@ namespace TegoareWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var lid = await _context.Leden.FindAsync(id);
-            _context.Leden.Remove(lid);
-            await _context.SaveChangesAsync();
+            var lid = _context.Leden.Find(id);
+
+            if(lid != null)
+            {
+                var relaties = _context.Relaties
+                    .Include(r => r.Groep)
+                    .Include(r => r.Lid1)
+                    .Include(r => r.Lid2)
+                    .Where(r => r.Id_Lid1 == lid.Id || r.Id_Lid2 == lid.Id)
+                    .ToList();
+                
+                _context.Relaties.RemoveRange(relaties);
+                _context.Leden.Remove(lid);
+                await _context.SaveChangesAsync();
+            }
             return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> DeleteRelatie(Guid? RelId, Guid? LidId)
+        {
+            if (RelId == null || LidId == null)
+            {
+                return NotFound();
+            }
+
+            var relatie = await _context.Relaties.FindAsync(RelId);
+
+            if (relatie == null)
+            {
+                return NotFound();
+            }
+
+            _context.Relaties.Remove(relatie);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Edit), new { id = LidId }) ;
         }
 
         private bool LidExists(Guid id)

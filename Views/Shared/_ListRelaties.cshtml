@@ -1,0 +1,35 @@
+﻿@using TegoareWeb.ViewModels
+
+@model LijstRelatieLid
+
+<ul class="text-left">
+    @foreach (var rel in Model.Relaties)
+    {
+        <li>
+            @if (Model.Knop)
+            {
+                TempData["RelId"] = rel.Id;
+                TempData["LidId"] = Model.LidId;
+
+                <a asp-action="DeleteRelatie" asp-route-RelId="@rel.Id" asp-route-LidId="@Model.LidId">
+                    <i class="btn btn-delete fa fa-times-circle"> </i>
+                </a>
+            }
+            @if (rel.Lid2 == null)
+            {
+                <span>lid van groep @rel.Groep.Rol.ToLower()</span>
+            }
+            else
+            {
+                if (rel.Lid1.Id == Model.LidId)
+                {
+                    <span>@rel.Groep.Rol van @rel.Lid2.VolledigeNaam</span>
+                }
+                else
+                {
+                    <span>heeft @rel.Lid1.VolledigeNaam als @rel.Groep.Rol.ToLower()</span>
+                }
+            }
+        </li>
+    }
+</ul>

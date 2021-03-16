@@ -27,25 +27,19 @@ namespace TegoareWeb.Data
             modelBuilder.Entity<Relatie>().ToTable("Relatie");
 
             modelBuilder.Entity<Activiteit>()
-               .HasOne<Ontmoetingsplaats>(o => o.Ontmoetingsplaats)
+               .HasOne(o => o.Ontmoetingsplaats)
                .WithMany(a => a.Activiteiten)
                .HasForeignKey(o => o.Id_ontmoetingsplaats);
 
             modelBuilder.Entity<Relatie>()
                 .HasOne(r => r.Lid1)
-                .WithMany(l => l.Relaties1)
+                .WithMany(l => l.Relaties)
                 .HasForeignKey(r => r.Id_Lid1);
 
             modelBuilder.Entity<Relatie>()
                 .HasOne(r => r.Groep)
                 .WithMany(g => g.Relaties)
                 .HasForeignKey(r => r.Id_Groep);
-
-            modelBuilder.Entity<Relatie>()
-                .HasOne(r => r.Lid2)
-                .WithMany(l => l.Relaties2)
-                .HasForeignKey(r => r.Id_Lid2);
-
         }
 
         public DbSet<Lid> Leden { get; set; }

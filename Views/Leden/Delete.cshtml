@@ -1,4 +1,6 @@
 ﻿@using TegoareWeb.Models
+@using TegoareWeb.Data
+@using TegoareWeb.ViewModels
 
 @model Lid
 
@@ -59,25 +61,41 @@
             @Html.DisplayNameFor(model => model.Telefoon_vast)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Telefoon_vast)
+            @(Model.Telefoon_vast == null ? "<LEEG>": Html.DisplayFor(model => model.Telefoon_vast))
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Telefoon_GSM)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Telefoon_GSM)
+            @(Model.Telefoon_GSM == null ? "<LEEG>": Html.DisplayFor(model => model.Telefoon_GSM))
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Email)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Email)
+            @(Model.Email == null ? "<LEEG>": Html.DisplayFor(model => model.Email))
         </dd>
+        @{
+            var relaties = Model.Relaties.Where(r => r.Id_Lid1 == Model.Id || r.Id_Lid2 == Model.Id);
+        }
+        @if (relaties.Count() > 0)
+        {
+            <dt class="col-sm-2">
+                AANTAL RELATIES: @relaties.Count() (OPGEPAST: indien je dit lid verwijderd, worden ook onderstaande relaties verwijderd!)
+            </dt>
+            <dd class="col-sm-10">
+                <partial name="_ListRelaties" model="new LijstRelatieLid { LidId = Model.Id, Relaties = relaties }" />
+            </dd>
+        }
     </dl>
 
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <div class="form-group">
+            <button class="btn btn-block btn-knop btn-delete" type="submit">
+                <i class="fa fa-times-circle"></i> Verwijder lid
+            </button>
+        </div>
     </form>
+    <partial name="_GoTo" model="new KnopInfo()" />
 </div>
