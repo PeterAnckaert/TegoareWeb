@@ -1,4 +1,5 @@
 ﻿@using TegoareWeb.Models
+@using TegoareWeb.Data
 
 @model Activiteit
 
@@ -13,71 +14,75 @@
     <h4>Activiteit</h4>
     <hr />
     <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Naam)
+        <dt class="col-sm-3 text-right">
+            @Html.DisplayNameFor(model => model.Naam):
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-9">
             @Html.DisplayFor(model => model.Naam)
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Omschrijving)
+        <dt class="col-sm-3 text-right">
+            @Html.DisplayNameFor(model => model.Omschrijving):
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-9">
             @Html.DisplayFor(model => model.Omschrijving)
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Publicatiedatum)
+        <dt class="col-sm-3 text-right">
+            @Html.DisplayNameFor(model => model.Publicatiedatum):
         </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Publicatiedatum)
+        <dd class="col-sm-9">
+            @(Model.Publicatiedatum == null ? "<LEEG>": Html.DisplayFor(model => model.Publicatiedatum))
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Uiterste_inschrijfdatum)
+        <dt class="col-sm-3 text-right">
+            @Html.DisplayNameFor(model => model.Uiterste_inschrijfdatum):
         </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Uiterste_inschrijfdatum)
+        <dd class="col-sm-9">
+            @(Model.Uiterste_inschrijfdatum == null ? "<LEEG>": Html.DisplayFor(model => model.Uiterste_inschrijfdatum))
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Prijs)
+        <dt class="col-sm-3 text-right">
+            @Html.DisplayNameFor(model => model.Prijs):
         </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Prijs)
+        <dd class="col-sm-9">
+            @(Model.Prijs == null ? "<LEEG>": Html.DisplayFor(model => model.Prijs))
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Max_inschrijvingen)
+        <dt class="col-sm-3 text-right">
+            @Html.DisplayNameFor(model => model.Max_inschrijvingen):
         </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Max_inschrijvingen)
+        <dd class="col-sm-9">
+            @(Model.Max_inschrijvingen == null ? "<LEEG>": Html.DisplayFor(model => model.Max_inschrijvingen))
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Ontmoetingsplaats)
+        <dt class="col-sm-3 text-right">
+            @Html.DisplayNameFor(model => model.Ontmoetingsplaats):
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-9">
             @Html.DisplayFor(model => model.Ontmoetingsplaats.Plaatsnaam)
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Activiteitendatum)
+        <dt class="col-sm-3 text-right">
+            @Html.DisplayNameFor(model => model.Activiteitendatum):
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-9">
             @Html.DisplayFor(model => model.Activiteitendatum)
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Beginuur)
+        <dt class="col-sm-3 text-right">
+            @Html.DisplayNameFor(model => model.Beginuur):
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-9">
             @Html.DisplayFor(model => model.Beginuur)
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Einduur)
+        <dt class="col-sm-3 text-right">
+            @Html.DisplayNameFor(model => model.Einduur):
         </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Einduur)
+        <dd class="col-sm-9">
+            @(Model.Einduur == null ? "<LEEG>": Html.DisplayFor(model => model.Einduur))
         </dd>
     </dl>
 
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <div class="form-group">
+            <button class="btn btn-block btn-knop btn-delete" type="submit">
+                <i class="fa fa-times-circle"></i> Verwijder activiteit
+            </button>
+        </div>
     </form>
+    <partial name="_GoTo" model="new KnopInfo()" />
 </div>
