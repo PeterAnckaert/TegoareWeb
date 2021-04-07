@@ -1,0 +1,44 @@
+﻿@using TegoareWeb.Models
+@using TegoareWeb.Data
+@using TegoareWeb.ViewModels
+
+@model Lid
+
+@{ ViewData["Title"] = "Aanpassen login gegevens"; }
+
+<h1>Aanpassen van de login gegevens van @Model.VolledigeNaam</h1>
+
+<h4>Login gegevens</h4>
+<hr />
+<div class="row">
+    <div class="col-md-11">
+        <form asp-action="EditLoginDataPost">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="row vertikaal-midden">
+                <div class="col-lg-3 col-md-6 col-sm-12 font-weight-bold text-lg-right text-md-left pr-1">
+                    <label asp-for="Login_Naam" class="control-label">Login naam:</label>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-12 mb-2 pl-0">
+                    <input asp-for="Login_Naam"  class="form-control" />
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-12 font-weight-bold text-lg-right text-md-left pr-1">
+                    <label asp-for="Wachtwoord" class="control-label">@Html.DisplayNameFor(Model => Model.Wachtwoord):</label>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-12 mb-2 pl-0">
+                    <input asp-for="Wachtwoord" class="form-control" />
+                </div>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-block btn-knop btn-save" type="submit">
+                    <i class="fa fa-save"></i> Bewaar aanpassingen
+                </button>
+            </div>
+        </form>
+        <partial name="_GoTo" model="new KnopInfo()" />
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

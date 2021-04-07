@@ -143,6 +143,8 @@ namespace TegoareWeb.Controllers
             if (ModelState.IsValid)
             {
                 lid.Id = Guid.NewGuid();
+                lid.Login_Naam = CreateDefaultLoginNaam(lid);
+                lid.Wachtwoord = CreateDefaultLoginWachtwoord(lid);
                 _context.Add(lid);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -184,7 +186,7 @@ namespace TegoareWeb.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Achternaam,Voornaam,Geboortedatum,Straatnaam,Straatnummer,Postcode,Gemeente,Telefoon_vast,Telefoon_GSM,Email")] Lid lid)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Achternaam,Voornaam,Geboortedatum,Straatnaam,Straatnummer,Postcode,Gemeente,Telefoon_vast,Telefoon_GSM,Email,Login_Naam,Wachtwoord")] Lid lid)
         {
             if (id != lid.Id)
             {
@@ -286,9 +288,93 @@ namespace TegoareWeb.Controllers
             return RedirectToAction(nameof(Edit), new { id = LidId }) ;
         }
 
+        public async Task<IActionResult> EditLoginData(Guid? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var lid = await _context.Leden.FindAsync(id);
+
+            if (lid == null)
+            {
+                return NotFound();
+            }
+
+            return View(lid);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditLoginDataPost(Guid? id, String Login_Naam, String Wachtwoord)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var lid = await _context.Leden.FindAsync(id);
+
+            if (lid == null)
+            {
+                return NotFound();
+            }
+
+            lid.Login_Naam = Login_Naam;
+            lid.Wachtwoord = Wachtwoord;
+
+            try
+            {
+                _context.Update(lid);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!LidExists(lid.Id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return RedirectToAction(nameof(Edit), new { id = id });
+        }
+
         private bool LidExists(Guid id)
         {
             return _context.Leden.Any(e => e.Id == id);
+        }
+
+        private String CreateDefaultLoginNaam(Lid lid)
+        {
+            String voor, achter;
+
+            if (lid != null)
+            {
+                voor = lid.Voornaam.Length > 3 ? lid.Voornaam.ToLower().Substring(0, 3) : lid.Voornaam.ToLower();
+                achter = lid.Achternaam.Length > 5 ? lid.Achternaam.ToLower().Substring(0, 5) : lid.Achternaam.ToLower();
+                return voor + achter;
+            }
+            return null;
+        }
+
+        private String CreateDefaultLoginWachtwoord(Lid lid)
+        {
+            String dag, maand, jaar;
+
+            if (lid != null)
+            {
+                dag = lid.Geboortedatum.Day.ToString("00");
+                maand = lid.Geboortedatum.Month.ToString("00");
+                jaar = lid.Geboortedatum.Year.ToString("0000");
+
+                return dag + maand + jaar;
+            }
+            return null;
         }
     }
 }

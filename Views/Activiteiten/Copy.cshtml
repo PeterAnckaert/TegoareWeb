@@ -3,20 +3,20 @@
 
 @model Activiteit
 
-@{
-    ViewData["Title"] = "Copy";
-}
+@{ ViewData["Title"] = "Gegevens kopiëren van " + Model.Naam; }
 
-<h1>Copy</h1>
+<h1>Gegevens kopiëren naar een nieuwe activiteit</h1>
 
-<h4>Activiteit</h4>
+<h4>Gegevens van de nieuwe activiteit</h4>
+<h5>Vul de nieuwe activiteitendatum in</h5>
+
 <hr />
 
 <div class="row">
     <div class="col-md-11">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="row">
+            <div class="row vertikaal-midden">
                 <div class="col-lg-3 col-md-6 col-sm-12 font-weight-bold text-lg-right text-md-left pr-1">
                     <label asp-for="Naam" class="control-label">@Html.DisplayNameFor(Model => Model.Naam):</label>
                 </div>
@@ -38,7 +38,7 @@
                     <textarea asp-for="Omschrijving" class="form-control"></textarea>
                 </div>
             </div>
-            <div class="row">
+            <div class="row vertikaal-midden">
                 <div class="col-lg-3 col-md-6 col-sm-12 font-weight-bold text-lg-right text-md-left pr-1">
                     <label asp-for="Beginuur" class="control-label">@Html.DisplayNameFor(Model => Model.Beginuur):</label>
                 </div>
@@ -52,7 +52,7 @@
                     <input asp-for="Einduur" class="form-control" />
                 </div>
             </div>
-            <div class="row">
+            <div class="row vertikaal-midden">
                 <div class="col-lg-3 col-md-6 col-sm-12 font-weight-bold text-lg-right text-md-left pr-1">
                     <label asp-for="Id_ontmoetingsplaats" class="control-label">@Html.DisplayNameFor(Model => Model.Ontmoetingsplaats):</label>
                 </div>
@@ -60,7 +60,7 @@
                     <select asp-for="Id_ontmoetingsplaats" class="form-control" asp-items="ViewBag.Id_ontmoetingsplaats"></select>
                 </div>
             </div>
-            <div class="row">
+            <div class="row vertikaal-midden">
                 <div class="col-lg-3 col-md-6 col-sm-12 font-weight-bold text-lg-right text-md-left pr-1">
                     <label asp-for="Publicatiedatum" class="control-label">@Html.DisplayNameFor(Model => Model.Publicatiedatum):</label>
                 </div>
@@ -74,7 +74,7 @@
                     <input asp-for="Uiterste_inschrijfdatum" class="form-control" />
                 </div>
             </div>
-            <div class="row">
+            <div class="row vertikaal-midden">
                 <div class="col-lg-3 col-md-6 col-sm-12 font-weight-bold text-lg-right text-md-left pr-1">
                     <label asp-for="Prijs" class="control-label">@Html.DisplayNameFor(Model => Model.Prijs):</label>
                 </div>

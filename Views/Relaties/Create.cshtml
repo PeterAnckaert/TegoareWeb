@@ -3,14 +3,13 @@
 
 @model CreateRelatieViewModel
 
-@{
-    ViewData["Title"] = "Create";
-}
+@{ ViewData["Title"] = "Aanmaken relatie"; }
 
-<h1>Create</h1>
+<h1>Nieuwe relatie aanmaken</h1>
 
-<h4>Relatie</h4>
+<h4>Gegevens van de relatie</h4>
 <hr />
+
 <div class="row">
     <div class="col-12">
         <form asp-action="Create">
@@ -29,10 +28,9 @@
                 <div class="row">
                     @foreach (SelectListItem groep in Model.GroepenDubbeleRelatieList)
                     {
-                        <div>
-                            <input type="hidden" value="@groep.Text" id="@("DR-"+groep.Value)" />
-                        </div>
-                    }
+        <div>
+            <input type="hidden" value="@groep.Text" id="@("DR-"+groep.Value)" />
+        </div>}
                 </div>
             </div>
             <div class="form-group">
@@ -47,11 +45,10 @@
                 <div class="row">
                     @foreach (Lid lid in Model.AlleLeden)
                     {
-                        <div class="col-sm-3 checkbox">
-                            <input type="checkbox" name="ledenlijst" value="@lid.Id" id="@lid.Id" onclick="EnableDisableSubmit()" />
-                            <label for="@lid.Id">@lid.VolledigeNaam</label>
-                        </div>
-                    }
+        <div class="col-sm-3 checkbox">
+            <input type="checkbox" name="ledenlijst" value="@lid.Id" id="@lid.Id" onclick="EnableDisableSubmit()" />
+            <label for="@lid.Id">@lid.VolledigeNaam</label>
+        </div>}
                 </div>
             </div>
         </form>

@@ -5,19 +5,33 @@
 @model Lid
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Aanpassen van " + Model.VolledigeNaam;
 }
 
-<h1>Edit</h1>
+<h1>Gegevens aanpassen</h1>
 
-<h4>Lid</h4>
+<h4>Gegevens van het lid</h4>
 <hr />
 <div class="row">
     <div class="col-md-11">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
-            <div class="row">
+            <div class="row vertikaal-midden">
+                <div class="col-lg-3 col-md-6 col-sm-12 font-weight-bold text-lg-right text-md-left pr-1">
+                    <label asp-for="Login_Naam" class="control-label">Login naam:</label>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-12 mb-2 pl-0">
+                    <input disabled asp-for="Login_Naam" class="form-control" />
+                </div>
+                <div class="col-lg-6 col-md-12 mb-2 pl-0">
+                    <button class="btn btn-block btn-knop btn-save" asp-action="EditLoginData" asp-route-id="Id">
+                        <i class="fa fa-save"></i> Pas login gegevens aan
+                    </button>
+                </div>
+            </div>
+
+            <div class="row vertikaal-midden">
                 <div class="col-lg-3 col-md-6 col-sm-12 font-weight-bold text-lg-right text-md-left pr-1">
                     <label asp-for="Achternaam" class="control-label">@Html.DisplayNameFor(Model => Model.Achternaam):</label>
                 </div>
@@ -31,7 +45,7 @@
                     <input asp-for="Voornaam" class="form-control" />
                 </div>
             </div>
-            <div class="row">
+            <div class="row vertikaal-midden">
                 <div class="col-lg-3 col-md-6 col-sm-12 font-weight-bold text-lg-right text-md-left pr-1">
                     <label asp-for="Straatnaam" class="control-label">@Html.DisplayNameFor(Model => Model.Straatnaam):</label>
                 </div>
@@ -45,7 +59,7 @@
                     <input asp-for="Straatnummer" class="form-control" />
                 </div>
             </div>
-            <div class="row">
+            <div class="row vertikaal-midden">
                 <div class="col-lg-3 col-md-6 col-sm-12 font-weight-bold text-lg-right text-md-left pr-1">
                     <label asp-for="Postcode" class="control-label">@Html.DisplayNameFor(Model => Model.Postcode):</label>
                 </div>
@@ -59,7 +73,7 @@
                     <input asp-for="Gemeente" class="form-control" />
                 </div>
             </div>
-            <div class="row">
+            <div class="row vertikaal-midden">
                 <div class="col-lg-3 col-md-6 col-sm-12 font-weight-bold text-lg-right text-md-left pr-1">
                     <label asp-for="Telefoon_vast" class="control-label">@Html.DisplayNameFor(Model => Model.Telefoon_vast):</label>
                 </div>
@@ -73,7 +87,7 @@
                     <input asp-for="Telefoon_GSM" class="form-control" />
                 </div>
             </div>
-            <div class="row">
+            <div class="row vertikaal-midden">
                 <div class="col-lg-3 col-md-6 col-sm-12 font-weight-bold text-lg-right text-md-left pr-1">
                     <label asp-for="Email" class="control-label">@Html.DisplayNameFor(Model => Model.Email):</label>
                 </div>
@@ -119,19 +133,16 @@
                     <span asp-validation-for="Geboortedatum" class="text-danger"></span>
                 </div>
             </div>
-            @{
-                var relaties = Model.Relaties.Where(r => r.Id_Lid1 == Model.Id || r.Id_Lid2 == Model.Id);
-            }
+            @{ var relaties = Model.Relaties.Where(r => r.Id_Lid1 == Model.Id || r.Id_Lid2 == Model.Id); }
             @if (relaties.Count() > 0)
             {
-                <hr />
-                <div class="font-weight-bold mb-3">
-                    AANTAL RELATIES: @relaties.Count() (klik op het kruisje naast de relatie om die te verwijderen)
-                </div>
-                <div>
-                    <partial name="_ListRelaties" model="new LijstRelatieLid { LidId = Model.Id, Relaties = relaties, Knop = true }" />
-                </div>
-            }
+        <hr />
+                        <div class="font-weight-bold mb-3">
+                            AANTAL RELATIES: @relaties.Count() (klik op het kruisje naast de relatie om die te verwijderen)
+                        </div>
+                                        <div>
+                                            <partial name="_ListRelaties" model="new LijstRelatieLid { LidId = Model.Id, Relaties = relaties, Knop = true }" />
+                                        </div>}
             <div class="form-group">
                 <button class="btn btn-block btn-knop btn-save" type="submit">
                     <i class="fa fa-save"></i> Bewaar aanpassingen

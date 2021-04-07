@@ -49,6 +49,14 @@ namespace TegoareWeb.Models
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
 
+        [MaxLength(30)]
+        public string Login_Naam { get; set; }
+
+        [MaxLength(1024)]
+        public string Wachtwoord { get; set; }
+
+
+
         public IList<Relatie> Relaties { get; set; }
 
         [NotMapped]

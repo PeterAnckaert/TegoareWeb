@@ -4,18 +4,18 @@
 @model Lid
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Aanmaken lid";
 }
 
-<h1>Create</h1>
+<h1>Nieuw lid aanmaken</h1>
 
-<h4>Lid</h4>
+<h4>Gegevens van het lid</h4>
 <hr />
 
 <div class="col-md-11">
     <form asp-action="Create">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <div class="row">
+        <div class="row vertikaal-midden">
             <div class="col-lg-3 col-md-6 col-sm-12 font-weight-bold text-lg-right text-md-left pr-1">
                 <label asp-for="Achternaam" class="control-label">@Html.DisplayNameFor(Model => Model.Achternaam):</label>
             </div>
@@ -29,7 +29,7 @@
                 <input asp-for="Voornaam" class="form-control" />
             </div>
         </div>
-        <div class="row">
+        <div class="row vertikaal-midden">
             <div class="col-lg-3 col-md-6 col-sm-12 font-weight-bold text-lg-right text-md-left pr-1">
                 <label asp-for="Straatnaam" class="control-label">@Html.DisplayNameFor(Model => Model.Straatnaam):</label>
             </div>
@@ -43,7 +43,7 @@
                 <input asp-for="Straatnummer" class="form-control" />
             </div>
         </div>
-        <div class="row">
+        <div class="row vertikaal-midden">
             <div class="col-lg-3 col-md-6 col-sm-12 font-weight-bold text-lg-right text-md-left pr-1">
                 <label asp-for="Postcode" class="control-label">@Html.DisplayNameFor(Model => Model.Postcode):</label>
             </div>
@@ -57,7 +57,7 @@
                 <input asp-for="Gemeente" class="form-control" />
             </div>
         </div>
-        <div class="row">
+        <div class="row vertikaal-midden">
             <div class="col-lg-3 col-md-6 col-sm-12 font-weight-bold text-lg-right text-md-left pr-1">
                 <label asp-for="Telefoon_vast" class="control-label">@Html.DisplayNameFor(Model => Model.Telefoon_vast):</label>
             </div>
@@ -71,7 +71,7 @@
                 <input asp-for="Telefoon_GSM" class="form-control" />
             </div>
         </div>
-        <div class="row">
+        <div class="row vertikaal-midden">
             <div class="col-lg-3 col-md-6 col-sm-12 font-weight-bold text-lg-right text-md-left pr-1">
                 <label asp-for="Email" class="control-label">@Html.DisplayNameFor(Model => Model.Email):</label>
             </div>
