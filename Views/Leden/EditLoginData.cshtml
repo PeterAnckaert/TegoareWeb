@@ -20,13 +20,27 @@
                     <label asp-for="Login_Naam" class="control-label">Login naam:</label>
                 </div>
                 <div class="col-lg-3 col-md-6 col-sm-12 mb-2 pl-0">
-                    <input asp-for="Login_Naam"  class="form-control" />
+                    <input asp-for="Login_Naam" class="form-control" />
                 </div>
                 <div class="col-lg-3 col-md-6 col-sm-12 font-weight-bold text-lg-right text-md-left pr-1">
                     <label asp-for="Wachtwoord" class="control-label">@Html.DisplayNameFor(Model => Model.Wachtwoord):</label>
                 </div>
                 <div class="col-lg-3 col-md-6 col-sm-12 mb-2 pl-0">
                     <input asp-for="Wachtwoord" class="form-control" />
+                </div>
+            </div>
+            <div class="font-weight-bold">
+                <div class="row">
+                    <div class="col-lg-6"></div>
+                    <div class="alert alert-warning col-lg-6 col-md-12 text-center" >
+                        Vul enkel het wachtwoord in, als je het wilt aanpassen!
+                    </div>
+                </div>
+                <div>
+                    <span asp-validation-for="Login_Naam" class="text-danger"></span>
+                </div>
+                <div>
+                    <span asp-validation-for="Wachtwoord" class="text-danger"></span>
                 </div>
             </div>
             <div class="form-group">

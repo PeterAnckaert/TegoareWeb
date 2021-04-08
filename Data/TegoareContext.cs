@@ -47,5 +47,6 @@ namespace TegoareWeb.Data
         public DbSet<Ontmoetingsplaats> Ontmoetingsplaatsen { get; set; }
         public DbSet<Activiteit> Activiteiten { get; set; }
         public DbSet<Relatie> Relaties { get; set; }
+        public DbSet<TegoareWeb.Models.Inschrijving> Inschrijving { get; set; }
     }
 }

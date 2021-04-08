@@ -49,17 +49,22 @@ namespace TegoareWeb.Models
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
 
+        [MinLength(8, ErrorMessage = "De loginnaam moet uit minstens {1} tekens bestaan")]
         [MaxLength(30)]
         public string Login_Naam { get; set; }
 
+        [MinLength(6, ErrorMessage = "Het wachtwoord moet uit minstens {1} tekens bestaan")]
         [MaxLength(1024)]
+        [DataType(DataType.Password)]
         public string Wachtwoord { get; set; }
-
 
 
         public IList<Relatie> Relaties { get; set; }
 
         [NotMapped]
         public string VolledigeNaam => $"{Voornaam} {Achternaam}";
+
+        [NotMapped]
+        public string ConfirmWachtwoord { get; set; }
     }
 }

@@ -144,7 +144,7 @@ namespace TegoareWeb.Controllers
             {
                 lid.Id = Guid.NewGuid();
                 lid.Login_Naam = CreateDefaultLoginNaam(lid);
-                lid.Wachtwoord = CreateDefaultLoginWachtwoord(lid);
+                lid.Wachtwoord = Crypto.Hash(CreateDefaultLoginWachtwoord(lid));
                 _context.Add(lid);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -322,7 +322,8 @@ namespace TegoareWeb.Controllers
             }
 
             lid.Login_Naam = Login_Naam;
-            lid.Wachtwoord = Wachtwoord;
+            if(Wachtwoord != null)
+                lid.Wachtwoord = Crypto.Hash(Wachtwoord);
 
             try
             {
@@ -349,7 +350,7 @@ namespace TegoareWeb.Controllers
             return _context.Leden.Any(e => e.Id == id);
         }
 
-        private String CreateDefaultLoginNaam(Lid lid)
+        private static String CreateDefaultLoginNaam(Lid lid)
         {
             String voor, achter;
 
@@ -362,7 +363,7 @@ namespace TegoareWeb.Controllers
             return null;
         }
 
-        private String CreateDefaultLoginWachtwoord(Lid lid)
+        private static String CreateDefaultLoginWachtwoord(Lid lid)
         {
             String dag, maand, jaar;
 
@@ -376,5 +377,21 @@ namespace TegoareWeb.Controllers
             }
             return null;
         }
+
+        public ActionResult Edit2()
+        {
+            var leden = from l in _context.Leden
+                        select l;
+            foreach(Lid lid in leden)
+            {
+                lid.Wachtwoord = Crypto.Hash(CreateDefaultLoginWachtwoord(lid));
+                _context.Update(lid);
+            }
+            _context.SaveChanges();
+
+            return RedirectToAction(nameof(Index));
+        }
+
+
     }
 }
