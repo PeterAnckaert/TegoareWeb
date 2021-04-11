@@ -26,6 +26,8 @@ namespace TegoareWeb.Data
 
             modelBuilder.Entity<Relatie>().ToTable("Relatie");
 
+            modelBuilder.Entity<Inschrijving>().ToTable("Inschrijving");
+
             modelBuilder.Entity<Activiteit>()
                .HasOne(o => o.Ontmoetingsplaats)
                .WithMany(a => a.Activiteiten)
@@ -40,6 +42,7 @@ namespace TegoareWeb.Data
                 .HasOne(r => r.Groep)
                 .WithMany(g => g.Relaties)
                 .HasForeignKey(r => r.Id_Groep);
+
         }
 
         public DbSet<Lid> Leden { get; set; }
@@ -47,6 +50,6 @@ namespace TegoareWeb.Data
         public DbSet<Ontmoetingsplaats> Ontmoetingsplaatsen { get; set; }
         public DbSet<Activiteit> Activiteiten { get; set; }
         public DbSet<Relatie> Relaties { get; set; }
-        public DbSet<TegoareWeb.Models.Inschrijving> Inschrijving { get; set; }
+        public DbSet<Inschrijving> Inschrijvingen { get; set; }
     }
 }

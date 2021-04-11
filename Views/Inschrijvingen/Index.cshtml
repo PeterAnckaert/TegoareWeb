@@ -1,41 +1,81 @@
-﻿@model IEnumerable<TegoareWeb.Models.Inschrijving>
+﻿@using TegoareWeb.Models
+
+@model IEnumerable<Activiteit>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Alle inschrijvingen";
 }
 
-<h1>Index</h1>
+<h1>Inschrijvingen</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+@{
+    var soort = "Eerste inschrijving";
+    var isVoorbijeActiviteiten = false;
+}
+
+<partial name="_SearchCreate" model="soort" />
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Lid)
+                @Html.DisplayNameFor(model => model.Activiteitendatum)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Activiteit)
+                @Html.DisplayNameFor(model => model.Naam)
             </th>
-            <th></th>
+            <th>
+                Aantal inschrijvingen
+            </th>
+            <th class="text-center">Gegevens aanpassen<br />Ingeschreven leden bekijken</th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Lid.Achternaam)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Activiteit.Naam)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            <td colspan="3" class="tekst-groter text-center font-weight-bold alert-info">
+                KOMENDE ACTIVITEITEN
             </td>
         </tr>
-}
+
+        @foreach (var item in Model)
+        {
+            if (!isVoorbijeActiviteiten && item.Activiteitendatum < DateTime.Now)
+            {
+                isVoorbijeActiviteiten = true;
+
+                <tr>
+                    <td colspan="3" class="tekst-groter text-center font-weight-bold alert-warning">
+                        VOORBIJE ACTIVITEITEN
+                    </td>
+                </tr>
+            }
+    <tr>
+        <td class="alert @(isVoorbijeActiviteiten ? "alert-warning":"alert-info")">
+            @Html.DisplayFor(modelItem => item.Activiteitendatum)
+        </td>
+        <td class="alert @(isVoorbijeActiviteiten ? "alert-warning":"alert-info")">
+            @Html.DisplayFor(modelItem => item.Naam)
+        </td>
+        <td class="alert @(isVoorbijeActiviteiten ? "alert-warning":"alert-info")">
+            @Html.DisplayFor(modelItem => item.AantalInschrijvingen)
+        </td>
+        @if (!isVoorbijeActiviteiten)
+        {
+            <td class="text-center tekst-groter">
+                <a asp-action="Edit" asp-route-id="@item.Id">
+                    <i class="btn btn-edit fa fa-wrench"></i>
+                </a>
+                <a asp-action="Delete" asp-route-id="@item.Id">
+                    <i class="btn btn-delete fa fa-times-circle"></i>
+                </a>
+            </td>
+         }
+        @*
+    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+    *@
+    </tr>
+        }
     </tbody>
 </table>

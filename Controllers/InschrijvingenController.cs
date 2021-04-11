@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TegoareWeb.Data;
 using TegoareWeb.Models;
+using TegoareWeb.ViewModels;
 
 namespace TegoareWeb.Controllers
 {
@@ -20,10 +21,26 @@ namespace TegoareWeb.Controllers
         }
 
         // GET: Inschrijvingen
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var tegoareContext = _context.Inschrijving.Include(i => i.Activiteit).Include(i => i.Lid);
-            return View(await tegoareContext.ToListAsync());
+            var tegoareContext = _context.Inschrijvingen
+                .AsNoTracking()
+                .GroupBy(i => i.Id_Activiteit)
+                .Select(g => new { Id_Activiteit = g.Key, Count = g.Count() }).ToList();
+
+            List<Activiteit> lijstActiviteiten = new List<Activiteit>();
+
+            foreach (var item in tegoareContext)
+            {
+                var activiteit = _context.Activiteiten.FirstOrDefault(a => a.Id == item.Id_Activiteit);
+                activiteit.AantalInschrijvingen = item.Count;
+                lijstActiviteiten.Add(activiteit);
+            }
+
+            lijstActiviteiten = lijstActiviteiten.OrderByDescending(a => a.Activiteitendatum)
+                .ThenBy(a => a.Naam).ToList();
+
+            return View(lijstActiviteiten);
         }
 
         // GET: Inschrijvingen/Details/5
@@ -34,7 +51,7 @@ namespace TegoareWeb.Controllers
                 return NotFound();
             }
 
-            var inschrijving = await _context.Inschrijving
+            var inschrijving = await _context.Inschrijvingen
                 .Include(i => i.Activiteit)
                 .Include(i => i.Lid)
                 .FirstOrDefaultAsync(m => m.Id == id);
@@ -49,8 +66,12 @@ namespace TegoareWeb.Controllers
         // GET: Inschrijvingen/Create
         public IActionResult Create()
         {
-            ViewData["Id_Activiteit"] = new SelectList(_context.Activiteiten, "Id", "Naam");
-            ViewData["Id_Lid"] = new SelectList(_context.Leden, "Id", "Achternaam");
+            ViewData["Id_Activiteit"] = new SelectList(_context.Activiteiten
+                .OrderByDescending(a => a.Activiteitendatum).ThenBy(a => a.Naam),
+                "Id", "ActiviteitendatumEnNaam");
+            ViewData["Id_Lid"] = new SelectList(_context.Leden
+                .OrderBy(l => l.Achternaam).ThenBy(l => l.Voornaam),
+                "Id", "VolledigeNaam");
             return View();
         }
 
@@ -68,8 +89,12 @@ namespace TegoareWeb.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["Id_Activiteit"] = new SelectList(_context.Activiteiten, "Id", "Naam", inschrijving.Id_Activiteit);
-            ViewData["Id_Lid"] = new SelectList(_context.Leden, "Id", "Achternaam", inschrijving.Id_Lid);
+            ViewData["Id_Activiteit"] = new SelectList(_context.Activiteiten
+                .OrderByDescending(a => a.Activiteitendatum).ThenBy(a=>a.Naam),
+                "Id", "Naam", inschrijving.Id_Activiteit);
+            ViewData["Id_Lid"] = new SelectList(_context.Leden
+                .OrderBy(l => l.Achternaam).ThenBy(l => l.Voornaam),
+                "Id", "VolledigeNaam", inschrijving.Id_Lid);
             return View(inschrijving);
         }
 
@@ -81,14 +106,50 @@ namespace TegoareWeb.Controllers
                 return NotFound();
             }
 
-            var inschrijving = await _context.Inschrijving.FindAsync(id);
-            if (inschrijving == null)
+            var inschrijvingenVoorActiviteit = await _context.Inschrijvingen
+                .AsNoTracking()
+                .Where(i => i.Id_Activiteit == id)
+                .Include(i => i.Lid)
+                .ToListAsync();
+
+            if (inschrijvingenVoorActiviteit == null)
             {
                 return NotFound();
             }
-            ViewData["Id_Activiteit"] = new SelectList(_context.Activiteiten, "Id", "Naam", inschrijving.Id_Activiteit);
-            ViewData["Id_Lid"] = new SelectList(_context.Leden, "Id", "Achternaam", inschrijving.Id_Lid);
-            return View(inschrijving);
+
+            var activiteit = _context.Activiteiten
+                .AsNoTracking()
+                .Where(a => a.Id == id)
+                .FirstOrDefault();
+
+            if (activiteit == null)
+            {
+                return NotFound();
+            }
+
+            var ingeschrevenLeden = new List<Lid>();
+
+            foreach (var inschrijving in inschrijvingenVoorActiviteit)
+            {
+                ingeschrevenLeden.Add(inschrijving.Lid);
+            }
+
+            activiteit.AantalInschrijvingen = inschrijvingenVoorActiviteit.Count;
+
+            var leden = await _context.Leden
+                .OrderBy(l => l.Achternaam)
+                .ThenBy(l => l.Voornaam)
+                .ToListAsync();
+
+            var model = new InschrijvingViewModel()
+            {
+                AlleLeden = leden,
+                IngeschrevenLeden = ingeschrevenLeden,
+                Activiteit = activiteit,
+                Id_Activiteit = activiteit.Id
+            };
+
+            return View(model);
         }
 
         // POST: Inschrijvingen/Edit/5
@@ -96,9 +157,9 @@ namespace TegoareWeb.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Id_Lid,Id_Activiteit")] Inschrijving inschrijving)
+        public async Task<IActionResult> Edit(Guid id,Guid id_Activiteit, List<Guid> ledenLijst)
         {
-            if (id != inschrijving.Id)
+            if (id != id_Activiteit)
             {
                 return NotFound();
             }
@@ -107,45 +168,80 @@ namespace TegoareWeb.Controllers
             {
                 try
                 {
-                    _context.Update(inschrijving);
+                    var inschrijvingenVoorActiviteit = await _context.Inschrijvingen
+                        .Where(i => i.Id_Activiteit == id)
+                        .ToListAsync();
+
+                    _context.RemoveRange(inschrijvingenVoorActiviteit);
+
+                    foreach(Guid id_lid in ledenLijst)
+                    {
+                        Inschrijving inschrijving = new Inschrijving
+                        {
+                            Id = new Guid(),
+                            Id_Activiteit = id,
+                            Id_Lid = id_lid
+                        };
+                        _context.Add(inschrijving);
+                    }
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!InschrijvingExists(inschrijving.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    throw;
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["Id_Activiteit"] = new SelectList(_context.Activiteiten, "Id", "Naam", inschrijving.Id_Activiteit);
-            ViewData["Id_Lid"] = new SelectList(_context.Leden, "Id", "Achternaam", inschrijving.Id_Lid);
-            return View(inschrijving);
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Inschrijvingen/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var inschrijving = await _context.Inschrijving
-                .Include(i => i.Activiteit)
+            var inschrijvingenVoorActiviteit = await _context.Inschrijvingen
+                .AsNoTracking()
+                .Where(i => i.Id_Activiteit == id)
                 .Include(i => i.Lid)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (inschrijving == null)
+                .ToListAsync();
+
+            if (inschrijvingenVoorActiviteit == null)
             {
                 return NotFound();
             }
 
-            return View(inschrijving);
+            var activiteit = _context.Activiteiten
+                .AsNoTracking()
+                .Where(a => a.Id == id)
+                .FirstOrDefault();
+
+            if (activiteit == null)
+            {
+                return NotFound();
+            }
+
+            var ingeschrevenLeden = new List<Lid>();
+
+            foreach (var inschrijving in inschrijvingenVoorActiviteit)
+            {
+                ingeschrevenLeden.Add(inschrijving.Lid);
+            }
+
+            activiteit.AantalInschrijvingen = inschrijvingenVoorActiviteit.Count;
+
+            var leden = await _context.Leden
+                .OrderBy(l => l.Achternaam)
+                .ThenBy(l => l.Voornaam)
+                .ToListAsync();
+
+            var model = new InschrijvingViewModel()
+            {
+                AlleLeden = leden,
+                IngeschrevenLeden = ingeschrevenLeden,
+                Activiteit = activiteit,
+                Id_Activiteit = activiteit.Id
+            };
+
+            return View(model);
         }
 
         // POST: Inschrijvingen/Delete/5
@@ -153,15 +249,18 @@ namespace TegoareWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var inschrijving = await _context.Inschrijving.FindAsync(id);
-            _context.Inschrijving.Remove(inschrijving);
+            var inschrijvingenVoorActiviteit = await _context.Inschrijvingen
+                .Where(i => i.Id_Activiteit == id)
+                .ToListAsync();
+
+            _context.RemoveRange(inschrijvingenVoorActiviteit);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool InschrijvingExists(Guid id)
         {
-            return _context.Inschrijving.Any(e => e.Id == id);
+            return _context.Inschrijvingen.Any(e => e.Id == id);
         }
     }
 }

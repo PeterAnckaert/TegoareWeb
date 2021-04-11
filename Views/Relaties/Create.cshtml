@@ -45,10 +45,11 @@
                 <div class="row">
                     @foreach (Lid lid in Model.AlleLeden)
                     {
-        <div class="col-sm-3 checkbox">
-            <input type="checkbox" name="ledenlijst" value="@lid.Id" id="@lid.Id" onclick="EnableDisableSubmit()" />
-            <label for="@lid.Id">@lid.VolledigeNaam</label>
-        </div>}
+                        <div class="col-sm-3 checkbox">
+                            <input type="checkbox" name="ledenlijst" value="@lid.Id" id="@lid.Id" onclick="EnableDisableSubmit()" />
+                            <label for="@lid.Id">@lid.VolledigeNaam</label>
+                        </div>
+                    }
                 </div>
             </div>
         </form>

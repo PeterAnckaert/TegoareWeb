@@ -15,7 +15,7 @@ namespace TegoareWeb.Controllers
     public class RelatiesController : Controller
     {
         private readonly TegoareContext _context;
-        private static RelatieListViewModel _listModel = new RelatieListViewModel();
+        private static readonly RelatieListViewModel _listModel = new RelatieListViewModel();
 
         public RelatiesController(TegoareContext context)
         {

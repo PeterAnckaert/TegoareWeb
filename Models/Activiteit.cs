@@ -56,5 +56,11 @@ namespace TegoareWeb.Models
         [DisplayFormat(DataFormatString = "{0:hh\\:mm}")]
         [DataType(DataType.Time)]
         public TimeSpan? Einduur { get; set; }
+
+        [NotMapped]
+        public int AantalInschrijvingen;
+
+        [NotMapped]
+        public string ActiviteitendatumEnNaam => $"{Activiteitendatum.ToShortDateString()} -- {Naam}";
     }
 }

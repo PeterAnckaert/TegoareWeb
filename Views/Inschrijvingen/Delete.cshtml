@@ -1,33 +1,55 @@
-﻿@model TegoareWeb.Models.Inschrijving
+﻿@using TegoareWeb.ViewModels
+@using TegoareWeb.Data
 
-@{
-    ViewData["Title"] = "Delete";
-}
+@model InschrijvingViewModel
 
-<h1>Delete</h1>
+@{ ViewData["Title"] = "Verwijderen van inschrijvingen voor " + Model.Activiteit.ActiviteitendatumEnNaam; }
 
-<h3>Are you sure you want to delete this?</h3>
+<h1>Verwijderen</h1>
+
+<h3>Ben je zeker dat je deze inschrijvingen wilt verwijderen ?</h3>
+<h4>Dit kan niet ongedaan gemaakt worden !</h4>
+<hr />
+
 <div>
-    <h4>Inschrijving</h4>
-    <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Lid)
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Activiteit.Naam):
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Lid.Achternaam)
-        </dd class>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Activiteit)
-        </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-9">
             @Html.DisplayFor(model => model.Activiteit.Naam)
-        </dd class>
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Activiteit.Activiteitendatum):
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Activiteit.Activiteitendatum)
+        </dd>
+        <dt class="col-sm-3">
+            Aantal inschrijvingen:
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Activiteit.AantalInschrijvingen)
+        </dd>
     </dl>
-    
+</div>
+<hr />
+<h5>Zijn ingeschreven:</h5>
+@{var ledenlist = new List<String>(); }
+@foreach(var lid in Model.IngeschrevenLeden)
+{
+    ledenlist.Add(lid.VolledigeNaam);
+}
+<partial name="_ListLeden" model="ledenlist" />
+<hr />
+<div>
     <form asp-action="Delete">
-        <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <input type="hidden" asp-for="Id_Activiteit" />
+        <div class="form-group">
+            <button class="btn btn-block btn-knop btn-delete" type="submit">
+                <i class="fa fa-times-circle"></i> Verwijder alle inschrijvingen
+            </button>
+        </div>
     </form>
+    <partial name="_GoTo" model="new KnopInfo()" />
 </div>
