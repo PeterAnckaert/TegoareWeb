@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 using TegoareWeb.Data;
 using TegoareWeb.Models;
 using TegoareWeb.ViewModels;
@@ -106,25 +104,6 @@ namespace TegoareWeb.Controllers
             }
 
             return View(await PaginatedList<Activiteit>.CreateAsync(activiteiten, pageNumber ?? 1, pageSize ?? 10));
-        }
-
-        // GET: Activiteiten/Details/5
-        public async Task<IActionResult> Details(Guid? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var activiteit = await _context.Activiteiten
-                .Include(a => a.Ontmoetingsplaats)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (activiteit == null)
-            {
-                return NotFound();
-            }
-
-            return View(activiteit);
         }
 
         // GET: Activiteiten/Create

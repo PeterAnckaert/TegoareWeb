@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using TegoareWeb.Data;
 using TegoareWeb.Models;
 using TegoareWeb.ViewModels;
@@ -107,24 +105,6 @@ namespace TegoareWeb.Controllers
             }
 
             return View(await PaginatedList<Lid>.CreateAsync(leden, pageNumber ?? 1, pageSize ?? 10));
-        }
-
-        // GET: Leden/Details/5
-        public async Task<IActionResult> Details(Guid? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var lid = await _context.Leden
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (lid == null)
-            {
-                return NotFound();
-            }
-
-            return View(lid);
         }
 
         // GET: Leden/Create
@@ -383,21 +363,5 @@ namespace TegoareWeb.Controllers
             }
             return null;
         }
-
-        public ActionResult Edit2()
-        {
-            var leden = from l in _context.Leden
-                        select l;
-            foreach(Lid lid in leden)
-            {
-                lid.Wachtwoord = Crypto.Hash(CreateDefaultLoginWachtwoord(lid));
-                _context.Update(lid);
-            }
-            _context.SaveChanges();
-
-            return RedirectToAction(nameof(Index));
-        }
-
-
     }
 }

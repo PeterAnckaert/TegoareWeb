@@ -1,5 +1,3 @@
-using System;
-
 namespace TegoareWeb.Models
 {
     public class ErrorViewModel

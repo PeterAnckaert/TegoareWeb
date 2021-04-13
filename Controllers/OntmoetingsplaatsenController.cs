@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using TegoareWeb.Data;
 using TegoareWeb.Models;
 
@@ -38,24 +36,6 @@ namespace TegoareWeb.Controllers
                 .OrderBy(o => o.Plaatsnaam).ToListAsync();
 
             return View(ontmoetingsplaatsen);
-        }
-
-        // GET: Ontmoetingsplaatsen/Details/5
-        public async Task<IActionResult> Details(Guid? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var ontmoetingsplaats = await _context.Ontmoetingsplaatsen
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (ontmoetingsplaats == null)
-            {
-                return NotFound();
-            }
-
-            return View(ontmoetingsplaats);
         }
 
         // GET: Ontmoetingsplaatsen/Create
@@ -131,36 +111,7 @@ namespace TegoareWeb.Controllers
             }
             return View(ontmoetingsplaats);
         }
-/*
-        // GET: Ontmoetingsplaatsen/Delete/5
-        public async Task<IActionResult> Delete(Guid? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
 
-            var ontmoetingsplaats = await _context.Ontmoetingsplaatsen
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (ontmoetingsplaats == null)
-            {
-                return NotFound();
-            }
-
-            return View(ontmoetingsplaats);
-        }
-
-        // POST: Ontmoetingsplaatsen/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(Guid id)
-        {
-            var ontmoetingsplaats = await _context.Ontmoetingsplaatsen.FindAsync(id);
-            _context.Ontmoetingsplaatsen.Remove(ontmoetingsplaats);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-*/
         private bool OntmoetingsplaatsExists(Guid id)
         {
             return _context.Ontmoetingsplaatsen.Any(e => e.Id == id);

@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using TegoareWeb.Data;
 using TegoareWeb.Models;
 
@@ -37,24 +35,6 @@ namespace TegoareWeb.Controllers
                 .OrderBy(g => g.Rol).ToListAsync();
 
             return View(groepen);
-        }
-
-        // GET: Groepen/Details/5
-        public async Task<IActionResult> Details(Guid? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var groep = await _context.Groepen
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (groep == null)
-            {
-                return NotFound();
-            }
-
-            return View(groep);
         }
 
         // GET: Groepen/Create
@@ -130,36 +110,7 @@ namespace TegoareWeb.Controllers
             }
             return View(groep);
         }
-/*
-        // GET: Groepen/Delete/5
-        public async Task<IActionResult> Delete(Guid? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
 
-            var groep = await _context.Groepen
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (groep == null)
-            {
-                return NotFound();
-            }
-
-            return View(groep);
-        }
-
-        // POST: Groepen/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(Guid id)
-        {
-            var groep = await _context.Groepen.FindAsync(id);
-            _context.Groepen.Remove(groep);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-*/
         private bool GroepExists(Guid id)
         {
             return _context.Groepen.Any(e => e.Id == id);
