@@ -51,16 +51,51 @@ namespace TegoareWeb.Controllers
                 return NotFound();
             }
 
-            var inschrijving = await _context.Inschrijvingen
-                .Include(i => i.Activiteit)
+            var inschrijvingenVoorActiviteit = await _context.Inschrijvingen
+                .AsNoTracking()
+                .Where(i => i.Id_Activiteit == id)
                 .Include(i => i.Lid)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (inschrijving == null)
+                .ToListAsync();
+
+            if (inschrijvingenVoorActiviteit == null)
             {
                 return NotFound();
             }
 
-            return View(inschrijving);
+            var activiteit = _context.Activiteiten
+                .AsNoTracking()
+                .Where(a => a.Id == id)
+                .Include(a => a.Ontmoetingsplaats)
+                .FirstOrDefault();
+
+            if (activiteit == null)
+            {
+                return NotFound();
+            }
+
+            var ingeschrevenLeden = new List<Lid>();
+
+            foreach (var inschrijving in inschrijvingenVoorActiviteit)
+            {
+                ingeschrevenLeden.Add(inschrijving.Lid);
+            }
+
+            activiteit.AantalInschrijvingen = inschrijvingenVoorActiviteit.Count;
+
+            var leden = await _context.Leden
+                .OrderBy(l => l.Achternaam)
+                .ThenBy(l => l.Voornaam)
+                .ToListAsync();
+
+            var model = new InschrijvingViewModel()
+            {
+                AlleLeden = leden,
+                IngeschrevenLeden = ingeschrevenLeden,
+                Activiteit = activiteit,
+                Id_Activiteit = activiteit.Id
+            };
+
+            return View(model);
         }
 
         // GET: Inschrijvingen/Create

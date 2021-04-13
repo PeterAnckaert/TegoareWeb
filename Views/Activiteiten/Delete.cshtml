@@ -75,7 +75,13 @@
             @(Model.Max_inschrijvingen == null ? "<LEEG>": Html.DisplayFor(model => model.Max_inschrijvingen))
         </dd>
     </dl>
-
+</div>
+<hr />
+<h3>
+    Aantal inschrijvingen die verwijderd zullen worden: @Model.AantalInschrijvingen
+</h3>
+<hr />
+<div>
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
         <div class="form-group">

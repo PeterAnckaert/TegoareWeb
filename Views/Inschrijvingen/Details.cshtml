@@ -1,30 +1,98 @@
-﻿@model TegoareWeb.Models.Inschrijving
+﻿@using TegoareWeb.ViewModels
+@using TegoareWeb.Data
 
-@{
-    ViewData["Title"] = "Details";
-}
+@model InschrijvingViewModel
 
-<h1>Details</h1>
+@{ ViewData["Title"] = "Details van inschrijving"; }
+
+<h1>Inschrijving</h1>
+<hr />
 
 <div>
-    <h4>Inschrijving</h4>
-    <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Lid)
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Activiteit.Naam):
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Lid.Achternaam)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Activiteit)
-        </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-9">
             @Html.DisplayFor(model => model.Activiteit.Naam)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Activiteit.Activiteitendatum):
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Activiteit.Activiteitendatum)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Activiteit.Beginuur):
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Activiteit.Beginuur)
+        </dd>
+        @if (Model.Activiteit.Einduur != null)
+        {
+<dt class="col-sm-3">
+    @Html.DisplayNameFor(model => model.Activiteit.Einduur):
+</dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.Activiteit.Einduur)
+                </dd>
+}
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Activiteit.Ontmoetingsplaats):
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Activiteit.Ontmoetingsplaats.Plaatsnaam)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Activiteit.Prijs):
+        </dt>
+        <dd class="col-sm-9">
+            @(Model.Activiteit.Prijs != null ? @Html.DisplayFor(model => model.Activiteit.Prijs):"GRATIS")
+        </dd>
+        @if (Model.Activiteit.Publicatiedatum != null)
+        {
+<dt class="col-sm-3">
+    @Html.DisplayNameFor(model => model.Activiteit.Publicatiedatum):
+</dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.Activiteit.Publicatiedatum)
+                </dd>
+}
+        @if (Model.Activiteit.Uiterste_inschrijfdatum != null)
+        {
+<dt class="col-sm-3">
+    @Html.DisplayNameFor(model => model.Activiteit.Uiterste_inschrijfdatum):
+</dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.Activiteit.Uiterste_inschrijfdatum)
+                </dd>
+}
+        @if (Model.Activiteit.Max_inschrijvingen != null)
+        {
+<dt class="col-sm-3">
+    @Html.DisplayNameFor(model => model.Activiteit.Max_inschrijvingen):
+</dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.Activiteit.Max_inschrijvingen)
+                </dd>
+}
+        <dt class="col-sm-3">
+            Aantal inschrijvingen:
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Activiteit.AantalInschrijvingen)
         </dd>
     </dl>
 </div>
+<hr />
+<h5>Zijn ingeschreven:</h5>
+@{var ledenlist = new List<String>(); }
+@foreach (var lid in Model.IngeschrevenLeden)
+{
+    ledenlist.Add(lid.VolledigeNaam);
+}
+<partial name="_ListLeden" model="ledenlist" />
+<hr />
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <partial name="_GoTo" model="new KnopInfo()" />
 </div>

@@ -43,8 +43,8 @@ namespace TegoareWeb.Controllers
             }
             ViewData["CurrentFilter"] = searchString;
 
-            var leden = from l in _context.Leden
-                           select l;
+            var leden = _context.Leden
+                .AsNoTracking();
 
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -252,19 +252,25 @@ namespace TegoareWeb.Controllers
         {
             var lid = _context.Leden.Find(id);
 
-            if(lid != null)
+            if (lid == null)
             {
-                var relaties = _context.Relaties
-                    .Include(r => r.Groep)
-                    .Include(r => r.Lid1)
-                    .Include(r => r.Lid2)
-                    .Where(r => r.Id_Lid1 == lid.Id || r.Id_Lid2 == lid.Id)
-                    .ToList();
-                
-                _context.Relaties.RemoveRange(relaties);
-                _context.Leden.Remove(lid);
-                await _context.SaveChangesAsync();
+                return NotFound();
             }
+
+            var relaties = _context.Relaties
+                .Include(r => r.Groep)
+                .Include(r => r.Lid1)
+                .Include(r => r.Lid2)
+                .Where(r => r.Id_Lid1 == lid.Id || r.Id_Lid2 == lid.Id)
+                .ToList();
+            _context.Relaties.RemoveRange(relaties);
+
+            var inschrijvingen = _context.Inschrijvingen.Where(i => i.Id_Lid == id);
+            _context.Inschrijvingen.RemoveRange(inschrijvingen);
+
+            _context.Leden.Remove(lid);
+            await _context.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -275,7 +281,7 @@ namespace TegoareWeb.Controllers
                 return NotFound();
             }
 
-            var relatie = await _context.Relaties.FindAsync(RelId);
+            var relatie = _context.Relaties.Find(RelId);
 
             if (relatie == null)
             {
@@ -342,7 +348,7 @@ namespace TegoareWeb.Controllers
                 }
             }
 
-            return RedirectToAction(nameof(Edit), new { id = id });
+            return RedirectToAction(nameof(Edit), new { id });
         }
 
         private bool LidExists(Guid id)

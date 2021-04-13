@@ -234,12 +234,17 @@ namespace TegoareWeb.Controllers
             }
 
             var activiteit = await _context.Activiteiten
+                .AsNoTracking()
                 .Include(a => a.Ontmoetingsplaats)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (activiteit == null)
             {
                 return NotFound();
             }
+
+           activiteit.AantalInschrijvingen = _context.Inschrijvingen
+                .Where(i => i.Id_Activiteit == id)
+                .Count();
 
             return View(activiteit);
         }
@@ -250,6 +255,14 @@ namespace TegoareWeb.Controllers
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             var activiteit = await _context.Activiteiten.FindAsync(id);
+            if (activiteit == null)
+            {
+                return NotFound();
+            }
+
+            var inschrijvingen = _context.Inschrijvingen.Where(i => i.Id_Activiteit == id);
+
+            _context.Inschrijvingen.RemoveRange(inschrijvingen);
             _context.Activiteiten.Remove(activiteit);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
