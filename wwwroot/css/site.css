@@ -149,8 +149,46 @@ hr {
     float: right;
 }
 
+.btn-onze-act {
+    background-color: #9df5a6;
+    border-radius: 15px;
+    border: 2px solid black;
+}
+
+    .btn-onze-act:hover {
+        color: #9df5a6;
+        background-color: #334e50;
+    }
+
+    .btn-onze-act:nth-child(even) {
+        background-color: #f8f195;
+        border-radius: 15px;
+        border: 2px solid black;
+    }
+    .btn-onze-act:hover:nth-child(even) {
+        color: #f8f195;
+        background-color: #334e50;
+    }
+
+.onze-act-titel {
+    background-color: sandybrown;
+    border-radius: 15px;
+    border: 2px solid black;
+}
+
+.onze-act-omschrijving {
+    background-color: #dad1eb;
+    color: black;
+    border-radius: 15px;
+    border: 2px solid black;
+}
+
 .tekst-groter {
     font-size: larger;
+}
+
+.tekst-groter-extra {
+    font-size: xx-large;
 }
 
 .rel-card {
@@ -310,3 +348,41 @@ hr {
                 background-color: #eeeeee;
                 cursor: not-allowed;
             }
+
+.denk-bubbel {
+    position: relative;
+    width: 100%;
+    text-align: center;
+    line-height: 1.4em;
+    margin: 40px auto;
+    background-color: #fbfd8b;
+    border: 8px solid #3e3e3e;
+    border-radius: 100px;
+    font-family: sans-serif;
+    padding: 30px;
+}
+
+    .denk-bubbel:before,
+    .denk-bubbel:after {
+        content: ' ';
+        position: absolute;
+        width: 40px;
+        height: 40px;
+        left: 10px;
+        bottom: -30px;
+        background-color: #fbfd8b;
+        border: 8px solid #3e3e3e;
+        -webkit-border-radius: 28px;
+        -moz-border-radius: 28px;
+        border-radius: 28px;
+    }
+
+    .denk-bubbel:after {
+        width: 20px;
+        height: 20px;
+        left: 5px;
+        bottom: -40px;
+        -webkit-border-radius: 18px;
+        -moz-border-radius: 18px;
+        border-radius: 18px;
+    }

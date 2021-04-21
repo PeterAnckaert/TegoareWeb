@@ -10,7 +10,7 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm fixed-top navbar-dark bg-dark border-bottom box-shadow mb-3">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">TegoareWeb</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -20,16 +20,13 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
                             <a class="nav-link text-light" asp-area="" asp-controller="BAD" asp-action="Index">Mijn gegevens</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-light" asp-area="" asp-controller="BAD" asp-action="Index">Mijn inschrijvingen</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="BAD" asp-action="Index">Onze activiteiten</a>
+                            <a class="nav-link text-light" asp-area="" asp-controller="OnzeActiviteiten" asp-action="Index">Onze activiteiten</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-light" asp-area="" asp-controller="Lijsten" asp-action="Index">Lijsten</a>
@@ -53,12 +50,18 @@
                             <a class="nav-link text-light" asp-area="" asp-controller="Inschrijvingen" asp-action="Index">Inschrijvingen</a>
                         </li>
                     </ul>
+                    <div class="nav-item tekst-groter justify-content-end">
+                        <a class="nav-link text-light" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
+                    </div>
                 </div>
             </div>
         </nav>
     </header>
     <div class="container">
-        <main role="main" class="pb-3">
+        <main role="main" class="pb-3 mt-5">
+            <div class="mt-5">
+                &nbsp;
+            </div>
             @RenderBody()
         </main>
     </div>

@@ -1,0 +1,96 @@
+﻿@model IEnumerable<TegoareWeb.Models.Activiteit>
+
+@{
+    ViewData["Title"] = "Onze activiteiten";
+}
+
+<h1>Voor welke activiteit wil je je inschrijven?</h1>
+
+@foreach (var item in Model)
+{
+<a asp-action="Details" asp-route-id="@item.Id" class=" col-12 btn btn-lijst btn-onze-act">
+    <div class="row tekst-groter-extra font-italic font-weight-bolder justify-content-center btn-lijst onze-act-titel">
+        <u>@item.Naam</u>
+    </div>
+    <div class="row">
+        <div class="col-md-8 col-sm-12 text-left tekst-groter">
+            <span class="font-weight-bold">
+                @Html.DisplayNameFor(modelItem => item.Activiteitendatum):
+            </span>
+            @Html.DisplayFor(modelItem => item.Activiteitendatum)
+        </div>
+        <div class="col-md-2 col-sm-12 text-left">
+            <span class="font-weight-bold">
+                @Html.DisplayNameFor(modelItem => item.Beginuur):
+            </span>
+            @Html.DisplayFor(modelItem => item.Beginuur)
+        </div>
+        <div class="col-md-2 col-sm-12 text-left">
+            <span class="font-weight-bold">
+                @Html.DisplayNameFor(modelItem => item.Einduur):
+            </span>
+            @if (item.Einduur != null)
+            {
+                @Html.DisplayFor(modelItem => item.Einduur)
+            }
+            else
+            {
+                @Html.Raw("-")
+            }
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8 col-sm-12 text-left tekst-groter">
+            <span class="font-weight-bold">
+                @Html.DisplayNameFor(modelItem => item.Ontmoetingsplaats.Plaatsnaam):
+            </span>
+            @Html.DisplayFor(modelItem => item.Ontmoetingsplaats.Plaatsnaam)
+        </div>
+        <div class="col-md-2 col-sm-12 text-left">
+            <span class="font-weight-bold">
+                @Html.DisplayNameFor(modelItem => item.Prijs):
+            </span>
+            @if (item.Prijs != null)
+            {
+                @Html.DisplayFor(modelItem => item.Prijs) @Html.Raw(" &euro;")
+            }
+            else
+            {
+                @Html.Raw("-")
+            }
+        </div>
+        <div class="col-md-2 col-sm-12 text-left">
+            <span class="font-weight-bold">
+                Inschrijvingen:
+            </span>
+            @if (item.Max_inschrijvingen != null)
+            {
+                @Html.DisplayFor(modelItem => item.AantalInschrijvingen)@Html.Raw("/")@Html.DisplayFor(modelItem => item.Max_inschrijvingen)
+            }
+            else
+            {
+                @Html.DisplayFor(modelItem => item.AantalInschrijvingen)
+            }
+        </div>
+    </div>
+    <div class="row col-12 vertikaal-midden">
+        <span class="font-weight-bold tekst-groter">
+            Uiterste inschrijfdatum:&nbsp;
+        </span>
+        @if (item.Uiterste_inschrijfdatum != null)
+        {
+            @Html.DisplayFor(modelItem => item.Uiterste_inschrijfdatum)
+        }
+        else
+        {
+            @item.Activiteitendatum.ToShortDateString()
+        }
+    </div>
+    <div class="row font-weight-bold tekst-groter col-12">
+        @Html.DisplayNameFor(modelItem => item.Omschrijving):
+    </div>
+    <div class="row mt-2 ml-2 mr-2 p-2 onze-act-omschrijving">
+        @Html.DisplayFor(modelItem => item.Omschrijving)
+    </div>
+</a>
+}

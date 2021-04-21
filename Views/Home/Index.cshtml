@@ -1,8 +1,23 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@{ ViewData["Title"] = "Home Page"; }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Welkom op de website van Tegoare</h1>
+    <div class="denk-bubbel tekst-groter-extra">
+        Mensen helpen mensen. Een tekort aan bezittingen is geen echte armoede. Echte armoede ken je maar als je geen vrienden hebt.
+        Al onze activiteiten zullen hier ook bekend gemaakt worden.
+    </div>
+    <div class="row">
+        <img src="~/images/logo.jpg" class="col-md-3 col-sm-12"/>
+        <div class="col-md-9 col-sm-12 tekst-groter">
+            <div class="mt-4 m-sm-0">
+                Klik <a asp-controller="OnzeActiviteiten" asp-action="Index">HIER</a> of op <a asp-controller="OnzeActiviteiten" asp-action="Index" class="btn bg-dark text-light">Onze activiteiten</a> om jezelf (of je familieleden) in te schrijven voor activiteiten
+            </div>
+            <div class="mt-4">
+                Klik <a asp-controller="MijnInschrijvingen" asp-action="Index">HIER</a> of op <a asp-controller="MijnInschrijvingen" asp-action="Index" class="btn bg-dark text-light">Mijn inschrijvingen</a> om te zien voor welke activiteiten jij en je familie ingeschreven zijn
+            </div>
+            <div class="mt-4">
+                Klik <a asp-controller="Mijn gegevens" asp-action="Index">HIER</a> of op <a asp-controller="MijnGegevens" asp-action="Index" class="btn bg-dark text-light">Mijn gegevens</a> om de gegevens van jezelf en je familie te bekijken en aan te passen
+            </div>
+        </div>
+    </div>
 </div>

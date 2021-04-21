@@ -44,9 +44,10 @@ namespace TegoareWeb.Controllers
             }
             ViewData["CurrentFilter"] = searchString;
 
-            var tegoareContext = _context.Activiteiten.Include(a => a.Ontmoetingsplaats);
-            var activiteiten = from a in _context.Activiteiten.Include(a => a.Ontmoetingsplaats)
-                               select a;
+            var activiteiten = _context.Activiteiten
+                .AsNoTracking()
+                .Include(a => a.Ontmoetingsplaats)
+                .AsQueryable();
 
             if (!String.IsNullOrEmpty(searchString))
             {
