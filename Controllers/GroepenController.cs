@@ -12,9 +12,12 @@ namespace TegoareWeb.Controllers
     {
         private readonly TegoareContext _context;
 
-        public GroepenController(TegoareContext context)
+        private readonly IMyLoginBeheerder _credentials;
+
+        public GroepenController(TegoareContext context, IMyLoginBeheerder credentials)
         {
             _context = context;
+            _credentials = credentials;
         }
 
         // GET: Groepen

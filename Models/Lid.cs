@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using TegoareWeb.Data;
 
 namespace TegoareWeb.Models
 {
@@ -56,13 +57,18 @@ namespace TegoareWeb.Models
         [DataType(DataType.Password)]
         public string Wachtwoord { get; set; }
 
-
         public IList<Relatie> Relaties { get; set; }
 
         [NotMapped]
         public string VolledigeNaam => $"{Voornaam} {Achternaam}";
 
         [NotMapped]
+        [NotEqual("Wachtwoord")]
+        [MinLength(6, ErrorMessage = "Het wachtwoord moet uit minstens {1} tekens bestaan")]
+        public string NieuwWachtwoord { get; set; }
+
+        [NotMapped]
+        [Compare("NieuwWachtwoord", ErrorMessage = "Het nieuwe wachtwoord komt niet overeen met het herhaalde wachtwoord")]
         public string ConfirmWachtwoord { get; set; }
     }
 }

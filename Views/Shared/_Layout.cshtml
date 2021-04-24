@@ -10,9 +10,9 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm fixed-top navbar-dark bg-dark border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">TegoareWeb</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">@(String.IsNullOrEmpty((String)TempData.Peek("LoginNaam")) ? "TegoareWeb" : "Welkom, " + TempData.Peek("LoginVoornaam"))</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -28,6 +28,8 @@
                         <li class="nav-item">
                             <a class="nav-link text-light" asp-area="" asp-controller="OnzeActiviteiten" asp-action="Index">Onze activiteiten</a>
                         </li>
+                    @if (TempData.Peek("IsManager") != null && (bool)TempData.Peek("IsManager"))
+                    {
                         <li class="nav-item">
                             <a class="nav-link text-light" asp-area="" asp-controller="Lijsten" asp-action="Index">Lijsten</a>
                         </li>
@@ -49,19 +51,24 @@
                         <li class="nav-item">
                             <a class="nav-link text-light" asp-area="" asp-controller="Inschrijvingen" asp-action="Index">Inschrijvingen</a>
                         </li>
+                    }
                     </ul>
                     <div class="nav-item tekst-groter justify-content-end">
-                        <a class="nav-link text-light" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
+                        @if (String.IsNullOrEmpty((String)TempData.Peek("LoginNaam")))
+                        {
+                            <a class="nav-link text-light" asp-area="" asp-controller="Account" asp-action="LogIn">Login</a>
+                        }
+                        else
+                        {
+                            <a class="nav-link text-light" asp-area="" asp-controller="Account" asp-action="LogUit">Logout</a>
+                        }
                     </div>
                 </div>
             </div>
         </nav>
     </header>
     <div class="container">
-        <main role="main" class="pb-3 mt-5">
-            <div class="mt-5">
-                &nbsp;
-            </div>
+        <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>

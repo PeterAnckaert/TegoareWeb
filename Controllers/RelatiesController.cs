@@ -14,11 +14,15 @@ namespace TegoareWeb.Controllers
     public class RelatiesController : Controller
     {
         private readonly TegoareContext _context;
+
         private static readonly RelatieListViewModel _listModel = new RelatieListViewModel();
 
-        public RelatiesController(TegoareContext context)
+        private readonly IMyLoginBeheerder _credentials;
+
+        public RelatiesController(TegoareContext context, IMyLoginBeheerder credentials)
         {
             _context = context;
+            _credentials = credentials;
         }
 
         // GET: Relaties

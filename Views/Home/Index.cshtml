@@ -1,15 +1,23 @@
-﻿@{ ViewData["Title"] = "Home Page"; }
+﻿@using TegoareWeb.Data
 
+@{ ViewData["Title"] = "Home Page";}
 <div class="text-center">
     <h1 class="display-4">Welkom op de website van Tegoare</h1>
+    <div class="tekst-groter-extra">
+        <div>
+            Al onze activiteiten zullen hier bekend gemaakt worden.
+        </div>
+        <div>
+            Je kunt je hiervoor via deze site inschrijven
+        </div>
+    </div>
     <div class="denk-bubbel tekst-groter-extra">
         Mensen helpen mensen. Een tekort aan bezittingen is geen echte armoede. Echte armoede ken je maar als je geen vrienden hebt.
-        Al onze activiteiten zullen hier ook bekend gemaakt worden.
     </div>
     <div class="row">
-        <img src="~/images/logo.jpg" class="col-md-3 col-sm-12"/>
+        <img src="/images/logo.jpg" class="col-md-3 col-sm-12" alt="Logo van Tegoare" />
         <div class="col-md-9 col-sm-12 tekst-groter">
-            <div class="mt-4 m-sm-0">
+            <div class="mt-4">
                 Klik <a asp-controller="OnzeActiviteiten" asp-action="Index">HIER</a> of op <a asp-controller="OnzeActiviteiten" asp-action="Index" class="btn bg-dark text-light">Onze activiteiten</a> om jezelf (of je familieleden) in te schrijven voor activiteiten
             </div>
             <div class="mt-4">

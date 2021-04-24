@@ -10,6 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TegoareWeb.Data;
 using Microsoft.EntityFrameworkCore;
+using TegoareWeb.Models;
 
 namespace TegoareWeb
 {
@@ -29,6 +30,8 @@ namespace TegoareWeb
 
             services.AddDbContext<TegoareContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("DatabaseContext")));
+
+            services.AddScoped<IMyLoginBeheerder, LoginBeheerder>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

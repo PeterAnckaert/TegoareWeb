@@ -1,0 +1,45 @@
+﻿@using TegoareWeb.Data
+@{
+    ViewData["Title"] = "Geslaagde login";
+}
+
+<h1>Login geslaagd</h1>
+
+<div class="tekst-groter-extra">
+    Je bent succesvol ingelogd.
+</div>
+<div class="tekst-groter">
+    <div class="row mt-4">
+        <div class="col-2 text-right">
+            Klik <a asp-controller="OnzeActiviteiten" asp-action="Index">HIER</a> of op
+        </div>
+        <div class="col-2 text-center bg-dark">
+            <a asp-controller="OnzeActiviteiten" asp-action="Index" class="btn text-light">Onze activiteiten</a>
+        </div>
+        <div class="col-8 text-left">
+            om jezelf (of je familieleden) in te schrijven voor activiteiten
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-2 text-right">
+            Klik <a asp-controller="MijnInschrijvingen" asp-action="Index">HIER</a> of op
+        </div>
+        <div class="col-2 text-center bg-dark">
+            <a asp-controller="MijnInschrijvingen" asp-action="Index" class="btn text-light">Mijn inschrijvingen</a>
+        </div>
+        <div class="col-8 text-left">
+            om te zien voor welke activiteiten jij en je familie ingeschreven zijn
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-2 text-right">
+            Klik <a asp-controller="Mijn gegevens" asp-action="Index">HIER</a> of op
+        </div>
+        <div class="col-2 text-center bg-dark">
+            <a asp-controller="MijnGegevens" asp-action="Index" class="btn text-light">Mijn gegevens</a>
+        </div>
+        <div class="col-8 text-left">
+            om de gegevens van jezelf en je familie te bekijken en aan te passen
+        </div>
+    </div>
+</div>

@@ -12,9 +12,12 @@ namespace TegoareWeb.Controllers
     {
         private readonly TegoareContext _context;
 
-        public OntmoetingsplaatsenController(TegoareContext context)
+        private readonly IMyLoginBeheerder _credentials;
+
+        public OntmoetingsplaatsenController(TegoareContext context, IMyLoginBeheerder credentials)
         {
             _context = context;
+            _credentials = credentials;
         }
 
         // GET: Ontmoetingsplaatsen

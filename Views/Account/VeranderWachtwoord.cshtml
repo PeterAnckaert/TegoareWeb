@@ -1,0 +1,63 @@
+﻿@using TegoareWeb.Data
+
+@model Lid
+
+@{
+    ViewData["Title"] = "Aanpassen wachtwoord";
+}
+
+<h1>Aanpassen van het wachtwoord</h1>
+<hr />
+
+<div class="row">
+    <div class="col-md-11">
+        <form asp-action="VeranderWachtwoord">
+            <div class="font-weight-bold">
+                <div>
+                    <span asp-validation-for="NieuwWachtwoord" class="text-danger"></span>
+                </div>
+                <div>
+                    <span asp-validation-for="ConfirmWachtwoord" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row vertikaal-midden tekst-groter-extra mt-5">
+                <div class="col-lg-4 col-md-12 font-weight-bold text-lg-right text-md-left pr-1">
+                    <label asp-for="Login_Naam" class="control-label">Loginnaam:</label>
+                </div>
+                <div class="col-lg-7 col-md-12 mb-2 pl-1">
+                    <input asp-for="Login_Naam" class="form-control account-input" placeholder="bijv. dirgoeth" />
+                </div>
+            </div>
+            <div class="row vertikaal-midden tekst-groter-extra mt-3">
+                <div class="col-lg-4 col-md-12 font-weight-bold text-lg-right text-md-left pr-1">
+                    <label asp-for="Wachtwoord" class="control-label">Huidig wachtwoord:</label>
+                </div>
+                <div class="col-lg-7 col-md-12 mb-2 pl-1">
+                    <input type="password" asp-for="Wachtwoord" class="form-control account-input" placeholder="bijv. t3go@R3" />
+                </div>
+            </div>
+            <hr />
+            <div class="row vertikaal-midden tekst-groter-extra mt-4">
+                <div class="col-lg-4 col-md-12 font-weight-bold text-lg-right text-md-left pr-1">
+                    <label asp-for="NieuwWachtwoord" class="control-label">Nieuw wachtwoord:</label>
+                </div>
+                <div class="col-lg-7 col-md-12 mb-2 pl-1">
+                    <input type="password" asp-for="NieuwWachtwoord" class="form-control account-input" placeholder="bijv. t3go@R3" />
+                </div>
+            </div>
+            <div class="row vertikaal-midden tekst-groter-extra mt-3 mb-5">
+                <div class="col-lg-4 col-md-12 font-weight-bold text-lg-right text-md-left pr-1">
+                    <label asp-for="ConfirmWachtwoord" class="control-label">Herhaal wachtwoord:</label>
+                </div>
+                <div class="col-lg-7 col-md-12 mb-2 pl-1">
+                    <input type="password" asp-for="ConfirmWachtwoord" class="form-control account-input" placeholder="bijv. t3go@R3" />
+                </div>
+            </div>
+            <div class="form-group tekst-groter">
+                <button class="btn btn-block btn-knop btn-dark" type="submit">
+                    <i class="fa fa-key"></i> Aanpassen wachtwoord
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

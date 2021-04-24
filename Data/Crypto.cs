@@ -28,6 +28,10 @@ namespace TegoareWeb.Data
 
         public static bool Verify(string password, string hashedPassword)
         {
+            if(password == null || hashedPassword == null)
+            {
+                return false;
+            }
             var hashBytes = Convert.FromBase64String(hashedPassword);
 
             var salt = new byte[SaltSize];

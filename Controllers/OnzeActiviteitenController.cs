@@ -4,6 +4,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using TegoareWeb.Data;
+using TegoareWeb.Models;
 
 namespace TegoareWeb.Controllers
 {
@@ -11,9 +12,12 @@ namespace TegoareWeb.Controllers
     {
         private readonly TegoareContext _context;
 
-        public OnzeActiviteitenController(TegoareContext context)
+        private readonly IMyLoginBeheerder _credentials;
+
+        public OnzeActiviteitenController(TegoareContext context, IMyLoginBeheerder credentials)
         {
             _context = context;
+            _credentials = credentials;
         }
 
         // GET: OnzeActiviteiten

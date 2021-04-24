@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TegoareWeb.Data;
+using TegoareWeb.Models;
 using TegoareWeb.ViewModels;
 
 namespace TegoareWeb.Controllers
@@ -15,9 +16,12 @@ namespace TegoareWeb.Controllers
     {
         private readonly TegoareContext _context;
 
-        public LijstenController(TegoareContext context)
+        private readonly IMyLoginBeheerder _credentials;
+
+        public LijstenController(TegoareContext context, IMyLoginBeheerder credentials)
         {
             _context = context;
+            _credentials = credentials;
         }
 
         public IActionResult Index()

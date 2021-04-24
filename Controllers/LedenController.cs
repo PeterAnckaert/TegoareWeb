@@ -13,9 +13,12 @@ namespace TegoareWeb.Controllers
     {
         private readonly TegoareContext _context;
 
-        public LedenController(TegoareContext context)
+        private readonly IMyLoginBeheerder _credentials;
+
+        public LedenController(TegoareContext context, IMyLoginBeheerder credentials)
         {
             _context = context;
+            _credentials = credentials;
         }
 
         // GET: Leden
@@ -309,7 +312,9 @@ namespace TegoareWeb.Controllers
 
             lid.Login_Naam = Login_Naam;
             if(Wachtwoord != null)
+            {
                 lid.Wachtwoord = Crypto.Hash(Wachtwoord);
+            }
 
             try
             {
@@ -342,8 +347,11 @@ namespace TegoareWeb.Controllers
 
             if (lid != null)
             {
-                voor = lid.Voornaam.Length > 3 ? lid.Voornaam.ToLower().Substring(0, 3) : lid.Voornaam.ToLower();
-                achter = lid.Achternaam.Length > 5 ? lid.Achternaam.ToLower().Substring(0, 5) : lid.Achternaam.ToLower();
+                string cleanString;
+                cleanString = new string(lid.Voornaam.Where(Char.IsLetter).ToArray());
+                voor = cleanString.Length > 3 ? cleanString.ToLower().Substring(0, 3) : cleanString.ToLower();
+                cleanString = new string(lid.Achternaam.Where(Char.IsLetter).ToArray());
+                achter = cleanString.Length > 5 ? cleanString.ToLower().Substring(0, 5) : cleanString.ToLower();
                 return voor + achter;
             }
             return null;

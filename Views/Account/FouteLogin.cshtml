@@ -1,0 +1,20 @@
+﻿@using TegoareWeb.Data
+@{
+    ViewData["Title"] = "Mislukte login";
+}
+
+<h1>Login mislukt</h1>
+
+<div class="tekst-groter-extra text-center">
+    <div>
+        U kon niet ingelogd worden.
+    </div>
+    <div>
+        Uw loginnaam en/of wachtwoord zijn niet correct.
+    </div>
+</div>
+<div class="col-lg-4 col-sm-12">
+    @{var goTo = new KnopInfo { Action = "LogIn", Label = "Opnieuw proberen" }; }
+    <partial name="_GoTo" model="goTo" />
+</div>
+
