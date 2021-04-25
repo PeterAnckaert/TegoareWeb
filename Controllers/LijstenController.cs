@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -16,20 +17,29 @@ namespace TegoareWeb.Controllers
     {
         private readonly TegoareContext _context;
 
-        private readonly IMyLoginBeheerder _credentials;
-
-        public LijstenController(TegoareContext context, IMyLoginBeheerder credentials)
+        public LijstenController(TegoareContext context)
         {
             _context = context;
-            _credentials = credentials;
         }
 
         public IActionResult Index()
         {
+            IActionResult actionResult = CheckIfNotAllowed(); ;
+            if (actionResult != null)
+            {
+                return actionResult;
+            }
+
             return View();
         }
         public IActionResult Verjaardagslijst(string maand)
         {
+            IActionResult actionResult = CheckIfNotAllowed(); ;
+            if (actionResult != null)
+            {
+                return actionResult;
+            }
+
             IEnumerable Maanden = new[]
              {
                 new { Value = "1", Text = "Januari" },
@@ -53,9 +63,9 @@ namespace TegoareWeb.Controllers
                 selectedMonth = maand;
             }
 
-            SelectList maandList = new SelectList(Maanden,"Value","Text", selectedMonth);
+            SelectList maandList = new(Maanden,"Value","Text", selectedMonth);
             ViewData["Maanden"] = maandList;
-            Verjaardagslijst lijst = new Verjaardagslijst();
+            Verjaardagslijst lijst = new();
             lijst.Maand = selectedMonth;
             lijst.Jarigen = _context.Leden
                 .Where(l => l.Geboortedatum.Month.ToString() == selectedMonth)
@@ -67,6 +77,12 @@ namespace TegoareWeb.Controllers
 
         public async Task<IActionResult> Huisbezoekerslijst()
         {
+            IActionResult actionResult = CheckIfNotAllowed(); ;
+            if (actionResult != null)
+            {
+                return actionResult;
+            }
+
             var model = new Huisbezoekerslijst
             {
                 HuisbezoekersList = new SortedDictionary<string, Guid>()
@@ -97,6 +113,12 @@ namespace TegoareWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> LedenHuisbezoekerlijst(Guid IdCurrentHuisbezoeker, String NaamHuisbezoeker)
         {
+            IActionResult actionResult = CheckIfNotAllowed(); ;
+            if (actionResult != null)
+            {
+                return actionResult;
+            }
+
             var queryHuisbezoeker = await _context.Groepen.FirstOrDefaultAsync(g => g.Rol == "Huisbezoeker");
 
             var query = _context.Relaties
@@ -119,16 +141,34 @@ namespace TegoareWeb.Controllers
 
         public async Task<IActionResult> Stuurgroep()
         {
+            IActionResult actionResult = CheckIfNotAllowed(); ;
+            if (actionResult != null)
+            {
+                return actionResult;
+            }
+
             return View(await FillList("Stuurgroep"));
         }
         public async Task<IActionResult> Vrijwilligers()
         {
+
+            IActionResult actionResult = CheckIfNotAllowed(); ;
+            if (actionResult != null)
+            {
+                return actionResult;
+            }
 
             return View(await FillList ("Vrijwilliger"));
         }
 
         public async Task<IActionResult> Beheerders()
         {
+            IActionResult actionResult = CheckIfNotAllowed(); ;
+            if (actionResult != null)
+            {
+                return actionResult;
+            }
+
             var model = new Beheerderslijst
             {
                 Activiteitenmanagerlijst = new List<string>(),
@@ -138,11 +178,6 @@ namespace TegoareWeb.Controllers
             model.Ledenmanagerlijst = await FillList("Ledenmanager");
             return View(model);
         }
-        public IActionResult NotImpl()
-        {
-            return View();
-        }
-
         private async Task<List<string>> FillList(string Rol)
         {
             List<string> lijst = new();
@@ -162,6 +197,22 @@ namespace TegoareWeb.Controllers
                 lijst.Add(rel.Lid1.VolledigeNaam);
             }
             return lijst;
+        }
+
+        private IActionResult CheckIfNotAllowed()
+        {
+            if (!CredentialBeheerder.Check(null, TempData, _context))
+            {
+                return RedirectToAction("LogIn", "Account");
+            }
+
+            string[] roles = { "ledenmanager" };
+            if (!CredentialBeheerder.Check(roles, TempData, _context))
+            {
+                return StatusCode(StatusCodes.Status401Unauthorized);
+            }
+
+            return null;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
@@ -12,17 +13,20 @@ namespace TegoareWeb.Controllers
     {
         private readonly TegoareContext _context;
 
-        private readonly IMyLoginBeheerder _credentials;
-
-        public GroepenController(TegoareContext context, IMyLoginBeheerder credentials)
+        public GroepenController(TegoareContext context)
         {
             _context = context;
-            _credentials = credentials;
         }
 
         // GET: Groepen
         public async Task<IActionResult> Index(string searchString = null)
         {
+            IActionResult actionResult = CheckIfNotAllowed(); ;
+            if (actionResult != null)
+            {
+                return actionResult;
+            }
+
             var query = _context.Groepen
                 .AsNoTracking();
 
@@ -43,6 +47,12 @@ namespace TegoareWeb.Controllers
         // GET: Groepen/Create
         public IActionResult Create()
         {
+            IActionResult actionResult = CheckIfNotAllowed(); ;
+            if (actionResult != null)
+            {
+                return actionResult;
+            }
+
             return View();
         }
 
@@ -53,6 +63,12 @@ namespace TegoareWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Rol,Omschrijving,Dubbele_Relatie")] Groep groep)
         {
+            IActionResult actionResult = CheckIfNotAllowed(); ;
+            if (actionResult != null)
+            {
+                return actionResult;
+            }
+
             if (ModelState.IsValid)
             {
                 groep.Id = Guid.NewGuid();
@@ -66,6 +82,12 @@ namespace TegoareWeb.Controllers
         // GET: Groepen/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
+            IActionResult actionResult = CheckIfNotAllowed(); ;
+            if (actionResult != null)
+            {
+                return actionResult;
+            }
+
             if (id == null)
             {
                 return NotFound();
@@ -86,6 +108,12 @@ namespace TegoareWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, [Bind("Id,Rol,Omschrijving,Dubbele_Relatie")] Groep groep)
         {
+            IActionResult actionResult = CheckIfNotAllowed(); ;
+            if (actionResult != null)
+            {
+                return actionResult;
+            }
+
             if (id != groep.Id)
             {
                 return NotFound();
@@ -117,6 +145,22 @@ namespace TegoareWeb.Controllers
         private bool GroepExists(Guid id)
         {
             return _context.Groepen.Any(e => e.Id == id);
+        }
+
+        private IActionResult CheckIfNotAllowed()
+        {
+            if (!CredentialBeheerder.Check(null, TempData, _context))
+            {
+                return RedirectToAction("LogIn", "Account");
+            }
+
+            string[] roles = { "ledenmanager" };
+            if (!CredentialBeheerder.Check(roles, TempData, _context))
+            {
+                return StatusCode(StatusCodes.Status401Unauthorized);
+            }
+
+            return null;
         }
     }
 }

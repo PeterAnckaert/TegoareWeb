@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -15,23 +16,26 @@ namespace TegoareWeb.Controllers
     {
         private readonly TegoareContext _context;
 
-        private readonly IMyLoginBeheerder _credentials;
-
-        public InschrijvingenController(TegoareContext context, IMyLoginBeheerder credentials)
+        public InschrijvingenController(TegoareContext context)
         {
             _context = context;
-            _credentials = credentials;
         }
 
         // GET: Inschrijvingen
         public IActionResult Index()
         {
+            IActionResult actionResult = CheckIfNotAllowed(); ;
+            if (actionResult != null)
+            {
+                return actionResult;
+            }
+
             var tegoareContext = _context.Inschrijvingen
                 .AsNoTracking()
                 .GroupBy(i => i.Id_Activiteit)
                 .Select(g => new { Id_Activiteit = g.Key, Count = g.Count() }).ToList();
 
-            List<Activiteit> lijstActiviteiten = new List<Activiteit>();
+            List<Activiteit> lijstActiviteiten = new();
 
             foreach (var item in tegoareContext)
             {
@@ -49,6 +53,12 @@ namespace TegoareWeb.Controllers
         // GET: Inschrijvingen/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
+            IActionResult actionResult = CheckIfNotAllowed(); ;
+            if (actionResult != null)
+            {
+                return actionResult;
+            }
+
             if (id == null)
             {
                 return NotFound();
@@ -104,6 +114,12 @@ namespace TegoareWeb.Controllers
         // GET: Inschrijvingen/Create
         public IActionResult Create()
         {
+            IActionResult actionResult = CheckIfNotAllowed(); ;
+            if (actionResult != null)
+            {
+                return actionResult;
+            }
+
             ViewData["Id_Activiteit"] = new SelectList(_context.Activiteiten
                 .OrderByDescending(a => a.Activiteitendatum).ThenBy(a => a.Naam),
                 "Id", "ActiviteitendatumEnNaam");
@@ -120,6 +136,12 @@ namespace TegoareWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Id_Lid,Id_Activiteit")] Inschrijving inschrijving)
         {
+            IActionResult actionResult = CheckIfNotAllowed(); ;
+            if (actionResult != null)
+            {
+                return actionResult;
+            }
+
             if (ModelState.IsValid)
             {
                 inschrijving.Id = Guid.NewGuid();
@@ -139,6 +161,12 @@ namespace TegoareWeb.Controllers
         // GET: Inschrijvingen/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
+            IActionResult actionResult = CheckIfNotAllowed(); ;
+            if (actionResult != null)
+            {
+                return actionResult;
+            }
+
             if (id == null)
             {
                 return NotFound();
@@ -197,6 +225,12 @@ namespace TegoareWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id,Guid id_Activiteit, List<Guid> ledenLijst)
         {
+            IActionResult actionResult = CheckIfNotAllowed(); ;
+            if (actionResult != null)
+            {
+                return actionResult;
+            }
+
             if (id != id_Activiteit)
             {
                 return NotFound();
@@ -214,7 +248,7 @@ namespace TegoareWeb.Controllers
 
                     foreach(Guid id_lid in ledenLijst)
                     {
-                        Inschrijving inschrijving = new Inschrijving
+                        Inschrijving inschrijving = new()
                         {
                             Id = new Guid(),
                             Id_Activiteit = id,
@@ -236,6 +270,12 @@ namespace TegoareWeb.Controllers
         // GET: Inschrijvingen/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
+            IActionResult actionResult = CheckIfNotAllowed(); ;
+            if (actionResult != null)
+            {
+                return actionResult;
+            }
+
             var inschrijvingenVoorActiviteit = await _context.Inschrijvingen
                 .AsNoTracking()
                 .Where(i => i.Id_Activiteit == id)
@@ -287,6 +327,12 @@ namespace TegoareWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
+            IActionResult actionResult = CheckIfNotAllowed(); ;
+            if (actionResult != null)
+            {
+                return actionResult;
+            }
+
             var inschrijvingenVoorActiviteit = await _context.Inschrijvingen
                 .Where(i => i.Id_Activiteit == id)
                 .ToListAsync();
@@ -299,6 +345,22 @@ namespace TegoareWeb.Controllers
         private bool InschrijvingExists(Guid id)
         {
             return _context.Inschrijvingen.Any(e => e.Id == id);
+        }
+
+        private IActionResult CheckIfNotAllowed()
+        {
+            if (!CredentialBeheerder.Check(null, TempData, _context))
+            {
+                return RedirectToAction("LogIn", "Account");
+            }
+
+            string[] roles = { "ledenmanager" };
+            if (!CredentialBeheerder.Check(roles, TempData, _context))
+            {
+                return StatusCode(StatusCodes.Status401Unauthorized);
+            }
+
+            return null;
         }
     }
 }

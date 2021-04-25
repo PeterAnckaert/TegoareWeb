@@ -28,30 +28,33 @@
                         <li class="nav-item">
                             <a class="nav-link text-light" asp-area="" asp-controller="OnzeActiviteiten" asp-action="Index">Onze activiteiten</a>
                         </li>
-                    @if (TempData.Peek("IsManager") != null && (bool)TempData.Peek("IsManager"))
-                    {
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Lijsten" asp-action="Index">Lijsten</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Leden" asp-action="Index">Leden</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Groepen" asp-action="Index">Groepen</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Ontmoetingsplaatsen" asp-action="Index">Ontmoetingsplaatsen</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Activiteiten" asp-action="Index">Activiteiten</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Relaties" asp-action="Index">Relaties</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Inschrijvingen" asp-action="Index">Inschrijvingen</a>
-                        </li>
-                    }
+                        @if (TempData.Peek("IsLedenManager") != null && (bool)TempData.Peek("IsLedenManager"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="Lijsten" asp-action="Index">Lijsten</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="Leden" asp-action="Index">Leden</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="Groepen" asp-action="Index">Groepen</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="Relaties" asp-action="Index">Relaties</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="Inschrijvingen" asp-action="Index">Inschrijvingen</a>
+                            </li>
+                        }
+                        @if (TempData.Peek("IsActiviteitenManager") != null && (bool)TempData.Peek("IsActiviteitenManager"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="Ontmoetingsplaatsen" asp-action="Index">Ontmoetingsplaatsen</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="Activiteiten" asp-action="Index">Activiteiten</a>
+                            </li>
+                        }
                     </ul>
                     <div class="nav-item tekst-groter justify-content-end">
                         @if (String.IsNullOrEmpty((String)TempData.Peek("LoginNaam")))

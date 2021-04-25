@@ -9,16 +9,6 @@ namespace TegoareWeb.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        private readonly IMyLoginBeheerder _credentials;
-
-        public HomeController(ILogger<HomeController> logger, IMyLoginBeheerder credentials)
-        {
-            _logger = logger;
-            _credentials = credentials;
-        }
-
         public IActionResult Index()
         {
             return View();

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -15,19 +16,22 @@ namespace TegoareWeb.Controllers
     {
         private readonly TegoareContext _context;
 
-        private static readonly RelatieListViewModel _listModel = new RelatieListViewModel();
+        private static readonly RelatieListViewModel _listModel = new();
 
-        private readonly IMyLoginBeheerder _credentials;
-
-        public RelatiesController(TegoareContext context, IMyLoginBeheerder credentials)
+        public RelatiesController(TegoareContext context)
         {
             _context = context;
-            _credentials = credentials;
         }
 
         // GET: Relaties
         public async Task<IActionResult> Index(string searchString = null)
         {
+            IActionResult actionResult = CheckIfNotAllowed(); ;
+            if (actionResult != null)
+            {
+                return actionResult;
+            }
+
             var query = _context.Leden
                 .AsNoTracking();  
                
@@ -62,6 +66,12 @@ namespace TegoareWeb.Controllers
         // GET: Relaties/Create
         public async Task<IActionResult> Create()
         {
+            IActionResult actionResult = CheckIfNotAllowed(); ;
+            if (actionResult != null)
+            {
+                return actionResult;
+            }
+
             var leden = await _context.Leden
                 .OrderBy(l => l.Achternaam)
                 .ThenBy(l => l.Voornaam)
@@ -95,7 +105,13 @@ namespace TegoareWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Guid Id_Lid1, Guid Id_Groep, List<Guid> ledenlijst)
         {
-            Relatie relatie = new Relatie
+            IActionResult actionResult = CheckIfNotAllowed(); ;
+            if (actionResult != null)
+            {
+                return actionResult;
+            }
+
+            Relatie relatie = new()
             {
                 Id_Lid1 = Id_Lid1,
                 Id_Groep = Id_Groep
@@ -174,6 +190,22 @@ namespace TegoareWeb.Controllers
         private bool RelatieExists(Guid id)
         {
             return _context.Relaties.Any(e => e.Id == id);
+        }
+
+        private IActionResult CheckIfNotAllowed()
+        {
+            if (!CredentialBeheerder.Check(null, TempData, _context))
+            {
+                return RedirectToAction("LogIn", "Account");
+            }
+
+            string[] roles = { "ledenmanager" };
+            if (!CredentialBeheerder.Check(roles, TempData, _context))
+            {
+                return StatusCode(StatusCodes.Status401Unauthorized);
+            }
+
+            return null;
         }
     }
 }

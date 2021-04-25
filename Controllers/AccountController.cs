@@ -46,19 +46,26 @@ namespace TegoareWeb.Controllers
                 return RedirectToAction("FouteLogin");
             }
 
-            var role = _credentials.CheckRole(user.Login_Naam, user.Wachtwoord, "ledenmanager") ||
-                _credentials.CheckRole(user.Login_Naam, user.Wachtwoord, "activiteitenmanager");
-
-            if (role)
+            if (_credentials.CheckRole(user.Login_Naam, user.Wachtwoord, "ledenmanager"))
             {
-                TempData["IsManager"] = true;
+                TempData["IsLedenManager"] = true;
             }
             else
             {
-                TempData["IsManager"] = false;
+                TempData["IsLedenManager"] = false;
             }
+
+            if (_credentials.CheckRole(user.Login_Naam, user.Wachtwoord, "activiteitenmanager"))
+            {
+                TempData["IsActiviteitenManager"] = true;
+            }
+            else
+            {
+                TempData["IsActiviteitenManager"] = false;
+            }
+
             TempData["LoginNaam"] = lid.Login_Naam;
-            TempData["LoginWachtwoord"] = lid.Wachtwoord;
+            TempData["LoginWachtwoord"] = user.Wachtwoord;
             TempData["LoginVoornaam"] = lid.Voornaam;
 
             if (user.Wachtwoord.Equals($"{lid.Geboortedatum.Day:00}{lid.Geboortedatum.Month:00}{lid.Geboortedatum.Year:0000}"))
@@ -117,7 +124,7 @@ namespace TegoareWeb.Controllers
             }
 
             TempData["LoginNaam"] = lid.Login_Naam;
-            TempData["LoginWachtwoord"] = lid.Wachtwoord;
+            TempData["LoginWachtwoord"] = user.Wachtwoord;
             TempData["LoginVoornaam"] = lid.Voornaam;
 
             lid.Wachtwoord = Crypto.Hash(user.NieuwWachtwoord);
@@ -139,7 +146,8 @@ namespace TegoareWeb.Controllers
             TempData.Remove("LoginNaam");
             TempData.Remove("LoginWachtwoord");
             TempData.Remove("LoginVoornaam");
-            TempData.Remove("IsManager");
+            TempData.Remove("IsActiviteitenManager");
+            TempData.Remove("IsLedenManager");
         }
     }
 }

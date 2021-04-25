@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
@@ -13,12 +14,9 @@ namespace TegoareWeb.Controllers
     {
         private readonly TegoareContext _context;
 
-        private readonly IMyLoginBeheerder _credentials;
-
-        public LedenController(TegoareContext context, IMyLoginBeheerder credentials)
+        public LedenController(TegoareContext context)
         {
             _context = context;
-            _credentials = credentials;
         }
 
         // GET: Leden
@@ -29,6 +27,12 @@ namespace TegoareWeb.Controllers
             string currentFilter = null,
             string searchString = null)
         {
+            IActionResult actionResult = CheckIfNotAllowed(); ;
+            if (actionResult != null)
+            {
+                return actionResult;
+            }
+
             ViewData["CurrentSort"] = sortOrder;
             ViewData["LidnaamSortParm"] = sortOrder == "lidnaam_asc" ? "lidnaam_desc" : "lidnaam_asc";
             ViewData["StraatnaamSortParm"] = sortOrder == "straatnaam_asc" ? "straatnaam_desc" : "straatnaam_asc";
@@ -59,60 +63,51 @@ namespace TegoareWeb.Controllers
                                        || l.Telefoon_GSM.ToLower().Contains(searchString));
             }
 
-            switch (sortOrder)
+            leden = sortOrder switch
             {
-                case "lidnaam_asc":
-                    leden = leden.OrderBy(l => l.Achternaam)
-                        .ThenBy(l => l.Voornaam);
-                    break;
-                case "lidnaam_desc":
-                    leden = leden.OrderByDescending(l => l.Achternaam)
-                        .ThenByDescending(l => l.Voornaam);
-                    break;
-                case "straatnaam_asc":
-                    leden = leden.OrderBy(l => l.Straatnaam)
-                        .ThenBy(l => l.Straatnummer)
-                        .ThenBy(l => l.Postcode)
-                        .ThenBy(l => l.Gemeente)
-                        .ThenBy(l => l.Achternaam)
-                        .ThenBy(l => l.Voornaam);
-                    break;
-                case "straatnaam_desc":
-                    leden = leden.OrderByDescending(l => l.Straatnaam)
-                        .ThenByDescending(l => l.Straatnummer)
-                        .ThenByDescending(l => l.Postcode)
-                        .ThenByDescending(l => l.Gemeente)
-                        .ThenByDescending(l => l.Achternaam)
-                        .ThenByDescending(l => l.Voornaam);
-                    break;
-                case "gemeente_asc":
-                    leden = leden.OrderBy(l => l.Postcode)
-                        .ThenBy(l => l.Gemeente)
-                        .ThenBy(l => l.Straatnaam)
-                        .ThenBy(l => l.Straatnummer)
-                        .ThenBy(l => l.Achternaam)
-                        .ThenBy(l => l.Voornaam);
-                    break;
-                case "gemeente_desc":
-                    leden = leden.OrderByDescending(l => l.Postcode)
-                        .ThenByDescending(l => l.Gemeente)
-                        .ThenByDescending(l => l.Straatnaam)
-                        .ThenByDescending(l => l.Straatnummer)
-                        .ThenByDescending(l => l.Achternaam)
-                        .ThenByDescending(l => l.Voornaam);
-                    break;
-                default:
-                    leden = leden.OrderBy(l => l.Achternaam)
-                        .ThenBy(l=> l.Voornaam);
-                    break;
-            }
-
+                "lidnaam_asc" => leden.OrderBy(l => l.Achternaam)
+                                       .ThenBy(l => l.Voornaam),
+                "lidnaam_desc" => leden.OrderByDescending(l => l.Achternaam)
+                                        .ThenByDescending(l => l.Voornaam),
+                "straatnaam_asc" => leden.OrderBy(l => l.Straatnaam)
+                                        .ThenBy(l => l.Straatnummer)
+                                        .ThenBy(l => l.Postcode)
+                                        .ThenBy(l => l.Gemeente)
+                                        .ThenBy(l => l.Achternaam)
+                                        .ThenBy(l => l.Voornaam),
+                "straatnaam_desc" => leden.OrderByDescending(l => l.Straatnaam)
+                                        .ThenByDescending(l => l.Straatnummer)
+                                        .ThenByDescending(l => l.Postcode)
+                                        .ThenByDescending(l => l.Gemeente)
+                                        .ThenByDescending(l => l.Achternaam)
+                                        .ThenByDescending(l => l.Voornaam),
+                "gemeente_asc" => leden.OrderBy(l => l.Postcode)
+                                        .ThenBy(l => l.Gemeente)
+                                        .ThenBy(l => l.Straatnaam)
+                                        .ThenBy(l => l.Straatnummer)
+                                        .ThenBy(l => l.Achternaam)
+                                        .ThenBy(l => l.Voornaam),
+                "gemeente_desc" => leden.OrderByDescending(l => l.Postcode)
+                                        .ThenByDescending(l => l.Gemeente)
+                                        .ThenByDescending(l => l.Straatnaam)
+                                        .ThenByDescending(l => l.Straatnummer)
+                                        .ThenByDescending(l => l.Achternaam)
+                                        .ThenByDescending(l => l.Voornaam),
+                _ => leden.OrderBy(l => l.Achternaam)
+                            .ThenBy(l => l.Voornaam),
+            };
             return View(await PaginatedList<Lid>.CreateAsync(leden, pageNumber ?? 1, pageSize ?? 10));
         }
 
         // GET: Leden/Create
         public IActionResult Create()
         {
+            IActionResult actionResult = CheckIfNotAllowed(); ;
+            if (actionResult != null)
+            {
+                return actionResult;
+            }
+
             return View();
         }
 
@@ -123,6 +118,12 @@ namespace TegoareWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Achternaam,Voornaam,Geboortedatum,Straatnaam,Straatnummer,Postcode,Gemeente,Telefoon_vast,Telefoon_GSM,Email")] Lid lid)
         {
+            IActionResult actionResult = CheckIfNotAllowed(); ;
+            if (actionResult != null)
+            {
+                return actionResult;
+            }
+
             if (ModelState.IsValid)
             {
                 lid.Id = Guid.NewGuid();
@@ -138,6 +139,12 @@ namespace TegoareWeb.Controllers
         // GET: Leden/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
+            IActionResult actionResult = CheckIfNotAllowed(); ;
+            if (actionResult != null)
+            {
+                return actionResult;
+            }
+
             if (id == null)
             {
                 return NotFound();
@@ -171,6 +178,12 @@ namespace TegoareWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, [Bind("Id,Achternaam,Voornaam,Geboortedatum,Straatnaam,Straatnummer,Postcode,Gemeente,Telefoon_vast,Telefoon_GSM,Email,Login_Naam,Wachtwoord")] Lid lid)
         {
+            IActionResult actionResult = CheckIfNotAllowed(); ;
+            if (actionResult != null)
+            {
+                return actionResult;
+            }
+
             if (id != lid.Id)
             {
                 return NotFound();
@@ -202,6 +215,12 @@ namespace TegoareWeb.Controllers
         // GET: Leden/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
+            IActionResult actionResult = CheckIfNotAllowed(); ;
+            if (actionResult != null)
+            {
+                return actionResult;
+            }
+
             if (id == null)
             {
                 return NotFound();
@@ -233,6 +252,12 @@ namespace TegoareWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
+            IActionResult actionResult = CheckIfNotAllowed(); ;
+            if (actionResult != null)
+            {
+                return actionResult;
+            }
+
             var lid = _context.Leden.Find(id);
 
             if (lid == null)
@@ -259,6 +284,12 @@ namespace TegoareWeb.Controllers
 
         public async Task<IActionResult> DeleteRelatie(Guid? RelId, Guid? LidId)
         {
+            IActionResult actionResult = CheckIfNotAllowed(); ;
+            if (actionResult != null)
+            {
+                return actionResult;
+            }
+
             if (RelId == null || LidId == null)
             {
                 return NotFound();
@@ -279,6 +310,12 @@ namespace TegoareWeb.Controllers
 
         public async Task<IActionResult> EditLoginData(Guid? id)
         {
+            IActionResult actionResult = CheckIfNotAllowed(); ;
+            if (actionResult != null)
+            {
+                return actionResult;
+            }
+
             if (id == null)
             {
                 return NotFound();
@@ -298,6 +335,12 @@ namespace TegoareWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditLoginDataPost(Guid? id, String Login_Naam, String Wachtwoord)
         {
+            IActionResult actionResult = CheckIfNotAllowed(); ;
+            if (actionResult != null)
+            {
+                return actionResult;
+            }
+
             if (id == null)
             {
                 return NotFound();
@@ -369,6 +412,22 @@ namespace TegoareWeb.Controllers
 
                 return dag + maand + jaar;
             }
+            return null;
+        }
+
+        private IActionResult CheckIfNotAllowed()
+        {
+            if (!CredentialBeheerder.Check(null, TempData, _context))
+            {
+                return RedirectToAction("LogIn", "Account");
+            }
+
+            string[] roles = { "ledenmanager" };
+            if (!CredentialBeheerder.Check(roles, TempData, _context))
+            {
+                return StatusCode(StatusCodes.Status401Unauthorized);
+            }
+
             return null;
         }
     }

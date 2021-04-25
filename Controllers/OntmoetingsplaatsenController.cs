@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
@@ -12,17 +13,20 @@ namespace TegoareWeb.Controllers
     {
         private readonly TegoareContext _context;
 
-        private readonly IMyLoginBeheerder _credentials;
-
-        public OntmoetingsplaatsenController(TegoareContext context, IMyLoginBeheerder credentials)
+        public OntmoetingsplaatsenController(TegoareContext context)
         {
             _context = context;
-            _credentials = credentials;
         }
 
         // GET: Ontmoetingsplaatsen
         public async Task<IActionResult> Index(string searchString = null)
         {
+            IActionResult actionResult = CheckIfNotAllowed(); ;
+            if (actionResult != null)
+            {
+                return actionResult;
+            }
+
             var query = _context.Ontmoetingsplaatsen
             .AsNoTracking();
 
@@ -44,6 +48,12 @@ namespace TegoareWeb.Controllers
         // GET: Ontmoetingsplaatsen/Create
         public IActionResult Create()
         {
+            IActionResult actionResult = CheckIfNotAllowed(); ;
+            if (actionResult != null)
+            {
+                return actionResult;
+            }
+
             return View();
         }
 
@@ -54,6 +64,12 @@ namespace TegoareWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Plaatsnaam,Straatnaam,Straatnummer,Postcode,Gemeente")] Ontmoetingsplaats ontmoetingsplaats)
         {
+            IActionResult actionResult = CheckIfNotAllowed(); ;
+            if (actionResult != null)
+            {
+                return actionResult;
+            }
+
             if (ModelState.IsValid)
             {
                 ontmoetingsplaats.Id = Guid.NewGuid();
@@ -67,6 +83,12 @@ namespace TegoareWeb.Controllers
         // GET: Ontmoetingsplaatsen/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
+            IActionResult actionResult = CheckIfNotAllowed(); ;
+            if (actionResult != null)
+            {
+                return actionResult;
+            }
+
             if (id == null)
             {
                 return NotFound();
@@ -87,6 +109,12 @@ namespace TegoareWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, [Bind("Id,Plaatsnaam,Straatnaam,Straatnummer,Postcode,Gemeente")] Ontmoetingsplaats ontmoetingsplaats)
         {
+            IActionResult actionResult = CheckIfNotAllowed(); ;
+            if (actionResult != null)
+            {
+                return actionResult;
+            }
+
             if (id != ontmoetingsplaats.Id)
             {
                 return NotFound();
@@ -118,6 +146,22 @@ namespace TegoareWeb.Controllers
         private bool OntmoetingsplaatsExists(Guid id)
         {
             return _context.Ontmoetingsplaatsen.Any(e => e.Id == id);
+        }
+
+        private IActionResult CheckIfNotAllowed()
+        {
+            if (!CredentialBeheerder.Check(null, TempData, _context))
+            {
+                return RedirectToAction("LogIn", "Account");
+            }
+
+            string[] roles = { "activiteitenmanager" };
+            if (!CredentialBeheerder.Check(roles, TempData, _context))
+            {
+                return StatusCode(StatusCodes.Status401Unauthorized);
+            }
+
+            return null;
         }
     }
 }
