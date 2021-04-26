@@ -193,12 +193,7 @@ namespace TegoareWeb.Controllers
                 return NotFound();
             }
 
-            var ingeschrevenLeden = new List<Lid>();
-
-            foreach (var inschrijving in inschrijvingenVoorActiviteit)
-            {
-                ingeschrevenLeden.Add(inschrijving.Lid);
-            }
+            var ingeschrevenLeden = inschrijvingenVoorActiviteit.Select(l => l.Lid).ToList();
 
             activiteit.AantalInschrijvingen = inschrijvingenVoorActiviteit.Count;
 

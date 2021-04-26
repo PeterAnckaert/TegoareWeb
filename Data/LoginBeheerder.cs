@@ -19,6 +19,11 @@ namespace TegoareWeb.Models
 
         public Lid FindUser(string login, string password)
         {
+            if(login == null || password == null)
+            {
+                return null;
+            }
+
             var lid = _context.Leden.FirstOrDefault(l => l.Login_Naam == login);
 
             if ( lid == null)

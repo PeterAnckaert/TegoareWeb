@@ -1,0 +1,132 @@
+﻿@using TegoareWeb.ViewModels
+@using TegoareWeb.Data
+
+@model DetailsOnzeActiviteitenViewModel
+
+@{
+    ViewData["Title"] = "Details voor " + Model.Activiteit.Naam;
+}
+
+<h1>Inschrijven voor @Model.Activiteit.Naam</h1>
+
+<h4>Gegevens van de activiteit</h4>
+<hr />
+
+<div class="row">
+    <div class="col-md-11">
+        <input type="hidden" asp-for="Activiteit.Id" />
+        <form asp-action="Details">
+            <div class="row align-bottom">
+                <div class="col-lg-3 col-md-6 col-sm-12 font-weight-bold text-lg-right text-md-left pr-1">
+                    @Html.DisplayNameFor(Model => Model.Activiteit.Activiteitendatum):
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-12 mb-2 pl-0">
+                    @Html.DisplayFor(Model => Model.Activiteit.Activiteitendatum)
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-12 font-weight-bold text-lg-right text-md-left pr-1">
+                    @Html.DisplayNameFor(Model => Model.Activiteit.Beginuur):
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-12 mb-2 pl-0">
+                    @Html.DisplayFor(Model => Model.Activiteit.Beginuur)
+                </div>
+            </div>
+            <div class="row align-bottom">
+                <div class="col-lg-3 col-md-6 col-sm-12 font-weight-bold text-lg-right text-md-left pr-1">
+                    @Html.DisplayNameFor(Model => Model.Activiteit.Naam):
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-12 mb-2 pl-0">
+                    @Model.Activiteit.Naam
+                </div>
+                @if (Model.Activiteit.Einduur != null)
+                {
+                    <div class="col-lg-3 col-md-6 col-sm-12 font-weight-bold text-lg-right text-md-left pr-1">
+                        @Html.DisplayNameFor(Model => Model.Activiteit.Einduur):
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-12 mb-2 pl-0">
+                        @Html.DisplayFor(Model => Model.Activiteit.Einduur)
+                    </div>
+                }
+            </div>
+            <div class="row align-bottom">
+                <div class="col-lg-3 col-md-6 col-sm-12 font-weight-bold text-lg-right text-md-left pr-1">
+                    @Html.DisplayNameFor(Model => Model.Activiteit.Omschrijving):
+                </div>
+                <div class="col-lg-9 col-md-12 mb-2 pl-0">
+                    @Model.Activiteit.Omschrijving
+                </div>
+            </div>
+            <div class="row align-bottom">
+                <div class="col-lg-3 col-md-6 col-sm-12 font-weight-bold text-lg-right text-md-left pr-1">
+                    Gaat door in:
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-12 mb-2 pl-0">
+                    @Model.Activiteit.Ontmoetingsplaats.Plaatsnaam
+                </div>
+                @if (Model.Activiteit.Uiterste_inschrijfdatum != null)
+                {
+                    <div class="col-lg-3 col-md-6 col-sm-12 font-weight-bold text-lg-right text-md-left pr-1">
+                        Inschrijven tegen:
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-12 mb-2 pl-0">
+                        @Html.DisplayFor(Model => Model.Activiteit.Uiterste_inschrijfdatum)
+                    </div>
+                }
+            </div>
+            <div class="row align-bottom">
+                <div class="col-lg-3 col-md-6 col-sm-12 font-weight-bold text-lg-right text-md-left pr-1">
+                    @Html.DisplayNameFor(Model => Model.Activiteit.Prijs):
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-12 mb-2 pl-0">
+                    @if (Model.Activiteit.Prijs != null)
+                    {
+                        @Html.DisplayFor(Model => Model.Activiteit.Prijs) @Html.Raw("&euro;")
+                    }
+                    else
+                    {
+                        @Html.Raw("GRATIS")
+                    }
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-12 font-weight-bold text-lg-right text-md-left pr-1">
+                    Aantal inschrijvingen:
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-12 mb-2 pl-0">
+                    @if (Model.Activiteit.Max_inschrijvingen != null)
+                    {
+                        @Html.DisplayFor(modelItem => Model.Activiteit.AantalInschrijvingen)@Html.Raw("/")@Html.DisplayFor(modelItem => Model.Activiteit.Max_inschrijvingen)
+                    }
+                    else
+                    {
+                        @Html.DisplayFor(modelItem => Model.Activiteit.AantalInschrijvingen)
+                    }
+                </div>
+            </div>
+            <hr />
+            <h4 class="mb-2">Deze personen kun je inschrijven</h4>
+            @foreach (Lid lid in Model.Leden)
+            {
+                var isChecked = false;
+                @foreach (Lid ingeschrevenLid in Model.IngeschrevenLeden)
+                {
+                    if (ingeschrevenLid.Id == lid.Id)
+                    {
+                        isChecked = true;
+                    }
+                }
+                <div class="row checkbox ml-lg-5 mb-2">
+                    <input type="checkbox" name="ledenlijst" value="@lid.Id" id="@lid.Id" @(isChecked ? "checked" : "") />
+                    <label for="@lid.Id">@lid.VolledigeNaam</label>
+                </div>
+            }
+            <hr />
+            <div>
+                <button class="btn btn-block btn-knop btn-save" type="submit">
+                    <i class="fa fa-save"></i> Bewaar inschrijvingen
+                </button>
+            </div>
+        </form>
+        <partial name="_GoTo" model="new KnopInfo()" />
+    </div>
+</div>
+
+
+
