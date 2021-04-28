@@ -21,6 +21,9 @@ namespace TegoareWeb.Controllers
         // GET: Groepen
         public async Task<IActionResult> Index(string searchString = null)
         {
+            // mag de huidige gebruiker (indien gekend) deze gegevens zien
+            // als het resultaat null is, mag hij de gegevens zien
+            // als het resultaat niet null is, toon dan de gepaste pagina (login of unauthorized)
             IActionResult actionResult = CheckIfNotAllowed(); ;
             if (actionResult != null)
             {
@@ -47,6 +50,9 @@ namespace TegoareWeb.Controllers
         // GET: Groepen/Create
         public IActionResult Create()
         {
+            // mag de huidige gebruiker (indien gekend) deze gegevens zien
+            // als het resultaat null is, mag hij de gegevens zien
+            // als het resultaat niet null is, toon dan de gepaste pagina (login of unauthorized)
             IActionResult actionResult = CheckIfNotAllowed(); ;
             if (actionResult != null)
             {
@@ -63,12 +69,17 @@ namespace TegoareWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Rol,Omschrijving,Dubbele_Relatie")] Groep groep)
         {
+            // mag de huidige gebruiker (indien gekend) deze gegevens zien
+            // als het resultaat null is, mag hij de gegevens zien
+            // als het resultaat niet null is, toon dan de gepaste pagina (login of unauthorized)
             IActionResult actionResult = CheckIfNotAllowed(); ;
             if (actionResult != null)
             {
                 return actionResult;
             }
 
+            // zijn er geen validatie fouten
+            // voeg dan de nieuwe groep toe aan de db
             if (ModelState.IsValid)
             {
                 groep.Id = Guid.NewGuid();
@@ -82,6 +93,9 @@ namespace TegoareWeb.Controllers
         // GET: Groepen/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
+            // mag de huidige gebruiker (indien gekend) deze gegevens zien
+            // als het resultaat null is, mag hij de gegevens zien
+            // als het resultaat niet null is, toon dan de gepaste pagina (login of unauthorized)
             IActionResult actionResult = CheckIfNotAllowed(); ;
             if (actionResult != null)
             {
@@ -119,6 +133,8 @@ namespace TegoareWeb.Controllers
                 return NotFound();
             }
 
+            // zijn er geen validatie fouten
+            // pas dan de groep aan in de db
             if (ModelState.IsValid)
             {
                 try
@@ -142,6 +158,7 @@ namespace TegoareWeb.Controllers
             return View(groep);
         }
 
+        // bestaat de groep?
         private bool GroepExists(Guid id)
         {
             return _context.Groepen.Any(e => e.Id == id);
@@ -149,17 +166,22 @@ namespace TegoareWeb.Controllers
 
         private IActionResult CheckIfNotAllowed()
         {
+            // indien gebruiker niet gekend, ga naar login pagina
             if (!CredentialBeheerder.Check(null, TempData, _context))
             {
                 return RedirectToAction("LogIn", "Account");
             }
 
+            // indien de gekende gebruiker niet de juiste authorisatie heeft
+            // (in dit geval ledenmanager)
+            // mag hij de gegevens niet zien
             string[] roles = { "ledenmanager" };
             if (!CredentialBeheerder.Check(roles, TempData, _context))
             {
                 return StatusCode(StatusCodes.Status401Unauthorized);
             }
 
+            // gebruiker is gekend en heeft de juiste authorisatie
             return null;
         }
     }

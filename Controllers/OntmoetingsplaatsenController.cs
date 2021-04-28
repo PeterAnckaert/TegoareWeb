@@ -21,15 +21,20 @@ namespace TegoareWeb.Controllers
         // GET: Ontmoetingsplaatsen
         public async Task<IActionResult> Index(string searchString = null)
         {
+            // mag de huidige gebruiker (indien gekend) deze gegevens zien
+            // als het resultaat null is, mag hij de gegevens zien
+            // als het resultaat niet null is, toon dan de gepaste pagina (login of unauthorized)
             IActionResult actionResult = CheckIfNotAllowed(); ;
             if (actionResult != null)
             {
                 return actionResult;
             }
 
-            var query = _context.Ontmoetingsplaatsen
-            .AsNoTracking();
+            // haal alle ontmoetingsplaatsen
+            // AsNoTracking omdat de db niet aangepast wordt
+            var query = _context.Ontmoetingsplaatsen.AsNoTracking();
 
+            // moet er gezocht worden
             if (!string.IsNullOrWhiteSpace(searchString))
             {
                 query = query.Where(o => o.Plaatsnaam.ToLower().Contains(searchString)
@@ -39,7 +44,9 @@ namespace TegoareWeb.Controllers
 
             ViewData["CurrentFilter"] = searchString;
 
-            var ontmoetingsplaatsen = await query
+            // sorteer de lijst met ontmoetingsplaatsen op plaatsnaam
+            // AsNoTracking omdat de db niet aangepast wordt
+            var ontmoetingsplaatsen = await query.AsNoTracking()
                 .OrderBy(o => o.Plaatsnaam).ToListAsync();
 
             return View(ontmoetingsplaatsen);
@@ -48,6 +55,9 @@ namespace TegoareWeb.Controllers
         // GET: Ontmoetingsplaatsen/Create
         public IActionResult Create()
         {
+            // mag de huidige gebruiker (indien gekend) deze gegevens zien
+            // als het resultaat null is, mag hij de gegevens zien
+            // als het resultaat niet null is, toon dan de gepaste pagina (login of unauthorized)
             IActionResult actionResult = CheckIfNotAllowed(); ;
             if (actionResult != null)
             {
@@ -64,12 +74,17 @@ namespace TegoareWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Plaatsnaam,Straatnaam,Straatnummer,Postcode,Gemeente")] Ontmoetingsplaats ontmoetingsplaats)
         {
+            // mag de huidige gebruiker (indien gekend) deze gegevens zien
+            // als het resultaat null is, mag hij de gegevens zien
+            // als het resultaat niet null is, toon dan de gepaste pagina (login of unauthorized)
             IActionResult actionResult = CheckIfNotAllowed(); ;
             if (actionResult != null)
             {
                 return actionResult;
             }
 
+            // als er geen validatie fouten zijn
+            // bewaar de nieuwe ontmoetingsplaats in de db
             if (ModelState.IsValid)
             {
                 ontmoetingsplaats.Id = Guid.NewGuid();
@@ -83,6 +98,9 @@ namespace TegoareWeb.Controllers
         // GET: Ontmoetingsplaatsen/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
+            // mag de huidige gebruiker (indien gekend) deze gegevens zien
+            // als het resultaat null is, mag hij de gegevens zien
+            // als het resultaat niet null is, toon dan de gepaste pagina (login of unauthorized)
             IActionResult actionResult = CheckIfNotAllowed(); ;
             if (actionResult != null)
             {
@@ -94,6 +112,7 @@ namespace TegoareWeb.Controllers
                 return NotFound();
             }
 
+            //zoek de ontmoetingsplaats
             var ontmoetingsplaats = await _context.Ontmoetingsplaatsen.FindAsync(id);
             if (ontmoetingsplaats == null)
             {
@@ -109,17 +128,23 @@ namespace TegoareWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, [Bind("Id,Plaatsnaam,Straatnaam,Straatnummer,Postcode,Gemeente")] Ontmoetingsplaats ontmoetingsplaats)
         {
+            // mag de huidige gebruiker (indien gekend) deze gegevens zien
+            // als het resultaat null is, mag hij de gegevens zien
+            // als het resultaat niet null is, toon dan de gepaste pagina (login of unauthorized)
             IActionResult actionResult = CheckIfNotAllowed(); ;
             if (actionResult != null)
             {
                 return actionResult;
             }
 
+            // zoek de ontmoetingsplaats
             if (id != ontmoetingsplaats.Id)
             {
                 return NotFound();
             }
 
+            // als er geen validatie fouten zijn
+            // pas de gegevens aan van de ontmoetingsplaats in de db
             if (ModelState.IsValid)
             {
                 try
@@ -143,6 +168,8 @@ namespace TegoareWeb.Controllers
             return View(ontmoetingsplaats);
         }
 
+
+        //bestaat de ontmoetingsplaats?
         private bool OntmoetingsplaatsExists(Guid id)
         {
             return _context.Ontmoetingsplaatsen.Any(e => e.Id == id);
@@ -150,17 +177,22 @@ namespace TegoareWeb.Controllers
 
         private IActionResult CheckIfNotAllowed()
         {
+            // indien gebruiker niet gekend, ga naar login pagina
             if (!CredentialBeheerder.Check(null, TempData, _context))
             {
                 return RedirectToAction("LogIn", "Account");
             }
 
+            // indien de gekende gebruiker niet de juiste authorisatie heeft
+            // (in dit geval ledenmanager)
+            // mag hij de gegevens niet zien
             string[] roles = { "activiteitenmanager" };
             if (!CredentialBeheerder.Check(roles, TempData, _context))
             {
                 return StatusCode(StatusCodes.Status401Unauthorized);
             }
 
+            // gebruiker is gekend en heeft de juiste authorisatie
             return null;
         }
     }

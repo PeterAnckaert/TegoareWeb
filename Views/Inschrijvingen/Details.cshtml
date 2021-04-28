@@ -5,7 +5,7 @@
 
 @{ ViewData["Title"] = "Details van inschrijving"; }
 
-<h1>Inschrijving</h1>
+<h1>Volgende personen hebben hiervoor ingeschreven</h1>
 <hr />
 
 <div>
@@ -86,12 +86,7 @@
 </div>
 <hr />
 <h5>Zijn ingeschreven:</h5>
-@{var ledenlist = new List<String>(); }
-@foreach (var lid in Model.IngeschrevenLeden)
-{
-    ledenlist.Add(lid.VolledigeNaam);
-}
-<partial name="_ListLeden" model="ledenlist" />
+<partial name="_ListLeden" model="Model.IngeschrevenLeden.Select(l => l.VolledigeNaam).ToList()" />
 <hr />
 <div>
     <partial name="_GoTo" model="new KnopInfo()" />

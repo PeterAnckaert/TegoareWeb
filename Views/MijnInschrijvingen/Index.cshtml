@@ -1,0 +1,52 @@
+﻿@model Dictionary<Activiteit, List<string>>
+
+@{
+    ViewData["Title"] = "Mijn inschrijvingen";
+}
+@{
+    var isVoorbijeActiviteiten = false;
+}
+
+
+<h1>Lijst met jouw inschrijvingen voor onze activiteiten</h1>
+<hr />
+
+<h2 class="text-center font-weight-bold">
+    KOMENDE ACTIVITEITEN
+</h2>
+
+@foreach (var item in Model)
+{
+    if(item.Value.Count == 0)
+    {
+        continue;
+    }
+
+    if (!isVoorbijeActiviteiten && item.Key.Activiteitendatum < DateTime.Now)
+    {
+        isVoorbijeActiviteiten = true;
+
+        <hr />
+        <h2 class="text-center font-weight-bold">
+            VOORBIJE ACTIVITEITEN
+        </h2>
+    }
+
+    <div class="@(isVoorbijeActiviteiten ? "alert-warning" : "alert-info") tekst-groter font-weight-bold btn-lijst btn-border">
+        <div class="row text-dark">
+            <div class="col-md-6 col-sm12 tekst-groter-extra pl-5">
+                @Html.DisplayFor(modelItem => item.Key.Activiteitendatum)
+            </div>
+            <div class="col-md-6 col-sm-12 pt-3 font-italic">
+                @Html.DisplayFor(modelItem => item.Key.Naam)
+            </div>
+        </div>
+        <div class="row ml-5">
+            <partial name="_ListLeden" model="item.Value" />
+        </div>
+    </div>
+}
+
+
+
+

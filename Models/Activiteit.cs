@@ -27,7 +27,8 @@ namespace TegoareWeb.Models
 
         [StringLength(50)]
         [RegularExpression("^(\\d+(?:[\\.\\,]\\d{2})?)$", ErrorMessage = "Gelieve een correct geldbedrag in te vullen")]
-        
+        // enkel cijfers, één punt of komma en twee cijfers na de komma
+        // zijn toegelaten als mogelijke prijs
         public string Prijs { get; set; }
 
         [Display(Name = "Max. inschrijvingen")]

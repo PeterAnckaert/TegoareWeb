@@ -101,7 +101,21 @@
                 </div>
             </div>
             <hr />
-            <h4 class="mb-2">Deze personen kun je inschrijven</h4>
+
+            @{ 
+                var isDisabled = (Model.Activiteit.AantalInschrijvingen >= Model.Activiteit.Max_inschrijvingen) ||
+                    (Model.Activiteit.Uiterste_inschrijfdatum < DateTime.Now);
+            }
+
+            @if (isDisabled)
+            {
+                <h4 class="mb-2">De personen waar een vinkje naast staat zijn ingeschreven voor de activiteit.</h4>
+                <h4 class="mb-2">Jammer genoeg kunnen geen personen meer ingeschreven worden</h4>
+            }
+            else
+            {
+                <h4 class="mb-2">Deze personen kun je in- of uitschrijven (een vinkje naast hun naam betekent dat ze ingeschreven worden)</h4>
+            }
             @foreach (Lid lid in Model.Leden)
             {
                 var isChecked = false;
@@ -113,16 +127,19 @@
                     }
                 }
                 <div class="row checkbox ml-lg-5 mb-2">
-                    <input type="checkbox" name="ledenlijst" value="@lid.Id" id="@lid.Id" @(isChecked ? "checked" : "") />
+                    <input type="checkbox" name="ledenlijst" value="@lid.Id" id="@lid.Id" @(isChecked ? "checked" : "") @(isDisabled ? "disabled" : "") />
                     <label for="@lid.Id">@lid.VolledigeNaam</label>
                 </div>
             }
             <hr />
-            <div>
-                <button class="btn btn-block btn-knop btn-save" type="submit">
-                    <i class="fa fa-save"></i> Bewaar inschrijvingen
-                </button>
-            </div>
+            @if (!isDisabled)
+            {
+                <div>
+                    <button class="btn btn-block btn-knop btn-save" type="submit">
+                        <i class="fa fa-save"></i> Bewaar inschrijvingen
+                    </button>
+                </div>
+            }
         </form>
         <partial name="_GoTo" model="new KnopInfo()" />
     </div>

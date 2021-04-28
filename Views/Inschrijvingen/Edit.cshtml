@@ -20,26 +20,26 @@
     <div class="col-12">
         <form asp-action="Edit">
             <input type="hidden" asp-for="Id_Activiteit" />
-            <div class="row">
-                @foreach (Lid lid in Model.AlleLeden)
-                {
-                    var isChecked = false;
-    @foreach (Lid ingeschrevenLid in Model.IngeschrevenLeden)
-    {
-        if (ingeschrevenLid.Id == lid.Id)
-        {
-            isChecked = true;
-        }
-    }
-                    <div class="col-sm-3 checkbox">
-                        <input type="checkbox" name="ledenlijst" value="@lid.Id" id="@lid.Id" @(isChecked ? "checked" : "") />
-                        <label for="@lid.Id">@lid.VolledigeNaam</label>
-                    </div>}
-            </div>
             <div class="form-group">
                 <button class="btn btn-block btn-knop btn-save" type="submit">
                     <i class="fa fa-save"></i> Bewaar aanpassingen
                 </button>
+            </div>
+            <div class="row">
+                @foreach (Lid lid in Model.AlleLeden)
+                {
+                    var isChecked = false;
+                    @foreach (Lid ingeschrevenLid in Model.IngeschrevenLeden)
+                    {
+                        if (ingeschrevenLid.Id == lid.Id)
+                        {
+                            isChecked = true;
+                        }
+                    }
+                        <div class="col-sm-3 checkbox">
+                            <input type="checkbox" name="ledenlijst" value="@lid.Id" id="@lid.Id" @(isChecked ? "checked" : "") />
+                            <label for="@lid.Id">@lid.VolledigeNaam</label>
+                        </div>}
             </div>
         </form>
         <partial name="_GoTo" model="new KnopInfo()" />
