@@ -16,6 +16,8 @@ namespace TegoareWeb.Controllers
     {
         private readonly TegoareContext _context;
 
+        private readonly string[] _role = { "ledenmanager" };
+
         public InschrijvingenController(TegoareContext context)
         {
             _context = context;
@@ -27,7 +29,7 @@ namespace TegoareWeb.Controllers
             // mag de huidige gebruiker (indien gekend) deze gegevens zien
             // als het resultaat null is, mag hij de gegevens zien
             // als het resultaat niet null is, toon dan de gepaste pagina (login of unauthorized)
-            IActionResult actionResult = CheckIfNotAllowed(); ;
+            IActionResult actionResult = CredentialBeheerder.CheckIfAllowed(_role, TempData, _context); ;
             if (actionResult != null)
             {
                 return actionResult;
@@ -61,7 +63,7 @@ namespace TegoareWeb.Controllers
             // mag de huidige gebruiker (indien gekend) deze gegevens zien
             // als het resultaat null is, mag hij de gegevens zien
             // als het resultaat niet null is, toon dan de gepaste pagina (login of unauthorized)
-            IActionResult actionResult = CheckIfNotAllowed(); ;
+            IActionResult actionResult = CredentialBeheerder.CheckIfAllowed(_role, TempData, _context); ;
             if (actionResult != null)
             {
                 return actionResult;
@@ -119,7 +121,7 @@ namespace TegoareWeb.Controllers
         // GET: Inschrijvingen/Create
         public IActionResult Create()
         {
-            IActionResult actionResult = CheckIfNotAllowed(); ;
+            IActionResult actionResult = CredentialBeheerder.CheckIfAllowed(_role, TempData, _context); ;
             if (actionResult != null)
             {
                 return actionResult;
@@ -141,7 +143,7 @@ namespace TegoareWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Id_Lid,Id_Activiteit")] Inschrijving inschrijving)
         {
-            IActionResult actionResult = CheckIfNotAllowed(); ;
+            IActionResult actionResult = CredentialBeheerder.CheckIfAllowed(_role, TempData, _context); ;
             if (actionResult != null)
             {
                 return actionResult;
@@ -171,7 +173,7 @@ namespace TegoareWeb.Controllers
             // mag de huidige gebruiker (indien gekend) deze gegevens zien
             // als het resultaat null is, mag hij de gegevens zien
             // als het resultaat niet null is, toon dan de gepaste pagina (login of unauthorized)
-            IActionResult actionResult = CheckIfNotAllowed(); ;
+            IActionResult actionResult = CredentialBeheerder.CheckIfAllowed(_role, TempData, _context); ;
             if (actionResult != null)
             {
                 return actionResult;
@@ -234,7 +236,7 @@ namespace TegoareWeb.Controllers
             // mag de huidige gebruiker (indien gekend) deze gegevens zien
             // als het resultaat null is, mag hij de gegevens zien
             // als het resultaat niet null is, toon dan de gepaste pagina (login of unauthorized)
-            IActionResult actionResult = CheckIfNotAllowed(); ;
+            IActionResult actionResult = CredentialBeheerder.CheckIfAllowed(_role, TempData, _context); ;
             if (actionResult != null)
             {
                 return actionResult;
@@ -288,7 +290,7 @@ namespace TegoareWeb.Controllers
             // mag de huidige gebruiker (indien gekend) deze gegevens zien
             // als het resultaat null is, mag hij de gegevens zien
             // als het resultaat niet null is, toon dan de gepaste pagina (login of unauthorized)
-            IActionResult actionResult = CheckIfNotAllowed(); ;
+            IActionResult actionResult = CredentialBeheerder.CheckIfAllowed(_role, TempData, _context); ;
             if (actionResult != null)
             {
                 return actionResult;
@@ -341,7 +343,7 @@ namespace TegoareWeb.Controllers
             // mag de huidige gebruiker (indien gekend) deze gegevens zien
             // als het resultaat null is, mag hij de gegevens zien
             // als het resultaat niet null is, toon dan de gepaste pagina (login of unauthorized)
-            IActionResult actionResult = CheckIfNotAllowed(); ;
+            IActionResult actionResult = CredentialBeheerder.CheckIfAllowed(_role, TempData, _context); ;
             if (actionResult != null)
             {
                 return actionResult;
@@ -362,27 +364,6 @@ namespace TegoareWeb.Controllers
         private bool InschrijvingExists(Guid id)
         {
             return _context.Inschrijvingen.Any(e => e.Id == id);
-        }
-
-        private IActionResult CheckIfNotAllowed()
-        {
-            // indien gebruiker niet gekend, ga naar login pagina
-            if (!CredentialBeheerder.Check(null, TempData, _context))
-            {
-                return RedirectToAction("LogIn", "Account");
-            }
-
-            // indien de gekende gebruiker niet de juiste authorisatie heeft
-            // (in dit geval ledenmanager)
-            // mag hij de gegevens niet zien
-            string[] roles = { "ledenmanager" };
-            if (!CredentialBeheerder.Check(roles, TempData, _context))
-            {
-                return StatusCode(StatusCodes.Status401Unauthorized);
-            }
-
-            // gebruiker is gekend en heeft de juiste authorisatie
-            return null;
         }
     }
 }

@@ -16,6 +16,7 @@ namespace TegoareWeb.Models
         [StringLength(250)]
         public string Omschrijving { get; set; }
 
+        // een relatie met deze groep bestaat uit twee leden
         [Display(Name = "Tweepersoonsrelatie")]
         public bool Dubbele_Relatie { get; set; }
 

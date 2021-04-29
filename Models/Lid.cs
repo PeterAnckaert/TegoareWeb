@@ -63,11 +63,13 @@ namespace TegoareWeb.Models
         public string VolledigeNaam => $"{Voornaam} {Achternaam}";
 
         [NotMapped]
+        // het nieuwe wachtwoord mag NIET gelijk aan het oude wachtwoord zijn
         [NotEqual("Wachtwoord")]
         [MinLength(6, ErrorMessage = "Het wachtwoord moet uit minstens {1} tekens bestaan")]
         public string NieuwWachtwoord { get; set; }
 
         [NotMapped]
+        // het nieuwe wachtwoord MOET gelijk zijn aan het confirm wachtwoord
         [Compare("NieuwWachtwoord", ErrorMessage = "Het nieuwe wachtwoord komt niet overeen met het herhaalde wachtwoord")]
         public string ConfirmWachtwoord { get; set; }
     }
