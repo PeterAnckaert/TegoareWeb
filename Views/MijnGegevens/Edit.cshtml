@@ -1,6 +1,5 @@
 ﻿@using TegoareWeb.Models
 @using TegoareWeb.Data
-@using TegoareWeb.ViewModels
 
 @model Lid
 
@@ -17,20 +16,8 @@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
-            <div class="row vertikaal-midden">
-                <div class="col-lg-3 col-md-6 col-sm-12 font-weight-bold text-lg-right text-md-left pr-1">
-                    <label asp-for="Login_Naam" class="control-label">Login naam:</label>
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-12 mb-2 pl-0">
-                    <input disabled asp-for="Login_Naam" class="form-control" />
-                </div>
-                <div class="col-lg-6 col-md-12 mb-2 pl-0">
-                    <button class="btn btn-block btn-knop btn-save" asp-action="EditLoginData" asp-route-id="Id">
-                        <i class="fa fa-save"></i> Pas login gegevens aan
-                    </button>
-                </div>
-            </div>
-
+            <input type="hidden" asp-for="Login_Naam" />
+            <input type="hidden" asp-for="Wachtwoord" />
             <div class="row vertikaal-midden">
                 <div class="col-lg-3 col-md-6 col-sm-12 font-weight-bold text-lg-right text-md-left pr-1">
                     <label asp-for="Achternaam" class="control-label">@Html.DisplayNameFor(Model => Model.Achternaam):</label>
@@ -133,16 +120,6 @@
                     <span asp-validation-for="Geboortedatum" class="text-danger"></span>
                 </div>
             </div>
-            @{ var relaties = Model.Relaties.Where(r => r.Id_Lid1 == Model.Id || r.Id_Lid2 == Model.Id); }
-            @if (relaties.Count() > 0)
-            {
-        <hr />
-                        <div class="font-weight-bold mb-3">
-                            AANTAL RELATIES: @relaties.Count() (klik op het kruisje naast de relatie om die te verwijderen)
-                        </div>
-                                        <div>
-                                            <partial name="_ListRelaties" model="new LijstRelatieLidViewModel { LidId = Model.Id, Relaties = relaties, Knop = true }" />
-                                        </div>}
             <div class="form-group">
                 <button class="btn btn-block btn-knop btn-save" type="submit">
                     <i class="fa fa-save"></i> Bewaar aanpassingen

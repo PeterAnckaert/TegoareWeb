@@ -108,7 +108,7 @@ namespace TegoareWeb.Controllers
                             .ThenBy(l => l.Voornaam),
             };
             // toon de juiste pagina van leden
-            return View(await PaginatedList<Lid>.CreateAsync(leden, pageNumber ?? 1, pageSize ?? 10));
+            return View(await PaginatedListViewModel<Lid>.CreateAsync(leden, pageNumber ?? 1, pageSize ?? 10));
         }
 
         // GET: Leden/Create
@@ -163,6 +163,11 @@ namespace TegoareWeb.Controllers
         // GET: Leden/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
             // mag de huidige gebruiker (indien gekend) deze gegevens zien
             // als het resultaat null is, mag hij de gegevens zien
             // als het resultaat niet null is, toon dan de gepaste pagina (login of unauthorized)
@@ -170,11 +175,6 @@ namespace TegoareWeb.Controllers
             if (actionResult != null)
             {
                 return actionResult;
-            }
-
-            if (id == null)
-            {
-                return NotFound();
             }
 
             // zoek het lid in de db
@@ -211,6 +211,11 @@ namespace TegoareWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, [Bind("Id,Achternaam,Voornaam,Geboortedatum,Straatnaam,Straatnummer,Postcode,Gemeente,Telefoon_vast,Telefoon_GSM,Email,Login_Naam,Wachtwoord")] Lid lid)
         {
+            if (id != lid.Id)
+            {
+                return NotFound();
+            }
+
             // mag de huidige gebruiker (indien gekend) deze gegevens zien
             // als het resultaat null is, mag hij de gegevens zien
             // als het resultaat niet null is, toon dan de gepaste pagina (login of unauthorized)
@@ -218,11 +223,6 @@ namespace TegoareWeb.Controllers
             if (actionResult != null)
             {
                 return actionResult;
-            }
-
-            if (id != lid.Id)
-            {
-                return NotFound();
             }
 
             // zijn er geen validatie fouten

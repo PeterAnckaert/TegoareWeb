@@ -103,7 +103,7 @@ namespace TegoareWeb.Controllers
             };
 
             // toon de juiste pagina van activiteiten
-            return View(await PaginatedList<Activiteit>.CreateAsync(activiteiten, pageNumber ?? 1, pageSize ?? 10));
+            return View(await PaginatedListViewModel<Activiteit>.CreateAsync(activiteiten, pageNumber ?? 1, pageSize ?? 10));
         }
 
         // GET: Activiteiten/Create

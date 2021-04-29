@@ -67,7 +67,7 @@ namespace TegoareWeb.Controllers
 
             if(lid == null)
             {
-                return RedirectToAction("Login", "Account");
+                return RedirectToAction("LogIn", "Account");
             }
 
             // vind de activiteit
@@ -125,7 +125,7 @@ namespace TegoareWeb.Controllers
             return View(viewModel);
         }
 
-        // POST: OnzeActiviteiten/Details/5
+        // PUT: OnzeActiviteiten/Details/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -143,7 +143,7 @@ namespace TegoareWeb.Controllers
 
             if (lid == null)
             {
-                return RedirectToAction("Login", "Account");
+                return RedirectToAction("LogIn","Account");
             }
 
             try

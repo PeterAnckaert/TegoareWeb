@@ -3,7 +3,7 @@ using TegoareWeb.Models;
 
 namespace TegoareWeb.ViewModels
 {
-    public class Verjaardagslijst
+    public class VerjaardagslijstViewModel
     {
         public string Maand { get; set; }
         public IList<Lid> Jarigen { get; set; }

@@ -74,7 +74,7 @@ namespace TegoareWeb.Controllers
             // maak de lijst met de maanden en selecteer een maand
             SelectList maandList = new(Maanden,"Value","Text", selectedMonth);
             ViewData["Maanden"] = maandList;
-            Verjaardagslijst lijst = new();
+            VerjaardagslijstViewModel lijst = new();
             lijst.Maand = selectedMonth;
             // maak een lijst met alle jarigen van de geselecteerde maand
             // gesorteerd per dag en van jong naar oud
@@ -97,7 +97,7 @@ namespace TegoareWeb.Controllers
                 return actionResult;
             }
 
-            var model = new Huisbezoekerslijst
+            var model = new HuisbezoekerslijstViewModel
             {
                 //  lijst gesorteerd op naam van de huisbezoeker en zijn id
                 HuisbezoekersList = new SortedDictionary<string, Guid>()
@@ -207,7 +207,7 @@ namespace TegoareWeb.Controllers
                 return actionResult;
             }
 
-            var model = new Beheerderslijst
+            var model = new BeheerderslijstViewModel
             {
                 Activiteitenmanagerlijst = new List<string>(),
                 Ledenmanagerlijst = new List<string>()

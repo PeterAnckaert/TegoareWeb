@@ -47,7 +47,7 @@ namespace TegoareWeb.Controllers
             // indien null, geen gepaste gebruiker gevonden, daarom ga naar view FouteLogin 
             if (lid == null)
             {
-                return RedirectToAction("FouteLogin");
+                return RedirectToAction(nameof(FouteLogin));
             }
 
             // indien hier, dan is gebruiker gekend en geverifieerd,
@@ -85,11 +85,11 @@ namespace TegoareWeb.Controllers
             // aanmelding, laat hem daarom zijn wachtwoord veranderen
             if (user.Wachtwoord.Equals($"{lid.Geboortedatum.Day:00}{lid.Geboortedatum.Month:00}{lid.Geboortedatum.Year:0000}"))
             {
-                return RedirectToAction("VeranderWachtwoord");
+                return RedirectToAction(nameof(VeranderWachtwoord));
             }
 
             //gebruiker gekend + wachtwoord niet geboortedatum ==> login geslaagd
-            return RedirectToAction("SuccesLogin");
+            return RedirectToAction(nameof(SuccesLogin));
         }
         // GET: LogUit
         public IActionResult LogUit()
@@ -127,7 +127,7 @@ namespace TegoareWeb.Controllers
             // gebruiker niet gekend
             if (lid == null)
             {
-                return RedirectToAction("FouteLogin");
+                return RedirectToAction(nameof(FouteLogin));
             }
 
             // indien hier, gebruiker gekend
@@ -194,7 +194,7 @@ namespace TegoareWeb.Controllers
                 throw;
             }
 
-            return RedirectToAction("SuccesLogin");
+            return RedirectToAction(nameof(SuccesLogin));
         }
 
         //alle relevante gegevens van de huidige gebruiker verwijderen

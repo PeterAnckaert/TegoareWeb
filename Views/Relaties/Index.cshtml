@@ -40,7 +40,7 @@
                 @{
                     var relaties = Model.Relaties.Where(r => r.Id_Lid1 == lid.Id || r.Id_Lid2 == lid.Id);
                 }
-                <partial name="_ListRelaties" model="new LijstRelatieLid { LidId = lid.Id, Relaties = relaties }" />
+                <partial name="_ListRelaties" model="new LijstRelatieLidViewModel { LidId = lid.Id, Relaties = relaties }" />
             </div>
         </a>
     }

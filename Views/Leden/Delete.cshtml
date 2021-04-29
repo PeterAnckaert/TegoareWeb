@@ -80,7 +80,7 @@
     AANTAL RELATIES: @relaties.Count() (OPGEPAST: indien je dit lid verwijderd, worden ook onderstaande relaties verwijderd!)
 </dt>
                 <dd class="col-sm-10">
-                    <partial name="_ListRelaties" model="new LijstRelatieLid { LidId = Model.Id, Relaties = relaties }" />
+                    <partial name="_ListRelaties" model="new LijstRelatieLidViewModel { LidId = Model.Id, Relaties = relaties }" />
                 </dd>}
     </dl>
 

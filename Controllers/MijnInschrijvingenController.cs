@@ -30,21 +30,17 @@ namespace TegoareWeb.Controllers
 
             if (lid == null)
             {
-                return RedirectToAction("Login", "Account");
+                return RedirectToAction("LogIn", "Account");
             }
 
             var lijstInschrijvingen = new Dictionary<Activiteit, List<string>>();
 
             // maak een lijst met alle relaties voor het lid
             // AsNoTracking want de db wordt niet aangepast
-            // Include want ik wil gegevens van twee groepen en de leden
-            // waarmee het huidig lid een relatie heeft
             // Select want ik heb verder enkel de gegevens nodig van de leden
             // waarmee het huidig lid een relatie heeft
             var relatiesLid = await _context.Relaties
                 .AsNoTracking()
-                .Include(r => r.Groep)
-                .Include(r => r.Lid2)
                 .Where(r => r.Id_Lid1 == lid.Id && (r.Groep.Rol == "Gezinshoofd" || r.Groep.Rol == "Huisbezoeker"))
                 .Select(r => r.Lid2)
                 .ToListAsync();

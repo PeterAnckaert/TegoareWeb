@@ -1,0 +1,52 @@
+﻿@using TegoareWeb.ViewModels
+
+@model MijnGegevensViewModel
+
+@{
+    ViewData["Title"] = "Lijst met jouw leden";
+}
+
+<h1>Van wie wil je gegevens aanpassen?</h1>
+<hr />
+<h3>
+    Jouw gegevens
+</h3>
+<hr />
+<div class="row">
+    <div class="col-12">
+        <form asp-action="Edit" asp-route-id="@Model.HuidigLid.Id" method="get">
+            <div class="form-group">
+                <button class="btn btn-block btn-knop btn-edit" type="submit">
+                    <div>
+                        @Model.HuidigLid.VolledigeNaam
+                    </div>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+@if (Model.Relaties.Count > 0)
+{
+    <hr />
+    <h3>
+        Gegevens van andere leden
+    </h3>
+    <hr />
+}
+@foreach (Lid lid in Model.Relaties)
+{
+    <div class="row">
+        <div class="col-12">
+            <form asp-action="Edit" asp-route-id="@lid.Id" method="get">
+                <div class="form-group">
+                    <button class="btn btn-block btn-knop btn-edit" type="submit">
+                        <div>
+                            @lid.VolledigeNaam
+                        </div>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+}
+

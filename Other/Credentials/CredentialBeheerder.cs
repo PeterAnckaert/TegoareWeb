@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using System;
+using TegoareWeb.Controllers;
 using TegoareWeb.Models;
 
 namespace TegoareWeb.Data

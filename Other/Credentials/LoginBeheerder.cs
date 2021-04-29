@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using TegoareWeb.Data;
 
 namespace TegoareWeb.Models
@@ -24,7 +25,10 @@ namespace TegoareWeb.Models
             }
 
             // vind het lid met de login naam
-            var lid = _context.Leden.FirstOrDefault(l => l.Login_Naam == login);
+            // AsNoTracking want we veranderen niets in de db
+            var lid = _context.Leden
+                            .AsNoTracking()
+                            .FirstOrDefault(l => l.Login_Naam == login);
 
             if ( lid == null)
             {
@@ -54,7 +58,10 @@ namespace TegoareWeb.Models
             }
 
             // vind de groep (rol) waarop gecontroleerd zal worden
-            var groep = _context.Groepen.FirstOrDefault(g => g.Rol.ToLower() == role);
+            // AsNoTracking want we veranderen niets in de db
+            var groep = _context.Groepen
+                            .AsNoTracking()
+                            .FirstOrDefault(g => g.Rol.ToLower() == role);
 
             if (groep == null)
             {
@@ -62,7 +69,9 @@ namespace TegoareWeb.Models
             }
 
             // zit het lid in die groep (heeft het die rol)
-            var rol = _context.Relaties.FirstOrDefault(r => r.Id_Lid1 == lid.Id && r.Groep.Rol.ToLower() == role);
+            // AsNoTracking want we veranderen niets in de db
+            var rol = _context.Relaties
+                            .FirstOrDefault(r => r.Id_Lid1 == lid.Id && r.Groep.Rol.ToLower() == role);
 
             if(rol == null)
             {

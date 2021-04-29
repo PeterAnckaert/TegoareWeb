@@ -4,7 +4,7 @@ using TegoareWeb.Models;
 
 namespace TegoareWeb.ViewModels
 {
-    public class LijstRelatieLid
+    public class LijstRelatieLidViewModel
     {
         public Guid LidId { get; set; }
         public IEnumerable<Relatie> Relaties { get; set; }
