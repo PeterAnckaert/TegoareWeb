@@ -118,55 +118,6 @@ namespace TegoareWeb.Controllers
             return View(model);
         }
 
-        // GET: Inschrijvingen/Create
-        public IActionResult Create()
-        {
-            IActionResult actionResult = CredentialBeheerder.CheckIfAllowed(_role, TempData, _context); ;
-            if (actionResult != null)
-            {
-                return actionResult;
-            }
-
-            ViewData["Id_Activiteit"] = new SelectList(_context.Activiteiten
-                .OrderByDescending(a => a.Activiteitendatum).ThenBy(a => a.Naam),
-                "Id", "ActiviteitendatumEnNaam");
-            ViewData["Id_Lid"] = new SelectList(_context.Leden
-                .OrderBy(l => l.Achternaam).ThenBy(l => l.Voornaam),
-                "Id", "VolledigeNaam");
-            return View();
-        }
-
-        // POST: Inschrijvingen/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Id_Lid,Id_Activiteit")] Inschrijving inschrijving)
-        {
-            IActionResult actionResult = CredentialBeheerder.CheckIfAllowed(_role, TempData, _context); ;
-            if (actionResult != null)
-            {
-                return actionResult;
-            }
-
-            // zijn er geen validatie fouten
-            // voeg dan de nieuwe inschrijving toe aan de db
-            if (ModelState.IsValid)
-            {
-                inschrijving.Id = Guid.NewGuid();
-                _context.Add(inschrijving);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["Id_Activiteit"] = new SelectList(_context.Activiteiten
-                .OrderByDescending(a => a.Activiteitendatum).ThenBy(a=>a.Naam),
-                "Id", "Naam", inschrijving.Id_Activiteit);
-            ViewData["Id_Lid"] = new SelectList(_context.Leden
-                .OrderBy(l => l.Achternaam).ThenBy(l => l.Voornaam),
-                "Id", "VolledigeNaam", inschrijving.Id_Lid);
-            return View(inschrijving);
-        }
-
         // GET: Inschrijvingen/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
